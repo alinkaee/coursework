@@ -1,0 +1,278 @@
+/* Стили для шапки - увеличенная версия */
+header {
+    background-color: white;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 80px; /* Фиксированная высота шапки */
+}
+
+.header__logotype {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header__logotype img {
+    height: 50px; /* Увеличенный логотип */
+    width: auto;
+}
+
+.header__logotype a {
+    color: #8a2be2;
+    font-size: 28px; /* Увеличенный шрифт */
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s;
+    letter-spacing: 0.5px;
+}
+
+.header__logotype__line {
+    height: 40px; /* Выше разделитель */
+    width: 2px; /* Толще линия */
+    background-color: #e0e0e0;
+    margin: 0 20px;
+}
+
+.header__navigation ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 30px; /* Больше расстояние между пунктами */
+}
+
+.header__navigation a {
+    color: #333;
+    text-decoration: none;
+    font-size: 18px; /* Увеличенный шрифт */
+    transition: all 0.3s;
+    position: relative;
+    padding: 8px 0;
+    font-weight: 500;
+}
+
+.header__buttons {
+    display: flex;
+    align-items: center;
+    gap: 25px; /* Больше расстояние между кнопками */
+}
+
+.header__buttons__application a {
+    background-color: #8a2be2;
+    color: white;
+    padding: 12px 25px; /* Увеличенные кнопки */
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: all 0.3s;
+    font-weight: 500;
+    box-shadow: 0 2px 10px rgba(138, 43, 226, 0.2);
+}
+
+.header__buttons__enter a {
+    color: #8a2be2;
+    text-decoration: none;
+    font-size: 18px; /* Увеличенный шрифт */
+    transition: all 0.3s;
+    padding: 12px 0;
+    font-weight: 500;
+}
+
+/* Эффекты при наведении */
+.header__logotype a:hover {
+    color: #7b1fa2;
+    transform: scale(1.02);
+}
+
+.header__navigation a:hover {
+    color: #8a2be2;
+    transform: translateY(-2px);
+}
+
+.header__navigation a::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    width: 0;
+    height: 3px; /* Толще подчеркивание */
+    background-color: #8a2be2;
+    transition: width 0.3s;
+}
+
+.header__buttons__application a:hover {
+    background-color: #7b1fa2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+}
+
+.header__buttons__enter a:hover {
+    color: #7b1fa2;
+    transform: translateY(-2px);
+}
+
+/* Стили для мобильного меню */
+.mobile-menu {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 80px);
+    background-color: rgba(255, 255, 255, 0.98);
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto;
+    display: none;
+}
+
+.mobile-menu.active {
+    transform: translateX(0);
+}
+
+.mobile-menu__content {
+    padding: 30px;
+}
+
+.mobile-menu__nav {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+}
+
+.mobile-menu__nav li {
+    margin-bottom: 20px;
+}
+
+.mobile-menu__nav a {
+    color: #333;
+    font-size: 20px;
+    text-decoration: none;
+    transition: color 0.3s;
+    display: block;
+    padding: 10px 0;
+}
+
+.mobile-menu__nav a:hover {
+    color: #8a2be2;
+}
+
+.mobile-menu__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.mobile-menu__application {
+    background-color: #8a2be2;
+    color: white;
+    padding: 15px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.mobile-menu__enter {
+    color: #8a2be2;
+    text-align: center;
+    font-size: 18px;
+    text-decoration: none;
+    padding: 15px;
+    border: 2px solid #8a2be2;
+    border-radius: 6px;
+}
+
+.toggle_btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 24px;
+}
+
+.toggle_btn span {
+    display: block;
+    width: 30px;
+    height: 3px;
+    background-color: #8a2be2;
+    transition: all 0.3s;
+}
+
+.toggle_btn.active span:nth-child(1) {
+    transform: translateY(10px) rotate(45deg);
+}
+
+.toggle_btn.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.toggle_btn.active span:nth-child(3) {
+    transform: translateY(-10px) rotate(-45deg);
+}
+
+/* Показываем мобильное меню на маленьких экранах */
+@media (max-width: 992px) {
+    .mobile-menu {
+        display: block;
+    }
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 1200px) {
+    header {
+        padding: 20px 30px;
+    }
+
+    .header__navigation ul {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 992px) {
+    .header__navigation,
+    .header__buttons {
+        display: none;
+    }
+
+    .toggle_btn {
+        display: block;
+    }
+
+    header {
+        padding: 20px;
+        height: 70px;
+    }
+
+    .header__logotype a {
+        font-size: 24px;
+    }
+
+    .header__logotype img {
+        height: 40px;
+    }
+}
+
+@media (max-width: 576px) {
+    header {
+        padding: 15px;
+    }
+
+    .header__logotype a {
+        font-size: 20px;
+    }
+
+    .header__logotype img {
+        height: 35px;
+    }
+
+    .header__logotype__line {
+        height: 30px;
+        margin: 0 10px;
+    }
+}

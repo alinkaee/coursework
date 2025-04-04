@@ -1,0 +1,138 @@
+.main__profile {
+  margin-top: 50px;
+}
+
+.main__profile button {
+  background-color: #d9d9d9;
+  padding: 3px 4px;
+  font-weight: 400;
+  border: none;
+  text-align: center;
+  transition: all 0.4s;
+}
+
+.main__profile button:hover {
+  background-color: #a644f2;
+  cursor: pointer;
+}
+
+.main__profile .profile__account {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.main__profile .profile__account img {
+  width: 132px;
+  height: 132px;
+  border-radius: 100%;
+}
+
+.main__profile .profile__account .account__information {
+  margin-top: -20px;
+}
+
+.main__profile .profile__account .account__information h4 {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.main__profile .profile__account .account__information p {
+  margin-top: -50px;
+}
+
+.main__profile .profile__account .account__information p.description {
+  font-size: 12px;
+  margin-top: -16px;
+  width: 236px;
+}
+
+.main__profile .profile__buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: center;
+}
+
+.main__profile .profile__buttons button {
+  padding: 11px;
+  font-weight: 500;
+  background-color: #fff93b;
+  border-radius: 5px;
+  border: none;
+}
+
+.main__profile .profile__buttons button img {
+  margin-bottom: -1px;
+  height: 12px;
+  width: 12px;
+}
+
+.main__profile .profile__buttons button:hover {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.main__profile .profile__buttons button:hover img {
+  height: 14px;
+  width: 14px;
+}
+
+.main__profile .profile__resumes {
+  display: flex;
+  flex-direction: row;
+  margin-top: 22px;
+  gap: 30px;
+}
+
+.main__profile .profile__resumes .resumes__resume {
+  width: 460px;
+  padding: 31px 21px;
+  border: 1px solid #a644f2;
+}
+
+.main__profile .profile__resumes .resumes__resume h4 {
+  font-size: 32px;
+  margin: 0;
+  margin-bottom: -10px;
+}
+
+.main__profile .profile__resumes .resumes__resume .category {
+  line-height: 2px;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.main__profile .profile__resumes .resumes__resume .text {
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.main__profile .profile__job_openings {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.main__profile .profile__job_openings .job_openings_column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.main__profile .profile__job_openings .job_openings_column p {
+  background-color: #d9d9d9;
+  padding: 14px 48px 15px 13px;
+  margin: 0;
+}
+
+@keyframes movement {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,166 @@
+/* Стили для подвала */
+footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-top: 3px solid #8a2be2;
+    padding: 40px;
+    margin-top: 80px;
+    background-color: #fff;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Левый блок */
+.footer__left__side {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer__logotype {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.footer__logotype img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.footer__logotype a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 700;
+    font-size: 20px;
+    transition: color 0.3s;
+}
+
+.footer__logotype a:hover {
+    color: #8a2be2;
+}
+
+.footer__left__side a.order {
+    color: #333;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 16px;
+    background-color: #fff83b;
+    border-radius: 8px;
+    padding: 12px 20px;
+    width: fit-content;
+    transition: all 0.3s;
+}
+
+.footer__left__side a.order:hover {
+    background-color: #8a2be2;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(138, 43, 226, 0.2);
+}
+
+/* Центральный блок (навигация) */
+.footer__center__side {
+    flex: 1;
+    min-width: 250px;
+    padding: 0 20px;
+}
+
+.footer__navigation ul {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer__navigation a {
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    color: #666;
+    transition: all 0.3s;
+}
+
+.footer__navigation a:hover {
+    color: #8a2be2;
+    padding-left: 5px;
+}
+
+/* Правый блок (контакты и соцсети) */
+.footer__right__side {
+    flex: 1;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.footer__right__side p {
+    font-size: 16px;
+    font-weight: 500;
+    color: #666;
+    margin: 0;
+}
+
+.footer__right__side__social {
+    display: flex;
+    gap: 15px;
+}
+
+.footer__right__side__social img {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.3s;
+}
+
+.footer__right__side__social img:hover {
+    transform: translateY(-3px);
+}
+
+/* Адаптация для планшетов */
+@media (max-width: 992px) {
+    footer {
+        gap: 40px;
+        padding: 40px 30px;
+    }
+    
+    .footer__center__side {
+        padding: 0;
+    }
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    footer {
+        flex-direction: column;
+        padding: 30px 20px;
+        gap: 30px;
+    }
+    
+    .footer__left__side,
+    .footer__center__side,
+    .footer__right__side {
+        min-width: 100%;
+    }
+    
+    .footer__navigation ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .footer__right__side {
+        align-items: flex-start;
+    }
+    
+    .footer__right__side__social {
+        justify-content: flex-start;
+    }
+}

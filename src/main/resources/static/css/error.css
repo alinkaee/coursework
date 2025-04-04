@@ -1,0 +1,287 @@
+/* Основные стили страницы ошибки */
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.error-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Шапка с анимацией */
+.error-header {
+    background: linear-gradient(135deg, #6e1b9b 0%, #8a2be2 100%);
+    padding: 25px 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.error-header::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    animation: pulse 15s infinite linear;
+}
+
+@keyframes pulse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+}
+
+.logo-part-1 {
+    color: #FFFFFF;
+}
+
+.logo-part-2 {
+    color: #FFD700;
+}
+
+/* Основное содержимое */
+.error-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    position: relative;
+}
+
+.error-illustration {
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.error-icon {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, #8a2be2 0%, #6e1b9b 100%);
+    color: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 72px;
+    font-weight: 700;
+    margin: 0 auto;
+    box-shadow: 0 10px 30px rgba(138, 43, 226, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+.error-icon::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 2px dashed rgba(138, 43, 226, 0.4);
+    border-radius: 50%;
+    animation: spin 20s linear infinite;
+    z-index: -1;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error-title {
+    font-size: 42px;
+    font-weight: 800;
+    color: #8a2be2;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+}
+
+.error-title::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #8a2be2, #ffd700);
+    border-radius: 2px;
+}
+
+.error-message {
+    font-size: 20px;
+    color: #555;
+    max-width: 600px;
+    margin-bottom: 30px;
+    line-height: 1.7;
+}
+
+.error-details {
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    max-width: 600px;
+    word-break: break-word;
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+    color: #d63384;
+    border-left: 4px solid #8a2be2;
+    position: relative;
+    text-align: left;
+}
+
+.error-details::before {
+    content: "⚠️ Error Details:";
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #8a2be2;
+}
+
+.error-actions {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* Кнопки с анимацией */
+.btn-primary {
+    background: linear-gradient(135deg, #8a2be2 0%, #6e1b9b 100%);
+    color: #FFFFFF;
+    padding: 15px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.4s ease;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(138, 43, 226, 0.4);
+}
+
+.btn-primary::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255,255,255,0.1);
+    transform: rotate(30deg);
+    transition: all 0.3s;
+}
+
+.btn-primary:hover::after {
+    left: 100%;
+}
+
+.btn-secondary {
+    background-color: #FFFFFF;
+    color: #8a2be2;
+    padding: 15px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.4s ease;
+    border: 2px solid #8a2be2;
+    box-shadow: 0 3px 10px rgba(138, 43, 226, 0.1);
+}
+
+.btn-secondary:hover {
+    background-color: #f8f0ff;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(138, 43, 226, 0.2);
+}
+
+/* Подвал */
+.error-footer {
+    text-align: center;
+    padding: 25px;
+    background-color: #f1f1f1;
+    color: #666;
+    font-size: 14px;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Анимация для всей страницы */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.error-content > * {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+.error-icon { animation-delay: 0.1s; }
+.error-title { animation-delay: 0.2s; }
+.error-message { animation-delay: 0.3s; }
+.error-details { animation-delay: 0.4s; }
+.error-actions { animation-delay: 0.5s; }
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .error-header {
+        padding: 20px;
+    }
+    
+    .error-content {
+        padding: 40px 20px;
+    }
+    
+    .error-icon {
+        width: 120px;
+        height: 120px;
+        font-size: 56px;
+    }
+    
+    .error-title {
+        font-size: 32px;
+    }
+    
+    .error-message {
+        font-size: 18px;
+    }
+    
+    .error-actions {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+    }
+    
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+}

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}"
+      lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Все категории</title>
+    <link rel="stylesheet" href="/css/view-all-categories.css">
+</head>
+<body>
+<div layout:fragment="content" class="">
+    <main>
+        <div class="main__categories__block">
+            <div class="main__categories__block__header">
+                <h1>Все категории</h1>
+                <a href="add-category">
+                    Добавить категорию
+                </a>
+                <a href="add-vacancy" class="btn btn-primary">
+                    Добавить вакансию
+                </a>
+            </div>
+
+            <div class="main__categories__block__content">
+                <div th:each="category : ${categories}" class="category-block" th:id="${category.id}">
+                    <div class="category-header">
+                        <h2 th:text="${category.title}"></h2>
+                        <button class="delete-category-btn" th:data-category-id="${category.id}">Удалить категорию</button>
+                    </div>
+                    <div class="category-cards">
+                        <!-- Карточки вакансий для каждой категории -->
+                        <div th:each="vacancy : ${category.vacancies}" class="card">
+                            <div class="card-image" ></div>
+                            <div class="card-content">
+                                <h4 th:text="${vacancy.title}"></h4>
+                                <p th:text="${vacancy.description}"></p>
+                                <div class="card-footer">
+                                    <p class="salary" th:text="'от ' + ${vacancy.salary} + ' ₽'"></p>
+                                    <div class="action-buttons">
+                                        <a th:href="@{/update-vacancy/{id}(id=${vacancy.id})}" class="edit-btn">Редактировать</a>
+                                        <button class="delete-btn" th:data-vacancy-id="${vacancy.id}">Удалить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoriesContainer = document.querySelector('.main__categories__block__content');
+            if (!categoriesContainer) {
+                console.error('Элемент .main__categories__block__content не найден');
+                return;
+            }
+
+            // Обработчик кликов
+            categoriesContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('delete-category-btn')) {
+                    const categoryId = e.target.getAttribute('data-category-id');
+
+                    if (confirm('Вы уверены, что хотите удалить эту категорию?')) {
+                        fetch(`/categories/${categoryId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]')?.content || ''
+                            },
+                            credentials: 'include'
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Ошибка сервера: ' + response.status);
+                            }
+                            return response;
+                        })
+                        .then(() => {
+                            // Удаляем категорию из DOM
+                            const categoryBlock = e.target.closest('.category-block');
+                            if (categoryBlock) {
+                                categoryBlock.remove();
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Ошибка при удалении категории: ' + error.message);
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+    <script th:inline="javascript">
+        function addVacancyCard(vacancy) {
+            const categoryBlock = document.getElementById(vacancy.categoryId);
+            if (categoryBlock) {
+                const cardsContainer = categoryBlock.querySelector('.category-cards');
+
+                const cardHtml = `
+                    <div class="card" data-vacancy-id="${vacancy.id}">
+                        <div class="card-image" style="background-image: url(${vacancy.imageUrl || '/img/default.jpg'})"></div>
+                        <div class="card-content">
+                            <h4>${vacancy.title}</h4>
+                            <p>${vacancy.description}</p>
+                            <div class="card-footer">
+                                <p class="salary">от ${vacancy.salary} ₽</p>
+                                <div class="action-buttons">
+                                    <button class="edit-btn">Редактировать</button>
+                                    <button class="delete-btn" data-vacancy-id="${vacancy.id}">Удалить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                cardsContainer.insertAdjacentHTML('beforeend', cardHtml);
+            }
+        }
+        // Обработка отправки формы (если используется AJAX)
+        document.querySelector('form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').content
+                }
+            })
+            .then(response => response.json())
+            .then(vacancy => {
+                addVacancyCard(vacancy);
+                window.location.href = '/categories'; // или другой URL
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const vacancyId = button.getAttribute('data-vacancy-id');
+            fetch('/vacancy/' + vacancyId, { method: 'DELETE' })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Ошибка при удалении вакансии');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    const cardElement = button.closest('.card');
+                    if (cardElement) {
+                        cardElement.remove();
+                    } else {
+                        console.error('Элемент .card не найден');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+});
+    </script>
+</div>
+
+</body>
+</html>

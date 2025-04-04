@@ -1,0 +1,259 @@
+/* Основные стили */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Блок поиска */
+.main__search__block {
+    margin-bottom: 40px;
+}
+
+.main__search__block__form {
+    background-color: #f9f0ff;
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.main__search__block__form h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.main__search__block__form p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Форма поиска - горизонтальное расположение */
+.main__search__block__form__bottom form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.box {
+    width: 20%;
+    min-width: 160px;
+}
+
+.box select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 16px;
+}
+
+.main__search__block__form__bottom__input {
+    flex-grow: 1;
+    display: flex;
+    gap: 10px;
+}
+
+.main__search__block__form__bottom__input input {
+    flex-grow: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    min-width: 0;
+}
+
+.main__search__block__form__bottom__input button {
+    padding: 14px 20px;
+    background-color: #8a2be2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    width: 100px;
+    flex-shrink: 0;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    box-sizing: border-box;
+}
+
+.main__search__block__form__bottom__input button:hover {
+    background-color: #7b1fa2;
+}
+
+/* Карточки вакансий */
+.main__search__block__develop__cards__row__card,
+.mainsearchblockdevelopcardsrowcard {
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: box-shadow 0.3s;
+}
+
+.main__search__block__develop__cards__row__card:hover,
+.mainsearchblockdevelopcardsrowcard:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.main__search__block__develop__cards__row__card h4,
+.develop__cards__row__card__name {
+    font-size: 18px;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.develop__cards__row__card__right p {
+    color: #666;
+    margin: 8px 0;
+}
+
+.p__second {
+    color: #8a2be2 !important;
+}
+
+.develop__cards__row__card__right button {
+    padding: 12px 20px;
+    background-color: #8a2be2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+    line-height: 1.3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    box-sizing: border-box;
+}
+
+.develop__cards__row__card__right button:hover {
+    background-color: #7b1fa2;
+}
+
+h2 {
+    font-size: 22px;
+    color: #333;
+    margin: 30px 0 15px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Стили для кнопки "Сбросить результаты поиска" */
+.reset-button {
+margin-bottom: 20px;
+    float: right; /* Смещение вправо */
+    font-size: 1em; /* Уменьшение размера */
+    padding: 5px 15px; /* Внутренние отступы */
+    background-color: #6c5ce7; /* Фиолетовый фон */
+    color: white; /* Белый текст */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.reset-button:hover {
+    background-color: #5649c0; /* Темнее фиолетовый при наведении */
+}
+
+/* Стили пагинации */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.pagination a {
+    color: #8a2be2;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+    border-radius: 4px;
+    transition: background-color .3s;
+}
+
+.pagination a.active {
+    background-color: #8a2be2;
+    color: white;
+    border: 1px solid #8a2be2;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #f9f0ff;
+}
+
+.pagination a:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.pagination a:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 600px) {
+    .pagination a {
+        padding: 6px 12px;
+        font-size: 14px;
+        margin: 2px;
+    }
+}
+
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .main__search__block__form__bottom form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .box,
+    .main__search__block__form__bottom__input {
+        width: 100%;
+    }
+
+    .box {
+        min-width: auto;
+    }
+
+    .main__search__block__form__bottom__input {
+        flex-direction: row;
+    }
+
+    .main__search__block__form__bottom__input button {
+        width: auto;
+        padding: 12px 15px;
+    }
+
+    .reset-button {
+            width: 100%;
+            margin-left: 0;
+            padding: 10px;
+        }
+}

@@ -1,0 +1,325 @@
+.main__categories__block {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    background-color: #fff;
+}
+
+.main__categories__block__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.main__categories__block__header h1 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #8a2be2;
+    margin: 0;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.main__categories__block__header a {
+    background-color: #fff83b;
+    color: #333;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.main__categories__block__header a:hover {
+    background-color: #8a2be2;
+    color: white;
+    box-shadow: 0 4px 6px rgba(138, 43, 226, 0.2);
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background-color: #8a2be2;
+    border: 1px solid #8a2be2;
+}
+
+.btn-primary:hover {
+    background-color: #6c5ce7;
+    border-color: #6c5ce7;
+}
+
+.delete-category-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.category-block:hover .delete-category-btn {
+    opacity: 1;
+}
+
+.delete-category-btn:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+.delete-category-btn:active {
+    transform: translateY(1px);
+}
+
+.main__categories__block__form {
+    position: relative;
+    margin: 0 auto;
+    margin-top: 30px;
+    width: 490px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    padding: 16px 26px;
+    transition: all 1s;
+}
+
+.main__categories__block__form h3 {
+    font-size: 30px;
+    margin: 0;
+}
+
+.main__categories__block__form .main__categories__block__form__bottom {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 26px;
+}
+
+.main__categories__block__form .main__categories__block__form__bottom .box select {
+    width: 102px;
+    padding: 7px 12px;
+    background-color: white;
+    border: none;
+    color: #727272;
+}
+
+.main__categories__block__form .main__categories__block__form__bottom .main__categories__block__form__bottom__input {
+    display: flex;
+    flex-direction: row;
+    gap: 0px;
+    width: 310px;
+    justify-content: space-between;
+    background-color: white;
+    overflow: hidden;
+    border-radius: 100px;
+}
+
+.main__categories__block__form .main__categories__block__form__bottom .main__categories__block__form__bottom__input input {
+    border: none;
+    margin-left: 10px;
+}
+
+.main__categories__block__form .main__categories__block__form__bottom .main__categories__block__form__bottom__input input:focus {
+    outline: none;
+    border: none;
+}
+
+.main__categories__block__form .main__categories__block__form__bottom .main__categories__block__form__bottom__input button {
+    background-color: #fff83b;
+    border: none;
+    width: 53px;
+    padding: 9px 11px;
+    font-size: 13px;
+}
+
+.main__categories__block__form .main__categories__block__form__bottom .main__categories__block__form__bottom__input button:hover {
+    cursor: pointer;
+}
+
+.main__categories__block__form:hover {
+    box-shadow: 5px 7px 30px #ddd;
+}
+
+.main__categories__block__form img {
+    position: absolute;
+    left: 600px;
+    border-radius: 100px;
+    top: -30px;
+    height: 190px;
+}
+
+.main__categories__block__content {
+    margin: 0 auto;
+}
+
+.main__categories__block__content .category-block {
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.category-block h2 {
+    font-size: 32px;
+    color: #8a2be2;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #8a2be2;
+    padding-bottom: 10px;
+}
+
+.category-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    min-height: 400px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+}
+
+.card-content {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-content h4 {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.card-content p {
+    color: #7f8c8d;
+    font-size: 0.9em;
+    line-height: 1.5;
+    margin-bottom: 1em;
+}
+
+.card-footer {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.salary {
+    color: #e74c3c;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.apply-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 0.8em;
+}
+
+.apply-btn:hover {
+    background: #2980b9;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.edit-btn {
+    background: #2ecc71;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 0.8em;
+}
+
+.edit-btn:hover {
+    background: #27ae60;
+}
+
+.delete-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 0.8em;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+}
+
+.category-block {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: appear 0.5s ease forwards;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .category-cards {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+
+    .card {
+        min-height: 300px;
+    }
+}

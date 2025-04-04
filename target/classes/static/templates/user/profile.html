@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Моя страница</title>
+  <link rel="stylesheet" href="./css/profile.css" />
+</head>
+<body>
+<div  layout:fragment="content" class="">
+  <main>
+    <div class="main__profile">
+      <button>Редактировать профиль</button>
+      <div class="profile__account">
+        <img src="./img/account.png" alt="" class="account__img" />
+        <div class="account__information">
+          <h4>Иванов Иван</h4>
+          <p>
+            +7(900)***-**-** <br />
+            ivan15@mail.ru
+          </p>
+          <p class="description">
+            The template’s scalable assets architecture makes it easy to
+            customize. Other features include 300+ color schemes, 200+
+            customized components, and individual documentation.
+          </p>
+        </div>
+      </div>
+      <div class="profile__buttons">
+        <button>Редактировать резюме</button>
+        <button><img src="./img/plus.png" alt="" /></button>
+      </div>
+      <div class="profile__resumes">
+        <div class="resumes__resume">
+
+        </div>
+        <div class="resumes__resume">
+
+        </div>
+      </div>
+      <h3>Мои вакансии</h3>
+
+    </div>
+  </main>
+</div>
+</body>
+
+</html>

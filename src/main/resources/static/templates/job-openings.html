@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www3.thymeleaf.org"
+      layout:decorate="~{layout}"
+      lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>поиск вакансий</title>
+    <link rel="stylesheet" href="/css/job-openings.css">
+    <script>
+        function resetSearch(event) {
+        event.preventDefault();
+        window.location.href = "http://localhost:8080/job_openings";
+        }
+    </script>
+</head>
+
+<body>
+<div layout:fragment="content" class="">
+    <main>
+        <div class="main__search__block">
+            <div class="main__search__block__form">
+                <h3>Уже видишь себя на <br/>определенном месте?</h3>
+                <p>Найди свое место!</p>
+                <div class="main__search__block__form__bottom">
+                    <form th:action="@{/job_openings}" method="get">
+                        <div class="box">
+                            <select name="category">
+                                <option value="">Все категории</option>
+                                <option th:each="category : ${categories}"
+                                        th:value="${category.title}"
+                                        th:text="${category.title}"
+                                        th:selected="${param.category != null && param.category == category.title}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="main__search__block__form__bottom__input">
+                            <input type="text" id="searchInput" name="query" placeholder="Поиск вакансии"
+                                   th:value="${query}"/>
+                            <button type="submit" onclick="clearSearchInput()">Найти</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <button type="button" class="reset-button" onclick="resetSearch(event)">Сбросить результаты поиска</button>
+
+            <!-- Отображение результатов поиска -->
+            <div th:if="${not #lists.isEmpty(vacancies)}">
+                <!-- Если есть результаты поиска -->
+                <div th:each="vacancy : ${vacancies}" class="main__search__block__develop__cards__row__card">
+                    <h4 th:text="${vacancy.title}"></h4>
+                    <div class="develop__cards__row__card__right">
+                        <p th:text="${vacancy.description}"></p>
+                        <p class="p__second" style="font-weight: 600" th:text="'от ' + ${vacancy.salary} + ' ₽'"></p>
+                        <button>ОТКЛИКНУТЬСЯ</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Если поиск не выполнялся или результаты пусты -->
+            <div th:if="${#lists.isEmpty(vacancies)}">
+                <!-- Отображение всех категорий и их вакансий -->
+                <div th:each="category : ${categories}" th:id="${category.title}">
+                    <h2 th:text="${category.title}"></h2>
+                    <div class="main__search__block__develop__cards">
+                        <div class="main__search__block__develop__cards__row">
+                            <div th:each="vacancy : ${category.vacancies}" class="mainsearchblockdevelopcardsrowcard">
+                                <h4 class="develop__cards__row__card__name" th:text="${vacancy.title}"></h4>
+                                <div class="develop__cards__row__card__right">
+                                    <p th:text="${vacancy.description}"></p>
+                                    <p class="p__second" style="font-weight: 600" th:text="'от ' + ${vacancy.salary} + ' ₽'"></p>
+                                    <button>ОТКЛИКНУТЬСЯ</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${totalPages > 1}" class="pagination">
+                <a th:if="${currentPage > 1}"
+                   th:href="@{/job_openings(page=0, size=${pageSize}, query=${searchQuery}, category=${categoryTitle})}">&laquo;</a>
+                <a th:if="${currentPage > 1}"
+                   th:href="@{/job_openings(page=${currentPage - 2}, size=${pageSize}, query=${searchQuery}, category=${categoryTitle})}">&lsaquo;</a>
+
+                <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
+                    <a th:href="@{/job_openings(page=${i - 1}, size=${pageSize}, query=${searchQuery}, category=${categoryTitle})}"
+                       th:class="${currentPage == i ? 'active' : ''}"
+                       th:text="${i}"></a>
+                </th:block>
+
+                <a th:if="${currentPage < totalPages}"
+                   th:href="@{/job_openings(page=${currentPage}, size=${pageSize}, query=${searchQuery}, category=${categoryTitle})}">&rsaquo;</a>
+                <a th:if="${currentPage < totalPages}"
+                   th:href="@{/job_openings(page=${totalPages - 1}, size=${pageSize}, query=${searchQuery}, category=${categoryTitle})}">&raquo;</a>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить вакансию</title>
+    <link rel="stylesheet" href="/css/add-vacancy.css">
+</head>
+<body>
+<div layout:fragment="content" class="">
+    <div class="main__add-vacancy__block">
+        <main>
+            <div class="main__add-vacancy__header">
+                <h1>Добавить вакансию</h1>
+            </div>
+
+            <div class="main__add-vacancy__form">
+                <form th:action="@{/add-vacancy}" th:object="${vacancyDto}" method="post">
+                    <div class="form-group">
+                        <label for="title">Название вакансии:</label>
+                        <input type="text" id="title" th:field="*{title}" required>
+                        <small class="text-danger" th:if="${#fields.hasErrors('title')}"
+                               th:errors="*{title}"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Описание:</label>
+                        <textarea id="description" th:field="*{description}" required></textarea>
+                        <small class="text-danger" th:if="${#fields.hasErrors('description')}"
+                               th:errors="*{description}"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="salary">Зарплата:</label>
+                        <input type="number" id="salary" th:field="*{salary}" required>
+                        <small class="text-danger" th:if="${#fields.hasErrors('salary')}"
+                               th:errors="*{salary}"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoryId">Категория:</label>
+                        <select id="categoryId" th:field="*{categoryId}" required>
+                            <option value="">Выберите категорию</option>
+                            <option th:each="category : ${categories}"
+                                    th:value="${category.id}"
+                                    th:text="${category.title}"></option>
+                        </select>
+                        <small class="text-danger" th:if="${#fields.hasErrors('categoryId')}"
+                               th:errors="*{categoryId}"></small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Добавить вакансию</button>
+                </form>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,189 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+/* Стили контейнера */
+.container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Усиливаем тень */
+}
+
+/* Стили заголовка */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Стили формы */
+#registration-form {
+    display: flex;
+    flex-direction: column;
+    padding: 10px; /* Добавляем внутренние отступы для формы */
+    border-radius: 5px; /* Добавляем закругленные углы для формы */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: calc(100% - 20px); /* Уменьшаем ширину на 20 пикселей */
+    height: 40px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 0 10px; /* Добавляем отступы по бокам */
+}
+
+.form-group input:focus {
+    outline: none; /* Удаляем стандартный контур */
+    box-shadow: 0 0 5px rgba(255, 105, 180, 0.5); /* Добавляем лиловое свечение */
+}
+
+/* Стили кнопки */
+button[type="submit"] {
+    width: calc(100% - 20px); /* Уменьшаем ширину на 20 пикселей */
+    height: 40px;
+    background-color: #7A288A; /* Фиолетовый цвет */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px; /* Добавляем отступы по бокам */
+}
+
+button[type="submit"]:hover {
+    background-color: #5C1A7D; /* Темнее фиолетовый цвет */
+}
+
+/* Стили сообщения */
+.message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Стили ссылки */
+p:last-child {
+    text-align: center;
+    margin-top: 20px;
+}
+
+p:last-child a {
+    text-decoration: none;
+    color: #7A288A;
+}
+
+p:last-child a:hover {
+    color: #5C1A7D;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+
+.container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 100px;
+    margin-top: 100px;
+}
+
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color:#00000;
+}
+
+
+#registration-form {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: calc(100% - 20px); /* Уменьшаем ширину на 20 пикселей */
+    height: 40px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 0 10px; /* Добавляем отступы по бокам */
+}
+
+.form-group input:focus {
+    outline: none; /* Удаляем стандартный контур */
+    box-shadow: 0 0 5px rgba(255, 105, 180, 0.5); /* Добавляем лиловое свечение */
+}
+
+/*
+button[type="submit"] {
+    width: calc(100% - 20px);
+    height: 40px;
+    background-color: #468966;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+button[type="submit"]:hover {
+    background-color: #fff;
+    color: #468966;
+    border: 1px solid #468966;
+    transition: .3s ease-out;
+}
+*/
+
+
+.message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+
+p:last-child {
+    text-align: center;
+    margin-top: 20px;
+}
+/*
+p:last-child a {
+    text-decoration: none;
+    color: #468966;
+}
+
+p:last-child a:hover {
+    text-decoration: underline;
+}
+/*
+
