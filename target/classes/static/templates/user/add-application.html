@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Добвление резюме</title>
+    <link rel="stylesheet" href="./css/application.css" />
+</head>
+<body>
+<div layout:fragment="content" class="">
+    <form id="applicationForm" action="/applications/add" method="post">
+        <h2>Добавьте своё резюме</h2>
+        <label for="userEmail">Email пользователя:</label>
+        <input type="email" id="userEmail" name="userEmail" required>
+
+        <label for="vacancyName">Название вакансии:</label>
+        <input type="text" id="vacancyName" name="vacancyName" required>
+
+        <label for="status">Статус заявки:</label>
+        <select id="status" name="status">
+            <option value="Новая">Новая</option>
+            <option value="В процессе">В процессе</option>
+            <option value="Одобрена">Одобрена</option>
+            <option value="Отклонена">Отклонена</option>
+        </select>
+
+        <button type="submit">Сохранить</button>
+    </form>
+</div>
+</body>
+</html>
