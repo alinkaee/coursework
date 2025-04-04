@@ -76,21 +76,6 @@ public class UserService implements UserDetailsService {
         );
     }
 
-
-//    public User createNewUser(RegistrationUserDto registrationUserDto) {
-//        User user = new User();
-//        user.setUsername(registrationUserDto.getUsername());
-//        user.setEmail(registrationUserDto.getEmail());
-//        user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
-//
-//        // Создание UserRole для роли пользователя
-//        Role userRole = roleService.getUserRole();
-//        UserRole userUserRole = new UserRole(user, userRole);
-//        user.setUserRoles(List.of(userUserRole));
-//
-//        return userRepository.save(user);
-//    }
-
     public User createNewUser(RegistrationUserDto registrationUserDto) {
         User user = new User();
         user.setUsername(registrationUserDto.getUsername());
