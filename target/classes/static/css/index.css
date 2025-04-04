@@ -1,0 +1,287 @@
+/* Основные стили */
+body {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    max-width: 1200px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+}
+
+/* Первый экран */
+.main__first_screen {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    position: relative;
+    margin-bottom: 60px;
+}
+
+.main__first_screen h1 {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #8a2be2;
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+}
+
+.first_screen__list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.first_screen__list li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 15px;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.first_screen__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 12px;
+    height: 12px;
+    background-color: #8a2be2;
+    border-radius: 50%;
+}
+
+.first_screen__button button {
+    background-color: #fff83b;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    padding: 18px 36px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 1;
+    position: relative;
+}
+
+.first_screen__button button:hover {
+    background-color: #8a2be2;
+    color: white;
+    box-shadow: 0 10px 20px rgba(138, 43, 226, 0.2);
+}
+
+.main__first_screen img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    max-width: 50%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Преимущества */
+.main__advantages {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin: 60px 0;
+}
+
+.advantages__card {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.advantages__card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(138, 43, 226, 0.1);
+}
+
+.card__top {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.card__top__img {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+}
+
+.card__top h3 {
+    font-size: 20px;
+    color: #8a2be2;
+    margin: 0;
+}
+
+.advantages__card p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Карточки работы */
+.main__work-card {
+    margin: 80px 0;
+}
+
+.main__work-card h2 {
+    font-size: 36px;
+    text-align: center;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+.main__work-card__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.main__work-card__cards__card {
+    height: 250px;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.main__work-card__cards__card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%);
+}
+
+.main__work-card__cards__card__top {
+    padding: 20px;
+    z-index: 1;
+}
+
+.main__work-card__cards__card__top h4 {
+    color: white;
+    font-size: 22px;
+    margin: 0;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.main__work-card__cards__card button {
+    background: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    align-self: flex-end;
+    cursor: pointer;
+    z-index: 1;
+    transition: all 0.3s;
+}
+
+.main__work-card__cards__card button:hover {
+    background: #8a2be2;
+}
+
+.main__work-card__cards__card button img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Компании-партнеры */
+.main__colleagues {
+    margin: 80px 0;
+    text-align: center;
+}
+
+.main__colleagues h2 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+.main__colleagues__row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin: 30px 0;
+}
+
+.main__colleagues__row img {
+    max-width: 180px;
+    max-height: 80px;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: all 0.3s;
+}
+
+.main__colleagues__row img:hover {
+    filter: grayscale(0);
+    opacity: 1;
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .main__first_screen h1 {
+        font-size: 36px;
+    }
+
+    .main__first_screen img {
+        position: relative;
+        max-width: 100%;
+        margin-top: 30px;
+    }
+
+    .main__advantages {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .main__first_screen h1 {
+        font-size: 28px;
+    }
+
+    .main__advantages {
+        grid-template-columns: 1fr;
+    }
+
+    .main__work-card__cards {
+        grid-template-columns: 1fr;
+    }
+
+    .main__colleagues__row {
+        gap: 20px;
+    }
+
+    .main__colleagues__row img {
+        max-width: 120px;
+    }
+}

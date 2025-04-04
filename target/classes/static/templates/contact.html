@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Контакты</title>
+    <link rel="stylesheet" href="/css/contact.css">
+</head>
+
+<body>
+<div  layout:fragment="content" class="">
+    <main>
+        <div class="main__relationship">
+            <div class="relationship__information" id="form">
+                <h2>СВЯЗАТЬСЯ <br />С НАМИ</h2>
+                <div class="information__contacts">
+                    <img src="./img/location.png" alt="" />
+                    <p class="contact">
+                        Казань, Большая Красная ул., дом 5А.Офисный центр №1, 5 этаж,
+                        офисы 501-504
+                    </p>
+                </div>
+                <div class="information__contacts">
+                    <img src="./img/phone.png" class="phone" alt=""/>
+                    <p class="contact">+7(900)123-45-67</p>
+                </div>
+                <div class="information__line"></div>
+                <p>Заявки высывайте на почту: <span>pochta@mail.ru</span></p>
+            </div>
+            <div class="relationship__form">
+                <div class="relationship__form__input">
+                    <input type="text" placeholder="Ваше имя" />
+                </div>
+                <div class="relationship__form__input">
+                    <input type="email" placeholder="Ваш E-mail" />
+                </div>
+                <div class="relationship__form__input">
+                    <input type="text" placeholder="Ваш телефон" />
+                </div>
+                <button>ОСТАВИТЬ ЗАЯВКУ</button>
+            </div>
+        </div>
+        <div class="relationship__map">
+            <h2>Главный офис</h2>
+        </div>
+
+    </main>
+    <div class="map">
+        <script type="text/javascript" charset="utf-8" async
+                src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Aea1e944cadb2cd9161ae3a3161ae94b30d68535cfee7cf3b7a3540cb6a7e6865&amp;width=2045&amp;height=466&amp;lang=ru_RU&amp;scroll=true"></script>
+    </div>
+</div>
+
+<script src="./js/drop-down-menu.js"></script>
+</body>
+
+</html>

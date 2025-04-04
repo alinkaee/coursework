@@ -1,0 +1,205 @@
+/* Основные стили страницы добавления категории */
+main {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+    font-size: 36px;
+    color: #8a2be2;
+    margin-bottom: 40px;
+    text-align: center;
+    position: relative;
+    font-weight: 700;
+}
+
+h1::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, #8a2be2, #ffd700);
+    border-radius: 2px;
+}
+
+/* Стили формы */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-group label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 16px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #8a2be2;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
+}
+
+.form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+/* Стили кнопки */
+button[type="submit"] {
+    background: linear-gradient(135deg, #8a2be2 0%, #6e1b9b 100%);
+    color: white;
+    padding: 18px;
+    border: none;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(138, 43, 226, 0.3);
+}
+
+button[type="submit"]:active {
+    transform: translateY(-1px);
+}
+
+/* Стили сообщений */
+.message {
+    padding: 16px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.message.error {
+    background-color: #ffebee;
+    color: #d32f2f;
+    border-left: 4px solid #d32f2f;
+}
+
+.message.success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border-left: 4px solid #2e7d32;
+}
+
+/* Стили для превью категории */
+.category-preview {
+    margin-top: 40px;
+    padding: 25px;
+    background: #f9f0ff;
+    border-radius: 12px;
+    border: 1px dashed #8a2be2;
+}
+
+.category-preview h3 {
+    color: #8a2be2;
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+/* Анимация ошибок */
+.error-input {
+    border-color: #d32f2f !important;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    main {
+        max-width: 700px;
+        padding: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    main {
+        margin: 40px 20px;
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        padding: 14px;
+    }
+
+    button[type="submit"] {
+        padding: 16px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    main {
+        margin: 30px 15px;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h1::after {
+        width: 80px;
+        bottom: -10px;
+    }
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}"
+      lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>добавить категорию</title>
+    <link rel="stylesheet" href="/css/add-category.css">
+</head>
+<body>
+<div layout:fragment="content" class="">
+    <main>
+        <form id="category-form" action="/categories/add" method="post">
+            <div class="form-group">
+                <label for="title">Название категории</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Описание категории</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+            <button type="submit">Добавить категорию</button>
+        </form>
+        <p class="message" id="message"></p>
+    </main>
+
+</div>
+<script>
+    document.getElementById('category-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const response = await fetch('/categories/add', {
+        method: 'POST',
+        body: formData
+    });
+
+    if (response.ok) {
+        const category = await response.json();
+        window.location.href = '/view-all-categories'; // Перенаправление
+    } else {
+        const errorData = await response.json();
+        showError(errorData);
+    }
+});
+
+function showError(errors) {
+    const messageElement = document.getElementById('message');
+    messageElement.textContent = errors.errors.join(', ');
+}
+
+</script>
+</body>
+</html>
