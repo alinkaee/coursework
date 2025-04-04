@@ -1,13 +1,17 @@
 package ru.flamexander.spring.security.jwt.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.service.ApplicationsService;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,12 +27,33 @@ public class ApplicationsController {
         this.applicationsService = applicationsService;
     }
 
-    @PostMapping(path = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<Applications> createApplication(
-            @ModelAttribute ApplicationsService.ApplicationsDTO application
+    @PostMapping("/add")
+    public ModelAndView createApplication(
+            @Valid @ModelAttribute ApplicationsService.ApplicationsDTO applicationDto,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
     ) {
-        Applications createdApplication = applicationsService.createApplication(application);
-        return new ResponseEntity<>(createdApplication, HttpStatus.CREATED);
+        List<String> errors = new ArrayList<>();
+
+        // Валидация данных
+        if (bindingResult.hasErrors()) {
+            bindingResult.getFieldErrors().forEach(error -> {
+                errors.add(error.getDefaultMessage());
+            });
+            redirectAttributes.addFlashAttribute("errors", errors);
+            return new ModelAndView(new RedirectView("/add-application"));
+        }
+
+        // Обработка и сохранение заявки
+        try {
+            applicationsService.createApplication(applicationDto);
+            redirectAttributes.addFlashAttribute("successMessage", "Заявка успешно создана!");
+            return new ModelAndView(new RedirectView("/profile"));
+        } catch (Exception e) {
+            errors.add("Ошибка при создании заявки: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errors", errors);
+            return new ModelAndView(new RedirectView("/add-application"));
+        }
     }
 
     @GetMapping("/{id}")

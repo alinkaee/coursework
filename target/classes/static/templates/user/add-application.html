@@ -28,5 +28,30 @@
         <button type="submit">Сохранить</button>
     </form>
 </div>
+<script>
+    document.getElementById('applicationForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const response = await fetch('/applications/add', {
+        method: 'POST',
+        body: formData
+    });
+
+    if (response.ok) {
+        const category = await response.json();
+        window.location.href = '/profile'; // Перенаправление
+    } else {
+        const errorData = await response.json();
+        showError(errorData);
+    }
+});
+
+function showError(errors) {
+    const messageElement = document.getElementById('message');
+    messageElement.textContent = errors.errors.join(', ');
+}
+
+</script>
 </body>
 </html>

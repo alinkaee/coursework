@@ -12,12 +12,6 @@ import java.util.List;
 @Repository
 public interface ApplicationsRepository extends JpaRepository<Applications, Long> {
 
-//        // Пример метода поиска заявок по пользователю
-//        List<Applications> findByUserId(Long userId);
-//
-//        // Пример метода поиска заявок по вакансии
-//        List<Applications> findByVacancyId(Long vacancyId);
-
         // Пример метода поиска заявок по статусу
         List<Applications> findByStatus(String status);
 
@@ -36,13 +30,5 @@ public interface ApplicationsRepository extends JpaRepository<Applications, Long
 
         // Метод для поиска заявок по названию вакансии
         List<Applications> findByVacancyName(String vacancyName);
-
-
-
-//        //Пример метода поиска по части имени пользователя
-//        List<Applications> findByUser_UsernameContainingIgnoreCase(String username);
-//
-//        // Пример метода поиска по части имени вакансии
-//        List<Applications> findByVacancy_NameContainingIgnoreCase(String vacancyName);
 }
 
