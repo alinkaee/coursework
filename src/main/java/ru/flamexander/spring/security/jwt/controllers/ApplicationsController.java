@@ -2,6 +2,7 @@ package ru.flamexander.spring.security.jwt.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.flamexander.spring.security.jwt.entities.Applications;
@@ -22,8 +23,10 @@ public class ApplicationsController {
         this.applicationsService = applicationsService;
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Applications> createApplication(@RequestBody ApplicationsService.ApplicationsDTO application) {
+    @PostMapping(path = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<Applications> createApplication(
+            @ModelAttribute ApplicationsService.ApplicationsDTO application
+    ) {
         Applications createdApplication = applicationsService.createApplication(application);
         return new ResponseEntity<>(createdApplication, HttpStatus.CREATED);
     }
