@@ -1,11 +1,9 @@
 package ru.flamexander.spring.security.jwt.controllers;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.flamexander.spring.security.jwt.dtos.ApplicationsDTO;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.service.ApplicationsService;
 
@@ -25,7 +23,7 @@ public class ApplicationsController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Applications> createApplication(@RequestBody ApplicationsService.ApplicationDto application) {
+    public ResponseEntity<Applications> createApplication(@RequestBody ApplicationsService.ApplicationsDTO application) {
         Applications createdApplication = applicationsService.createApplication(application);
         return new ResponseEntity<>(createdApplication, HttpStatus.CREATED);
     }
@@ -43,8 +41,8 @@ public class ApplicationsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Applications> updateApplication(@PathVariable Long id, @RequestBody ApplicationsService.ApplicationDto applicationDto) {
-        Applications updatedApplication = applicationsService.updateApplication(id, applicationDto);
+    public ResponseEntity<Applications> updateApplication(@PathVariable Long id, @RequestBody ApplicationsService.ApplicationsDTO applicationsDto) {
+        Applications updatedApplication = applicationsService.updateApplication(id, applicationsDto);
         return ResponseEntity.ok(updatedApplication);
     }
 
@@ -54,4 +52,5 @@ public class ApplicationsController {
         return ResponseEntity.noContent().build();
     }
 }
+
 

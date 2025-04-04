@@ -216,6 +216,50 @@ header {
     transform: translateY(-10px) rotate(-45deg);
 }
 
+/* Стили для кнопки "Профиль" */
+.header__buttons div:nth-child(2) a {
+    color: #8a2be2;
+    text-decoration: none;
+    font-size: 18px;
+    transition: all 0.3s;
+    padding: 12px 25px;
+    font-weight: 500;
+    border: 2px solid #8a2be2;
+    border-radius: 6px;
+}
+
+.header__buttons div:nth-child(2) a:hover {
+    background-color: #8a2be2;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 10px rgba(138, 43, 226, 0.2);
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 992px) {
+    .mobile-menu__buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .mobile-menu__profile {
+        color: #8a2be2;
+        text-align: center;
+        font-size: 18px;
+        text-decoration: none;
+        padding: 15px;
+        border: 2px solid #8a2be2;
+        border-radius: 6px;
+        margin-bottom: 15px;
+    }
+
+    .mobile-menu__profile:hover {
+        background-color: #8a2be2;
+        color: white;
+    }
+}
+
 /* Показываем мобильное меню на маленьких экранах */
 @media (max-width: 992px) {
     .mobile-menu {

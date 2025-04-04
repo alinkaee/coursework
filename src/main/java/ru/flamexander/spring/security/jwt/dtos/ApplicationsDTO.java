@@ -11,8 +11,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class ApplicationsDTO {
     private Long id;
-    private UserDto user;
-    private VacancyDto vacancy;
+    private String userEmail;
+    private String vacancyTitle;
     private Date date;
     private String status;
 }
+

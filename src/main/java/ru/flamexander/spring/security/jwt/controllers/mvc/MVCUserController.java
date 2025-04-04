@@ -2,11 +2,9 @@ package ru.flamexander.spring.security.jwt.controllers.mvc;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.flamexander.spring.security.jwt.entities.Category;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class MVCUserController {
@@ -15,4 +13,15 @@ public class MVCUserController {
     public String getProfilePage() {
         return "user/profile";
     }
+
+    @GetMapping("/add_application")
+    public String showAddedApplication() {
+        return "user/add-application";
+    }
+
+    @PostMapping("/add_application")
+    public String AddApplication() {
+        return "user/add-application";
+    }
+
 }

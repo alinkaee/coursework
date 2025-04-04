@@ -9,7 +9,6 @@ import java.util.Date;
 @Entity
 @Table(name = "applications")
 @Data
-//@NoArgsConstructor
 @AllArgsConstructor
 public class Applications {
 
@@ -17,11 +16,11 @@ public class Applications {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @Column(name = "user_email", nullable = false)
+    private String userEmail;
 
-    @Column(name = "vacancy_id", nullable = false)
-    private Long vacancyId;
+    @Column(name = "vacancy_name", nullable = false)
+    private String vacancyName;
 
     @Column(name = "application_date")
     private Date date;
@@ -32,9 +31,9 @@ public class Applications {
     // Конструкторы и геттеры/сеттеры
     public Applications() {}
 
-    public Applications(Long userId, Long vacancyId) {
-        this.userId = userId;
-        this.vacancyId = vacancyId;
+    public Applications(String userEmail, String vacancyName) {
+        this.userEmail = userEmail;
+        this.vacancyName = vacancyName;
     }
 
     // Геттеры и сеттеры
@@ -46,20 +45,20 @@ public class Applications {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
-    public Long getVacancyId() {
-        return vacancyId;
+    public String getVacancyName() {
+        return vacancyName;
     }
 
-    public void setVacancyId(Long vacancyId) {
-        this.vacancyId = vacancyId;
+    public void setVacancyName(String vacancyName) {
+        this.vacancyName = vacancyName;
     }
 
     public Date getDate() {
@@ -78,4 +77,5 @@ public class Applications {
         this.status = status;
     }
 }
+
 

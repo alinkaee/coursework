@@ -12,11 +12,11 @@ import java.util.List;
 @Repository
 public interface ApplicationsRepository extends JpaRepository<Applications, Long> {
 
-        // Пример метода поиска заявок по пользователю
-        List<Applications> findByUserId(Long userId);
-
-        // Пример метода поиска заявок по вакансии
-        List<Applications> findByVacancyId(Long vacancyId);
+//        // Пример метода поиска заявок по пользователю
+//        List<Applications> findByUserId(Long userId);
+//
+//        // Пример метода поиска заявок по вакансии
+//        List<Applications> findByVacancyId(Long vacancyId);
 
         // Пример метода поиска заявок по статусу
         List<Applications> findByStatus(String status);
@@ -30,6 +30,13 @@ public interface ApplicationsRepository extends JpaRepository<Applications, Long
 
         // Пример метода поиска заявок по дате и статусу
         List<Applications> findByDateBetweenAndStatus(Date startDate, Date endDate, String status);
+
+        // Метод для поиска заявок по email пользователя
+        List<Applications> findByUserEmail(String userEmail);
+
+        // Метод для поиска заявок по названию вакансии
+        List<Applications> findByVacancyName(String vacancyName);
+
 
 
 //        //Пример метода поиска по части имени пользователя

@@ -10,6 +10,7 @@ import ru.flamexander.spring.security.jwt.entities.Category;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
@@ -32,6 +33,11 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
     Page<Vacancy> findByCategoryAndTitleContainingIgnoreCase(Category category, String title, Pageable pageable);
 
     Page<Vacancy> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+
+    Optional<Vacancy> findVacancyByTitle(String title);
+
+    // Альтернативный метод для поиска по части названия (игнорируя регистр)
+    List<Vacancy> findByTitleIgnoreCase(String title);
 
 
     @Query("SELECT v FROM Vacancy v WHERE v.category.title = :categoryName AND v.title LIKE %:query%")

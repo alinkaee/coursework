@@ -1,11 +1,7 @@
 package ru.flamexander.spring.security.jwt.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.flamexander.spring.security.jwt.dtos.ApplicationsDTO;
-import ru.flamexander.spring.security.jwt.dtos.CategoriesDTO;
-import ru.flamexander.spring.security.jwt.dtos.VacancyDto;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
@@ -37,19 +33,18 @@ public class ApplicationsService {
     }
 
     @Transactional
-    public Applications createApplication(ApplicationDto applicationDto) {
-        // Получаем Vacancy по ID
-        Vacancy vacancy = vacancyRepository.findById(applicationDto.getVacancyId())
-                .orElseThrow(() -> new RuntimeException("Vacancy not found with id: " + applicationDto.getVacancyId()));
+    public Applications createApplication(ApplicationsDTO applicationDto) {
+        // Проверка существования пользователя и вакансии по email и названию
+        User user = userRepository.findByEmail(applicationDto.getUserEmail())
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + applicationDto.getUserEmail()));
 
-        // Получаем User по ID
-        User user = userRepository.findById(applicationDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + applicationDto.getUserId()));
+        Vacancy vacancy = vacancyRepository.findVacancyByTitle(applicationDto.getVacancyTitle())
+                .orElseThrow(() -> new RuntimeException("Vacancy not found with name: " + applicationDto.getVacancyTitle()));
 
-        // Создаем новую заявку и устанавливаем полученные объекты
+        // Создаем новую заявку
         Applications application = new Applications();
-        application.setUserId(applicationDto.getUserId());
-        application.setVacancyId(applicationDto.getVacancyId());
+        application.setUserEmail(applicationDto.getUserEmail());
+        application.setVacancyName(applicationDto.getVacancyTitle());
         application.setDate(new Date()); // Устанавливаем текущую дату
         application.setStatus(applicationDto.getStatus());
 
@@ -57,26 +52,26 @@ public class ApplicationsService {
     }
 
     // DTO для заявки
-    public static class ApplicationDto {
-        private Long userId; // Поле для ID пользователя
-        private Long vacancyId; // Поле для ID вакансии
+    public static class ApplicationsDTO {
+        private String userEmail; // Поле для email пользователя
+        private String vacancyName; // Поле для названия вакансии
         private String status; // Статус заявки
 
         // Геттеры и сеттеры
-        public Long getUserId() {
-            return userId;
+        public String getUserEmail() {
+            return userEmail;
         }
 
-        public void setUserId(Long userId) {
-            this.userId = userId;
+        public void setUserEmail(String userEmail) {
+            this.userEmail = userEmail;
         }
 
-        public Long getVacancyId() {
-            return vacancyId;
+        public String getVacancyTitle() {
+            return vacancyName;
         }
 
-        public void setVacancyId(Long vacancyId) {
-            this.vacancyId = vacancyId;
+        public void setVacancyName(String vacancyName) {
+            this.vacancyName = vacancyName;
         }
 
         public String getStatus() {
@@ -100,12 +95,12 @@ public class ApplicationsService {
 
     // Метод для обновления заявки
     @Transactional
-    public Applications updateApplication(Long id, ApplicationDto applicationDto) {
+    public Applications updateApplication(Long id, ApplicationsDTO applicationDto) {
         Applications existingApplication = applicationsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Application not found with id: " + id));
 
-        existingApplication.setUserId(applicationDto.getUserId());
-        existingApplication.setVacancyId(applicationDto.getVacancyId());
+        existingApplication.setUserEmail(applicationDto.getUserEmail());
+        existingApplication.setVacancyName(applicationDto.getVacancyTitle());
         existingApplication.setDate(new Date()); // Обновляем дату при обновлении
         existingApplication.setStatus(applicationDto.getStatus());
 
@@ -118,5 +113,6 @@ public class ApplicationsService {
         applicationsRepository.deleteById(id);
     }
 }
+
 
 
