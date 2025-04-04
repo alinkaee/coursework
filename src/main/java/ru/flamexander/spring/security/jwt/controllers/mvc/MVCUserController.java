@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
+import ru.flamexander.spring.security.jwt.service.ApplicationsService;
 
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,9 +19,25 @@ public class MVCUserController {
 
     private final ApplicationsRepository applicationsRepository;
 
+    private final ApplicationsService applicationsService;
+
     @GetMapping("/profile")
-    public String getProfilePage() {
+    public String getProfilePage(Model model) {
+
+        String userEmail = getCurrentUserEmail();
+
+        // Получите заявки пользователя из сервиса
+        List<Applications> applications = applicationsService.getApplicationsByUserEmail(userEmail);
+
+        // Добавьте список заявок в модель для отображения на странице
+        model.addAttribute("applications", applications);
+
         return "user/profile";
+    }
+
+    private String getCurrentUserEmail() {
+        // Здесь должна быть логика получения email текущего пользователя, например, из Spring Security
+        return "pochta@mail.ru"; // Замените на реальный email пользователя
     }
 
     @GetMapping("/add_application")

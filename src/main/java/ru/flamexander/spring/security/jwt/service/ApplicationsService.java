@@ -1,6 +1,8 @@
 package ru.flamexander.spring.security.jwt.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.entities.User;
@@ -83,6 +85,10 @@ public class ApplicationsService {
         }
     }
 
+    public List<Applications> getApplicationsByUserEmail(String userEmail) {
+        return applicationsRepository.findByUserEmail(userEmail);
+    }
+
     // Метод для получения заявки по ID
     public Optional<Applications> getApplicationById(Long id) {
         return applicationsRepository.findById(id);
@@ -112,6 +118,7 @@ public class ApplicationsService {
     public void deleteApplication(Long id) {
         applicationsRepository.deleteById(id);
     }
+
 }
 
 
