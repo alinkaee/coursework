@@ -10,10 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface ApplicationsRepository extends JpaRepository<Applications, Long> {
+public interface ApplicationsRepository extends JpaRepository<Applications, String> {
 
         // Пример метода поиска заявок по статусу
         List<Applications> findByStatus(String status);
+
+        boolean existsByUserEmailAndVacancyName(String userEmail, String vacancyTitle);
 
         // Пример метода поиска заявок по дате (>=)
         List<Applications> findByDateGreaterThanEqual(Date date);

@@ -2,6 +2,7 @@ package ru.flamexander.spring.security.jwt.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -9,10 +10,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.flamexander.spring.security.jwt.dtos.ApplicationRequest;
 import ru.flamexander.spring.security.jwt.entities.Applications;
+import ru.flamexander.spring.security.jwt.entities.Vacancy;
+import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
 import ru.flamexander.spring.security.jwt.service.ApplicationsService;
+import ru.flamexander.spring.security.jwt.service.VacancyService;
 import ru.flamexander.spring.security.jwt.utils.JwtTokenUtils;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,62 +30,61 @@ public class ApplicationsController {
 
     private final ApplicationsService applicationsService;
 
-    private final JwtTokenUtils jwtTokenUtils;
-
     @Autowired
-    public ApplicationsController(ApplicationsService applicationsService, JwtTokenUtils jwtTokenUtils) {
+    public ApplicationsController(ApplicationsService applicationsService, JwtTokenUtils jwtTokenUtils, VacancyService vacancyService, ApplicationsRepository applicationsRepository) {
         this.applicationsService = applicationsService;
-        this.jwtTokenUtils = jwtTokenUtils;
     }
 
-    @Valid
+
     @PostMapping("/add")
-    public ResponseEntity<?> createApplication(
-            @RequestBody ApplicationRequest request,
-            @CookieValue(name = "jwt_token") String token
+    public ModelAndView createApplication(
+            @Valid @ModelAttribute ApplicationsService.ApplicationsDTO applicationDto,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
     ) {
-        String emailFromToken = jwtTokenUtils.getUsername(token);
-        if (!emailFromToken.equals(request.getUserEmail())) {
-            return ResponseEntity.status(403).build();
+        List<String> errors = new ArrayList<>();
+
+        // Валидация данных
+        if (bindingResult.hasErrors()) {
+            bindingResult.getFieldErrors().forEach(error -> {
+                errors.add(error.getDefaultMessage());
+            });
+            redirectAttributes.addFlashAttribute("errors", errors);
+            return new ModelAndView(new RedirectView("/add-application"));
         }
 
-        ApplicationsService.ApplicationsDTO dto = new ApplicationsService.ApplicationsDTO();
-        dto.setUserEmail(request.getUserEmail());
-        dto.setVacancyName(request.getVacancyName());
-        dto.setStatus("PENDING");
-
-        applicationsService.createApplication(dto);
-        return ResponseEntity.ok().build();
+        // Обработка и сохранение заявки
+        try {
+            applicationsService.createApplication(applicationDto);
+            redirectAttributes.addFlashAttribute("successMessage", "Заявка успешно создана!");
+            return new ModelAndView(new RedirectView("/profile"));
+        } catch (Exception e) {
+            errors.add("Ошибка при создании заявки: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errors", errors);
+            return new ModelAndView(new RedirectView("/add-application"));
+        }
     }
 
-//    @PostMapping("/add")
-//    public ModelAndView createApplication(
-//            @Valid @ModelAttribute ApplicationsService.ApplicationsDTO applicationDto,
-//            BindingResult bindingResult,
-//            RedirectAttributes redirectAttributes
-//    ) {
-//        List<String> errors = new ArrayList<>();
-//
-//        // Валидация данных
-//        if (bindingResult.hasErrors()) {
-//            bindingResult.getFieldErrors().forEach(error -> {
-//                errors.add(error.getDefaultMessage());
-//            });
-//            redirectAttributes.addFlashAttribute("errors", errors);
-//            return new ModelAndView(new RedirectView("/add-application"));
-//        }
-//
-//        // Обработка и сохранение заявки
-//        try {
-//            applicationsService.createApplication(applicationDto);
-//            redirectAttributes.addFlashAttribute("successMessage", "Заявка успешно создана!");
-//            return new ModelAndView(new RedirectView("/profile"));
-//        } catch (Exception e) {
-//            errors.add("Ошибка при создании заявки: " + e.getMessage());
-//            redirectAttributes.addFlashAttribute("errors", errors);
-//            return new ModelAndView(new RedirectView("/add-application"));
-//        }
-//    }
+    @PostMapping("/apply/{vacancyId}")
+    public String applyForVacancy(
+            @PathVariable Long vacancyId,
+            RedirectAttributes redirectAttributes) {
+
+        String userEmail = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        try {
+            applicationsService.applyForVacancy(userEmail, vacancyId);
+            redirectAttributes.addFlashAttribute("success", "Отклик успешно отправлен!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+
+        return "redirect:/job_openings";
+    }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Applications> getApplicationById(@PathVariable Long id) {

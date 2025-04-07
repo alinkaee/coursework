@@ -1,8 +1,6 @@
 package ru.flamexander.spring.security.jwt.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ru.flamexander.spring.security.jwt.entities.Applications;
@@ -11,14 +9,13 @@ import ru.flamexander.spring.security.jwt.entities.Vacancy;
 import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
 import ru.flamexander.spring.security.jwt.repositories.UserRepository;
 import ru.flamexander.spring.security.jwt.repositories.VacancyRepository;
-
-
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-//@RequiredArgsConstructor
+
 @Service
 @EnableTransactionManagement
 public class ApplicationsService {
@@ -26,14 +23,16 @@ public class ApplicationsService {
     private final ApplicationsRepository applicationsRepository;
     private final VacancyRepository vacancyRepository;
     private final UserRepository userRepository;
+    private final VacancyService vacancyService;
 
     @Autowired
     public ApplicationsService(ApplicationsRepository applicationsRepository,
                                VacancyRepository vacancyRepository,
-                               UserRepository userRepository) {
+                               UserRepository userRepository, VacancyService vacancyService) {
         this.applicationsRepository = applicationsRepository;
         this.vacancyRepository = vacancyRepository;
         this.userRepository = userRepository;
+        this.vacancyService = vacancyService;
     }
 
     @Transactional
@@ -49,10 +48,27 @@ public class ApplicationsService {
         Applications application = new Applications();
         application.setUserEmail(applicationDto.getUserEmail());
         application.setVacancyName(applicationDto.getVacancyTitle());
-        application.setDate(new Date()); // Устанавливаем текущую дату
+        application.setDate(LocalDateTime.now());
         application.setStatus(applicationDto.getStatus());
 
         return applicationsRepository.save(application);
+    }
+
+    @Transactional
+    public void applyForVacancy(String userEmail, Long vacancyId) {
+        Vacancy vacancy = vacancyService.getById(vacancyId);
+
+        if (applicationsRepository.existsByUserEmailAndVacancyName(userEmail, vacancy.getTitle())) {
+            throw new IllegalStateException("Вы уже откликались на эту вакансию");
+        }
+
+        Applications application = new Applications();
+        application.setUserEmail(userEmail);
+        application.setVacancyName(vacancy.getTitle());
+        application.setDate(LocalDateTime.now());
+        application.setStatus("PENDING");
+
+        applicationsRepository.save(application);
     }
 
     // DTO для заявки

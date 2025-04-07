@@ -6,11 +6,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.flamexander.spring.security.jwt.dtos.VacancyDto;
+import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.entities.Category;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
+import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
 import ru.flamexander.spring.security.jwt.repositories.CategoryRepository;
 import ru.flamexander.spring.security.jwt.repositories.VacancyRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,8 +23,32 @@ import java.util.stream.Collectors;
 public class VacancyService {
 
     private final VacancyRepository vacancyRepository;
+    private final VacancyService vacancyService;
+    private final ApplicationsRepository applicationsRepository;
     private final CategoryRepository categoryRepository;
     private final CategoryService categoryService;
+
+    public Vacancy getById(Long id) {
+        return vacancyRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Вакансия не найдена"));
+    }
+
+    @Transactional
+    public void applyForVacancy(String userEmail, Long vacancyId) {
+        Vacancy vacancy = vacancyService.getById(vacancyId);
+
+        if (applicationsRepository.existsByUserEmailAndVacancyName(userEmail, vacancy.getTitle())) {
+            throw new IllegalStateException("Вы уже откликались на эту вакансию");
+        }
+
+        Applications application = new Applications();
+        application.setUserEmail(userEmail);
+        application.setVacancyName(vacancy.getTitle());
+        application.setDate(LocalDateTime.now());
+        application.setStatus("PENDING");
+
+        applicationsRepository.save(application);
+    }
 
 
     @Transactional
@@ -36,7 +63,6 @@ public class VacancyService {
         Vacancy savedVacancy = vacancyRepository.save(vacancy);
         return convertToDto(savedVacancy);
     }
-
 
     @Transactional
     public VacancyDto updateVacancy(Long id, VacancyDto vacancyDto) {
@@ -62,6 +88,9 @@ public class VacancyService {
         Vacancy updatedVacancy = vacancyRepository.save(vacancy);
         return convertToDto(updatedVacancy);
     }
+
+
+
 
     private VacancyDto mapToDto(Vacancy vacancy) {
         VacancyDto dto = new VacancyDto();

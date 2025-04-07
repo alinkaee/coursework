@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -23,7 +24,7 @@ public class Applications {
     private String vacancyName;
 
     @Column(name = "application_date")
-    private Date date;
+    private LocalDateTime date;
 
     @Column(name = "status")
     private String status;
@@ -61,11 +62,11 @@ public class Applications {
         this.vacancyName = vacancyName;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

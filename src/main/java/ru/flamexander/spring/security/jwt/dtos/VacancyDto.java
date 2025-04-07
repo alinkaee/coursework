@@ -20,6 +20,8 @@ public class VacancyDto {
 //    @NotNull(message = "Категория обязательна")
     private Long categoryId;
 
+    private boolean hasApplied;
+
     public Long getId() {
         return id;
     }
@@ -36,6 +38,14 @@ public class VacancyDto {
     public void setSalary(Integer salary) { this.salary = salary; }
     public Long getCategoryId() { return categoryId; }
     public void setCategoryId(Long categoryId) { this.categoryId = categoryId; }
+
+    public boolean isHasApplied() {
+        return hasApplied;
+    }
+
+    public void setHasApplied(boolean hasApplied) {
+        this.hasApplied = hasApplied;
+    }
 
 
 }

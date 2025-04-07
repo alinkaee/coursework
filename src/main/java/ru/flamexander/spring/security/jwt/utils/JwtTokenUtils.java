@@ -8,8 +8,6 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
-
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,7 +22,7 @@ public class JwtTokenUtils {
     private String secret;
     @Value("${jwt.lifetime}")
     private Duration jwtLifetime;
-    @Value("${jwt.cookie.name:jwt_token}") // Default cookie name
+    @Value("${jwt.cookie.name}")
     private String cookieName;
 
 

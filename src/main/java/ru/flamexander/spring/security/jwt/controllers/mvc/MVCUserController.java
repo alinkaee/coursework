@@ -11,7 +11,6 @@ import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
 import ru.flamexander.spring.security.jwt.service.ApplicationsService;
 import ru.flamexander.spring.security.jwt.utils.JwtTokenUtils;
-
 import java.util.Date;
 import java.util.List;
 
