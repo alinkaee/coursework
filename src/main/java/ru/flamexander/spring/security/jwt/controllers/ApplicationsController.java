@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
+import ru.flamexander.spring.security.jwt.dtos.ApplicationRequest;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.service.ApplicationsService;
+import ru.flamexander.spring.security.jwt.utils.JwtTokenUtils;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -22,39 +24,62 @@ public class ApplicationsController {
 
     private final ApplicationsService applicationsService;
 
+    private final JwtTokenUtils jwtTokenUtils;
+
     @Autowired
-    public ApplicationsController(ApplicationsService applicationsService) {
+    public ApplicationsController(ApplicationsService applicationsService, JwtTokenUtils jwtTokenUtils) {
         this.applicationsService = applicationsService;
+        this.jwtTokenUtils = jwtTokenUtils;
     }
 
+    @Valid
     @PostMapping("/add")
-    public ModelAndView createApplication(
-            @Valid @ModelAttribute ApplicationsService.ApplicationsDTO applicationDto,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
+    public ResponseEntity<?> createApplication(
+            @RequestBody ApplicationRequest request,
+            @CookieValue(name = "jwt_token") String token
     ) {
-        List<String> errors = new ArrayList<>();
-
-        // Валидация данных
-        if (bindingResult.hasErrors()) {
-            bindingResult.getFieldErrors().forEach(error -> {
-                errors.add(error.getDefaultMessage());
-            });
-            redirectAttributes.addFlashAttribute("errors", errors);
-            return new ModelAndView(new RedirectView("/add-application"));
+        String emailFromToken = jwtTokenUtils.getUsername(token);
+        if (!emailFromToken.equals(request.getUserEmail())) {
+            return ResponseEntity.status(403).build();
         }
 
-        // Обработка и сохранение заявки
-        try {
-            applicationsService.createApplication(applicationDto);
-            redirectAttributes.addFlashAttribute("successMessage", "Заявка успешно создана!");
-            return new ModelAndView(new RedirectView("/profile"));
-        } catch (Exception e) {
-            errors.add("Ошибка при создании заявки: " + e.getMessage());
-            redirectAttributes.addFlashAttribute("errors", errors);
-            return new ModelAndView(new RedirectView("/add-application"));
-        }
+        ApplicationsService.ApplicationsDTO dto = new ApplicationsService.ApplicationsDTO();
+        dto.setUserEmail(request.getUserEmail());
+        dto.setVacancyName(request.getVacancyName());
+        dto.setStatus("PENDING");
+
+        applicationsService.createApplication(dto);
+        return ResponseEntity.ok().build();
     }
+
+//    @PostMapping("/add")
+//    public ModelAndView createApplication(
+//            @Valid @ModelAttribute ApplicationsService.ApplicationsDTO applicationDto,
+//            BindingResult bindingResult,
+//            RedirectAttributes redirectAttributes
+//    ) {
+//        List<String> errors = new ArrayList<>();
+//
+//        // Валидация данных
+//        if (bindingResult.hasErrors()) {
+//            bindingResult.getFieldErrors().forEach(error -> {
+//                errors.add(error.getDefaultMessage());
+//            });
+//            redirectAttributes.addFlashAttribute("errors", errors);
+//            return new ModelAndView(new RedirectView("/add-application"));
+//        }
+//
+//        // Обработка и сохранение заявки
+//        try {
+//            applicationsService.createApplication(applicationDto);
+//            redirectAttributes.addFlashAttribute("successMessage", "Заявка успешно создана!");
+//            return new ModelAndView(new RedirectView("/profile"));
+//        } catch (Exception e) {
+//            errors.add("Ошибка при создании заявки: " + e.getMessage());
+//            redirectAttributes.addFlashAttribute("errors", errors);
+//            return new ModelAndView(new RedirectView("/add-application"));
+//        }
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Applications> getApplicationById(@PathVariable Long id) {

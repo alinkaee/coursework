@@ -12,7 +12,7 @@ import java.util.Date;
 public class ApplicationsDTO {
     private Long id;
     private String userEmail;
-    private String vacancyTitle;
+    private String vacancyName;
     private Date date;
     private String status;
 }

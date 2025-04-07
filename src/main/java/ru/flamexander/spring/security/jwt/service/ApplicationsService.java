@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 //@RequiredArgsConstructor
 @Service
+@EnableTransactionManagement
 public class ApplicationsService {
 
     private final ApplicationsRepository applicationsRepository;

@@ -3,12 +3,14 @@ package ru.flamexander.spring.security.jwt.controllers.mvc;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
 import ru.flamexander.spring.security.jwt.service.ApplicationsService;
+import ru.flamexander.spring.security.jwt.utils.JwtTokenUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -21,17 +23,17 @@ public class MVCUserController {
 
     private final ApplicationsService applicationsService;
 
+    private final JwtTokenUtils jwtTokenUtils;
+
+
     @GetMapping("/profile")
-    public String getProfilePage(Model model) {
-
-        String userEmail = getCurrentUserEmail();
-
-        // Получите заявки пользователя из сервиса
-        List<Applications> applications = applicationsService.getApplicationsByUserEmail(userEmail);
-
-        // Добавьте список заявок в модель для отображения на странице
-        model.addAttribute("applications", applications);
-
+    public String getProfile(@CookieValue(name = "jwt_token", required = false) String token, Model model) {
+        if (token != null) {
+            String email = jwtTokenUtils.getUsername(token);
+            List<Applications> applications = applicationsService.getApplicationsByUserEmail(email);
+            model.addAttribute("applications", applications);
+            model.addAttribute("userEmail", email);
+        }
         return "user/profile";
     }
 
