@@ -23,8 +23,8 @@
         <form th:action="@{/profile/update}" method="post" class="edit-profile-form" enctype="multipart/form-data">
             <div class="avatar-section">
                 <div class="avatar-preview">
-                    <img th:src="${user.avatarUrl != null} ? ${user.avatarUrl} : '/img/default-avatar.png'"
-                         alt="Аватар" id="avatar-preview">
+<!--                    <img th:src="${user.avatarUrl != null} ? ${user.avatarUrl} : '/img/default-avatar.png'"-->
+<!--                         alt="Аватар" id="avatar-preview">-->
                 </div>
                 <div class="avatar-upload">
                     <label for="avatar">Изменить фото</label>
@@ -57,15 +57,14 @@
 
             <div class="form-group">
                 <label for="skills">Навыки</label>
-                <input type="text" id="skills" name="skills" th:value="${user.skills}"
-                       placeholder="Введите навыки через запятую">
+                <input type="text" id="skills" name="skills" placeholder="Введите навыки через запятую"> <!-- th:value="${user.skills}" -->
             </div>
 
             <div class="form-group">
                 <label for="resume">Резюме (PDF)</label>
                 <input type="file" id="resume" name="resume" accept=".pdf">
-                <small th:if="${user.resumeUrl != null}">
-                    Текущее резюме: <a th:href="${user.resumeUrl}" target="_blank">Просмотреть</a>
+                <small> <!--  th:if="${user.resumeUrl != null}" -->
+                    Текущее резюме: <a target="_blank">Просмотреть</a> <!--  th:href="${user.resumeUrl}" -->
                 </small>
             </div>
 
