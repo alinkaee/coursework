@@ -22,10 +22,10 @@
       <div class="profile__account">
         <img src="/img/account.png" alt="" class="account__img" />
         <div class="account__information">
-          <h4 th:text="${userName}">Иванов Иван</h4>
+          <h4 th:text="${userName}"></h4>
           <p>
             +7(900)***-**-** <br />
-            <span th:text="${userEmail}">ivan15@mail.ru</span>
+            <span th:text="${userEmail}"></span>
           </p>
           <p class="description">
             The template’s scalable assets architecture makes it easy to
@@ -62,7 +62,22 @@
         <p>У вас пока нет заявок</p>
         <a href="/job_openings" class="add-button">Найти вакансии</a>
       </div>
+
       <h3>Мои вакансии</h3>
+
+      <div class="profile__favorite-vacancies" th:if="${not #lists.isEmpty(favoriteVacancies)}">
+        <div class="favorite-vacancy-card" th:each="vacancy : ${favoriteVacancies}">
+          <h4 th:text="${vacancy.title}">Название вакансии</h4>
+          <p th:text="${vacancy.description}">Описание вакансии</p>
+          <p th:text="'Зарплата: от ' + ${vacancy.salary} + ' ₽'">Зарплата</p>
+        </div>
+      </div>
+
+      <div th:if="${#lists.isEmpty(favoriteVacancies)}" class="no-favorite-vacancies">
+        <p>У вас пока нет избранных вакансий</p>
+        <a href="/job_openings" class="add-button">Найти вакансии</a>
+      </div>
+
     </div>
   </main>
 </div>

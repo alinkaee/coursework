@@ -16,6 +16,7 @@ import ru.flamexander.spring.security.jwt.repositories.VacancyRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +33,9 @@ public class VacancyService {
                 .orElseThrow(() -> new ResourceNotFoundException("Вакансия не найдена"));
     }
 
+    public Optional<Vacancy> findById(Long id) {
+        return vacancyRepository.findById(id);
+    }
 
     @Transactional
     public VacancyDto createVacancy(VacancyDto vacancyDto) {

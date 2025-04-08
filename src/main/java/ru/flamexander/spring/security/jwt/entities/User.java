@@ -1,5 +1,6 @@
 package ru.flamexander.spring.security.jwt.entities;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -21,6 +22,12 @@ public class User {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "avatar_filename")
+    private String avatarFilename; // Имя файла аватарки
+
+    @Transient // Не сохраняется в БД
+    private MultipartFile avatarFile;
 
     @OneToMany(mappedBy = "user")
     private Collection<UserRole> userRoles;

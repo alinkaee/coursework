@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.entities.User;
+import ru.flamexander.spring.security.jwt.entities.Vacancy;
 import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
 import ru.flamexander.spring.security.jwt.service.ApplicationsService;
 import ru.flamexander.spring.security.jwt.service.UserService;
@@ -35,6 +36,15 @@ public class MVCUserController {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         List<Applications> applications = applicationsService.getApplicationsByUserEmail(userEmail);
         model.addAttribute("applications", applications);
+
+        User currentUser = userService.getCurrentUser();
+        if (currentUser != null) {
+            model.addAttribute("userName", currentUser.getUsername());
+            model.addAttribute("userEmail", currentUser.getEmail());
+            List<Vacancy> favoriteVacancies = userService.getFavoriteVacancies(currentUser);
+            model.addAttribute("favoriteVacancies", favoriteVacancies);
+        }
+
         return "user/profile";
     }
 

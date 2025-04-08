@@ -185,6 +185,93 @@
     margin-bottom: 20px;
 }
 
+/* Стили для избранных вакансий */
+.profile__favorite-vacancies {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.favorite-vacancy-card {
+    background: white;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #8a2be2;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.favorite-vacancy-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(138, 43, 226, 0.15);
+}
+
+.favorite-vacancy-card h4 {
+    font-size: 20px;
+    margin: 0 0 15px 0;
+    color: #333;
+    position: relative;
+}
+
+.favorite-vacancy-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 12px;
+}
+
+.favorite-vacancy-card p:last-child {
+    color: #8a2be2;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+/* Иконка избранного (можно добавить через псевдоэлемент) */
+.favorite-vacancy-card::before {
+    content: "★";
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #8a2be2;
+    font-size: 20px;
+}
+
+/* Блок без избранных вакансий */
+.no-favorite-vacancies {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.no-favorite-vacancies p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Кнопка "Найти вакансии" */
+.no-favorite-vacancies .add-button {
+    background-color: #8a2be2;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+.no-favorite-vacancies .add-button:hover {
+    background-color: #7b1fa2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(138, 43, 226, 0.2);
+}
+
 /* Адаптация для мобильных */
 @media (max-width: 768px) {
     .profile__account {
@@ -199,6 +286,14 @@
     .profile__applications {
         grid-template-columns: 1fr;
     }
+
+    .profile__favorite-vacancies {
+            grid-template-columns: 1fr;
+        }
+
+        .favorite-vacancy-card {
+            padding: 20px;
+        }
 }
 
 /* Уведомления */

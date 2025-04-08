@@ -59,6 +59,10 @@
                             <input type="hidden" name="vacancyId" th:value="${vacancy.id}">
                             <button type="submit">Откликнуться</button>
                         </form>
+                        <form th:if="${userService != null and not userService.isVacancyInFavorites(currentUser, vacancy)}"
+                              th:action="@{/vacancies/add-to-favorites/{vacancyId}(vacancyId=${vacancy.id})}" method="post">
+                            <button type="submit">Добавить в избранное</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -78,6 +82,10 @@
                                     <form th:action="@{/applications/apply/{vacancyId}(vacancyId=${vacancy.id})}" method="post">
                                         <input type="hidden" name="vacancyId" th:value="${vacancy.id}">
                                         <button type="submit">Откликнуться</button>
+                                    </form>
+                                    <form th:if="${userService != null and not userService.isVacancyInFavorites(currentUser, vacancy)}"
+                                          th:action="@{/vacancies/add-to-favorites/{vacancyId}(vacancyId=${vacancy.id})}" method="post">
+                                        <button type="submit">Добавить в избранное</button>
                                     </form>
                                 </div>
                             </div>

@@ -11,7 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.flamexander.spring.security.jwt.dtos.RegistrationUserDto;
+import ru.flamexander.spring.security.jwt.entities.FavoriteVacancy;
 import ru.flamexander.spring.security.jwt.entities.User;
+import ru.flamexander.spring.security.jwt.entities.Vacancy;
+import ru.flamexander.spring.security.jwt.repositories.FavoriteVacancyRepository;
 import ru.flamexander.spring.security.jwt.repositories.UserRepository;
 
 import java.util.List;
@@ -131,5 +134,34 @@ public class UserService implements UserDetailsService {
 
     public boolean existsByUsername(String username) {
         return findByUsername(username).isPresent();
+    }
+
+    @Autowired
+    private FavoriteVacancyRepository favoriteVacancyRepository;
+
+    public void addVacancyToFavorites(User user, Vacancy vacancy) {
+        if (favoriteVacancyRepository.findByUserAndVacancy(user, vacancy).isEmpty()) {
+            FavoriteVacancy favoriteVacancy = new FavoriteVacancy();
+            favoriteVacancy.setUser(user);
+            favoriteVacancy.setVacancy(vacancy);
+            favoriteVacancyRepository.save(favoriteVacancy);
+        }
+    }
+
+    public List<Vacancy> getFavoriteVacancies(User user) {
+        return favoriteVacancyRepository.findByUser(user).stream()
+                .map(FavoriteVacancy::getVacancy)
+                .collect(Collectors.toList());
+    }
+
+    public void removeVacancyFromFavorites(User user, Vacancy vacancy) {
+        Optional<FavoriteVacancy> favoriteVacancy = favoriteVacancyRepository.findByUserAndVacancy(user, vacancy);
+        if (favoriteVacancy.isPresent()) {
+            favoriteVacancyRepository.deleteByUserAndVacancy(user, vacancy);
+        }
+    }
+
+    public boolean isVacancyInFavorites(User user, Vacancy vacancy) {
+        return favoriteVacancyRepository.findByUserAndVacancy(user, vacancy).isPresent();
     }
 }

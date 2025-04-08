@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import ru.flamexander.spring.security.jwt.dtos.CategoriesDTO;
 import ru.flamexander.spring.security.jwt.dtos.VacancyDto;
 import ru.flamexander.spring.security.jwt.entities.Category;
+import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
 import ru.flamexander.spring.security.jwt.repositories.CategoryRepository;
 import ru.flamexander.spring.security.jwt.service.CategoryService;
+import ru.flamexander.spring.security.jwt.service.UserService;
 import ru.flamexander.spring.security.jwt.service.VacancyService;
 
 import javax.validation.Valid;
@@ -33,6 +35,9 @@ public class MVCCategoryController {
 
     @Autowired
     private final VacancyService vacancyService;
+
+    @Autowired
+    private final UserService userService;
 
     @GetMapping("/view-all-categories")
     public String getAllCategories(Model model) {
@@ -147,6 +152,12 @@ public class MVCCategoryController {
         } else {
             vacancyPage = vacancyService.getAllVacancies(pageable);
         }
+
+        User currentUser = userService.getCurrentUser();
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("userService", userService); // Добавьте userService в модель
+        model.addAttribute("vacancies", vacancyService.getAllVacancy());
+
 
         model.addAttribute("vacancies", vacancyPage.getContent());
         model.addAttribute("currentPage", vacancyPage.getNumber() + 1);
