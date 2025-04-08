@@ -3,29 +3,26 @@ package ru.flamexander.spring.security.jwt.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
-import ru.flamexander.spring.security.jwt.dtos.ApplicationRequest;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
 import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
 import ru.flamexander.spring.security.jwt.service.ApplicationsService;
 import ru.flamexander.spring.security.jwt.service.VacancyService;
 import ru.flamexander.spring.security.jwt.utils.JwtTokenUtils;
-
-import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/applications")
-//@RequiredArgsConstructor
 public class ApplicationsController {
 
     private final ApplicationsService applicationsService;
@@ -64,6 +61,15 @@ public class ApplicationsController {
             return new ModelAndView(new RedirectView("/add-application"));
         }
     }
+
+    @GetMapping("/my")
+    public String getUserApplications(Model model) {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<Applications> applications = applicationsService.getApplicationsByUserEmail(userEmail);
+        model.addAttribute("applications", applications);
+        return "user/profile"; // имя вашего Thymeleaf шаблона профиля
+    }
+
 
     @PostMapping("/apply/{vacancyId}")
     public String applyForVacancy(

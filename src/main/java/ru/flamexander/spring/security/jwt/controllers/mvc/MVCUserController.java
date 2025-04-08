@@ -1,6 +1,7 @@
 package ru.flamexander.spring.security.jwt.controllers.mvc;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -26,24 +27,11 @@ public class MVCUserController {
 
 
     @GetMapping("/profile")
-    public String getProfile(@CookieValue(name = "jwt_token", required = false) String token, Model model) {
-        if (token != null) {
-            String email = jwtTokenUtils.getUsername(token);
-            List<Applications> applications = applicationsService.getApplicationsByUserEmail(email);
-            model.addAttribute("applications", applications);
-            model.addAttribute("userEmail", email);
-        }
+    public String getProfile(Model model) {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<Applications> applications = applicationsService.getApplicationsByUserEmail(userEmail);
+        model.addAttribute("applications", applications);
         return "user/profile";
-    }
-
-    private String getCurrentUserEmail() {
-        // Здесь должна быть логика получения email текущего пользователя, например, из Spring Security
-        return "pochta@mail.ru"; // Замените на реальный email пользователя
-    }
-
-    @GetMapping("/add_application")
-    public String showAddedApplication() {
-        return "user/add-application";
     }
 
     @PostMapping("/add_application")

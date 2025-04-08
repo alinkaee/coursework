@@ -66,7 +66,7 @@ public class ApplicationsService {
         application.setUserEmail(userEmail);
         application.setVacancyTitle(vacancy.getTitle());
         application.setDate(new Date());
-        application.setStatus("PENDING");
+        application.setStatus("На рассмотрении");
 
         applicationsRepository.save(application);
     }
