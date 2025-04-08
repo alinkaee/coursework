@@ -3,6 +3,7 @@ package ru.flamexander.spring.security.jwt.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,9 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.flamexander.spring.security.jwt.dtos.RegistrationUserDto;
-import ru.flamexander.spring.security.jwt.entities.Role;
 import ru.flamexander.spring.security.jwt.entities.User;
-import ru.flamexander.spring.security.jwt.entities.UserRole;
 import ru.flamexander.spring.security.jwt.repositories.UserRepository;
 
 import java.util.List;
@@ -29,10 +28,10 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void createUser(User user) {
+    public Object createUser(User user) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        // Сохраните пользователя в базе данных
+        return null;
     }
 
     @Autowired
@@ -105,6 +104,29 @@ public class UserService implements UserDetailsService {
             return userRepository.save(userToUpdate);
         }
         return null; // Или выбросьте исключение, если пользователь не найден
+    }
+
+    public Object save(User user) {
+        if (user.getId() != null) {
+            // Обновление существующего пользователя
+            return updateUser(user.getId(), user);
+        } else {
+            // Создание нового пользователя
+            return createUser(user);
+        }
+    }
+
+    public User getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+
+        return findByUsername(username).orElseThrow(() -> new RuntimeException("Текущий пользователь не найден"));
     }
 
     public boolean existsByUsername(String username) {

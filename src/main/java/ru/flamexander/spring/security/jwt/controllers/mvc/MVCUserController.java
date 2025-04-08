@@ -4,14 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.flamexander.spring.security.jwt.entities.Applications;
+import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
 import ru.flamexander.spring.security.jwt.service.ApplicationsService;
+import ru.flamexander.spring.security.jwt.service.UserService;
 import ru.flamexander.spring.security.jwt.utils.JwtTokenUtils;
+
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
@@ -21,9 +24,10 @@ public class MVCUserController {
 
     private final ApplicationsRepository applicationsRepository;
 
+    private final UserService userService;
+
     private final ApplicationsService applicationsService;
 
-    private final JwtTokenUtils jwtTokenUtils;
 
 
     @GetMapping("/profile")
@@ -54,5 +58,29 @@ public class MVCUserController {
         // После сохранения перенаправляем на страницу профиля
         return "redirect:/profile";
     }
+
+    @GetMapping("/profile_editing")
+    public String getEditingProfilePage(Model model) {
+        User user = userService.getCurrentUser();
+
+        // Добавляем объект в модель
+        model.addAttribute("user", user);
+        return "user/profile-editing";
+    }
+
+    @PostMapping("/edit-profile")
+    public String processEditProfile(@Valid @ModelAttribute("user") User user, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "profile-editing"; // Возврат на страницу редактирования при ошибках
+        }
+
+        // Сохраняем изменения
+        userService.save(user);
+
+        // Добавляем объект для редиректа
+        redirectAttributes.addFlashAttribute("user", user);
+        return "redirect:/edit-profile";
+    }
+
 
 }
