@@ -55,7 +55,7 @@
                     <div class="develop__cards__row__card__right">
                         <p th:text="${vacancy.description}"></p>
                         <p class="p__second" style="font-weight: 600" th:text="'от ' + ${vacancy.salary} + ' ₽'"></p>
-                        <form th:action="@{/apply}" method="post">
+                        <form th:action="@{/applications/apply/{vacancyId}(vacancyId=${vacancy.id})}" method="post">
                             <input type="hidden" name="vacancyId" th:value="${vacancy.id}">
                             <button type="submit">Откликнуться</button>
                         </form>
@@ -75,7 +75,7 @@
                                 <div class="develop__cards__row__card__right">
                                     <p th:text="${vacancy.description}"></p>
                                     <p class="p__second" style="font-weight: 600" th:text="'от ' + ${vacancy.salary} + ' ₽'"></p>
-                                    <form th:action="@{/apply}" method="post">
+                                    <form th:action="@{/applications/apply/{vacancyId}(vacancyId=${vacancy.id})}" method="post">
                                         <input type="hidden" name="vacancyId" th:value="${vacancy.id}">
                                         <button type="submit">Откликнуться</button>
                                     </form>

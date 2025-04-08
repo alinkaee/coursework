@@ -2,6 +2,8 @@ package ru.flamexander.spring.security.jwt.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.util.Date;
 @Table(name = "applications")
 @Data
 @AllArgsConstructor
+@Getter
+@Setter
 public class Applications {
 
     @Id
@@ -21,10 +25,10 @@ public class Applications {
     private String userEmail;
 
     @Column(name = "vacancy_name", nullable = false)
-    private String vacancyName;
+    private String vacancyTitle;
 
     @Column(name = "application_date")
-    private LocalDateTime date;
+    private Date date;
 
     @Column(name = "status")
     private String status;
@@ -32,51 +36,11 @@ public class Applications {
     // Конструкторы и геттеры/сеттеры
     public Applications() {}
 
-    public Applications(String userEmail, String vacancyName) {
+    public Applications(String userEmail, String vacancyTitle) {
         this.userEmail = userEmail;
-        this.vacancyName = vacancyName;
+        this.vacancyTitle = vacancyTitle;
     }
 
-    // Геттеры и сеттеры
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
-    public String getVacancyName() {
-        return vacancyName;
-    }
-
-    public void setVacancyName(String vacancyName) {
-        this.vacancyName = vacancyName;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }
 
 

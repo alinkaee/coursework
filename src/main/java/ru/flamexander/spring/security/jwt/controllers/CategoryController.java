@@ -2,6 +2,7 @@ package ru.flamexander.spring.security.jwt.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -9,7 +10,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.flamexander.spring.security.jwt.dtos.CategoriesDTO;
 import ru.flamexander.spring.security.jwt.entities.Category;
+import ru.flamexander.spring.security.jwt.service.ApplicationsService;
 import ru.flamexander.spring.security.jwt.service.CategoryService;
+import ru.flamexander.spring.security.jwt.service.VacancyService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ import java.util.List;
 @RequestMapping("/categories")
 public class CategoryController {
     private final CategoryService categoryService;
+    private final VacancyService vacancyService;
 
     @GetMapping("/main/categories")
     public ResponseEntity<List<Category>> getAllCategories() {

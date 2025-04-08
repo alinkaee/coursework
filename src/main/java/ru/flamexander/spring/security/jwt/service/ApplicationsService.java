@@ -47,8 +47,8 @@ public class ApplicationsService {
         // Создаем новую заявку
         Applications application = new Applications();
         application.setUserEmail(applicationDto.getUserEmail());
-        application.setVacancyName(applicationDto.getVacancyTitle());
-        application.setDate(LocalDateTime.now());
+        application.setVacancyTitle(applicationDto.getVacancyTitle());
+        application.setDate(new Date());
         application.setStatus(applicationDto.getStatus());
 
         return applicationsRepository.save(application);
@@ -58,14 +58,14 @@ public class ApplicationsService {
     public void applyForVacancy(String userEmail, Long vacancyId) {
         Vacancy vacancy = vacancyService.getById(vacancyId);
 
-        if (applicationsRepository.existsByUserEmailAndVacancyName(userEmail, vacancy.getTitle())) {
+        if (applicationsRepository.existsByUserEmailAndVacancyTitle(userEmail, vacancy.getTitle())) {
             throw new IllegalStateException("Вы уже откликались на эту вакансию");
         }
 
         Applications application = new Applications();
         application.setUserEmail(userEmail);
-        application.setVacancyName(vacancy.getTitle());
-        application.setDate(LocalDateTime.now());
+        application.setVacancyTitle(vacancy.getTitle());
+        application.setDate(new Date());
         application.setStatus("PENDING");
 
         applicationsRepository.save(application);
@@ -74,7 +74,7 @@ public class ApplicationsService {
     // DTO для заявки
     public static class ApplicationsDTO {
         private String userEmail; // Поле для email пользователя
-        private String vacancyName; // Поле для названия вакансии
+        private String vacancyTitle; // Поле для названия вакансии
         private String status; // Статус заявки
 
         // Геттеры и сеттеры
@@ -87,11 +87,11 @@ public class ApplicationsService {
         }
 
         public String getVacancyTitle() {
-            return vacancyName;
+            return vacancyTitle;
         }
 
-        public void setVacancyName(String vacancyName) {
-            this.vacancyName = vacancyName;
+        public void setVacancyTitle(String vacancyTitle) {
+            this.vacancyTitle = vacancyTitle;
         }
 
         public String getStatus() {
@@ -119,14 +119,14 @@ public class ApplicationsService {
 
     // Метод для обновления заявки
     @Transactional
-    public Applications updateApplication(Long id, ApplicationsDTO applicationDto) {
+    public Applications updateApplication(Long id, ApplicationsDTO applicationsDTO) {
         Applications existingApplication = applicationsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Application not found with id: " + id));
 
-        existingApplication.setUserEmail(applicationDto.getUserEmail());
-        existingApplication.setVacancyName(applicationDto.getVacancyTitle());
+        existingApplication.setUserEmail(applicationsDTO.getUserEmail());
+        existingApplication.setVacancyTitle(applicationsDTO.getVacancyTitle());
         existingApplication.setDate(new Date()); // Обновляем дату при обновлении
-        existingApplication.setStatus(applicationDto.getStatus());
+        existingApplication.setStatus(applicationsDTO.getStatus());
 
         return applicationsRepository.save(existingApplication);
     }
@@ -136,7 +136,6 @@ public class ApplicationsService {
     public void deleteApplication(Long id) {
         applicationsRepository.deleteById(id);
     }
-
 }
 
 

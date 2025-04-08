@@ -38,7 +38,7 @@
       <div class="profile__applications" th:if="${not #lists.isEmpty(applications)}">
         <div class="application-card" th:each="app : ${applications}">
           <div class="application-header">
-            <h4 th:text="${app.vacancyName}">Название вакансии</h4>
+            <h4 th:text="${app.vacancyTitle}">Название вакансии</h4>
             <span class="status-badge">
     Статус
 </span>

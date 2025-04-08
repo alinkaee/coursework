@@ -4,18 +4,17 @@ package ru.flamexander.spring.security.jwt.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.flamexander.spring.security.jwt.entities.Applications;
-import ru.flamexander.spring.security.jwt.entities.Vacancy;
 
 import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface ApplicationsRepository extends JpaRepository<Applications, String> {
+public interface ApplicationsRepository extends JpaRepository<Applications, Long> {
 
         // Пример метода поиска заявок по статусу
         List<Applications> findByStatus(String status);
 
-        boolean existsByUserEmailAndVacancyName(String userEmail, String vacancyTitle);
+        boolean existsByUserEmailAndVacancyTitle(String userEmail, String vacancyTitle);
 
         // Пример метода поиска заявок по дате (>=)
         List<Applications> findByDateGreaterThanEqual(Date date);
@@ -31,6 +30,6 @@ public interface ApplicationsRepository extends JpaRepository<Applications, Stri
         List<Applications> findByUserEmail(String userEmail);
 
         // Метод для поиска заявок по названию вакансии
-        List<Applications> findByVacancyName(String vacancyName);
+        List<Applications> findByVacancyTitle(String vacancyTitle);
 }
 

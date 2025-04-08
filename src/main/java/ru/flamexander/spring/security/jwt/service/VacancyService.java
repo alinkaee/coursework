@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class VacancyService {
 
     private final VacancyRepository vacancyRepository;
-    private final VacancyService vacancyService;
     private final ApplicationsRepository applicationsRepository;
     private final CategoryRepository categoryRepository;
     private final CategoryService categoryService;
@@ -31,23 +30,6 @@ public class VacancyService {
     public Vacancy getById(Long id) {
         return vacancyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Вакансия не найдена"));
-    }
-
-    @Transactional
-    public void applyForVacancy(String userEmail, Long vacancyId) {
-        Vacancy vacancy = vacancyService.getById(vacancyId);
-
-        if (applicationsRepository.existsByUserEmailAndVacancyName(userEmail, vacancy.getTitle())) {
-            throw new IllegalStateException("Вы уже откликались на эту вакансию");
-        }
-
-        Applications application = new Applications();
-        application.setUserEmail(userEmail);
-        application.setVacancyName(vacancy.getTitle());
-        application.setDate(LocalDateTime.now());
-        application.setStatus("PENDING");
-
-        applicationsRepository.save(application);
     }
 
 

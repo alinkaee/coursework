@@ -49,14 +49,14 @@ public class MVCUserController {
     @PostMapping("/add_application")
     public String AddApplication(
             @RequestParam("userEmail") String userEmail,
-            @RequestParam("vacancyName") String vacancyName,
+            @RequestParam("vacancyTitle") String vacancyTitle,
             @RequestParam("status") String status,
             Model model
     ) {
         // Создание сущности Applications
         Applications application = new Applications();
         application.setUserEmail(userEmail);
-        application.setVacancyName(vacancyName);
+        application.setVacancyTitle(vacancyTitle);
         application.setStatus(status);
         application.setDate(new Date()); // Установка текущей даты
 
