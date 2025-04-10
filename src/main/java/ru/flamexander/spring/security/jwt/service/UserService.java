@@ -59,6 +59,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id);
     }
 
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -88,8 +92,6 @@ public class UserService implements UserDetailsService {
         return userRoleService.createUserWithRole(user, roleService.getRoleIdByName("ROLE_USER"));
     }
 
-
-
     public boolean deleteById(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
@@ -97,6 +99,7 @@ public class UserService implements UserDetailsService {
         }
         return false; // Пользователь не найден
     }
+
     public User updateUser(Long id, User userDetails) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {

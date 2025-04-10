@@ -55,6 +55,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/vacancies/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/categories/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/applications/apply/**")).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/favorites/**")).authenticated()
                         // Требуем аутентификацию для доступа к странице "/secured"
                         .requestMatchers(new AntPathRequestMatcher("/secured")).authenticated()
                         // Требуем аутентификацию для доступа к странице "/info"

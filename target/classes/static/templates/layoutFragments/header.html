@@ -48,11 +48,14 @@
                         <li th:if="${#request.isUserInRole('ROLE_ADMIN')}">
                             <a href="./view-all-categories">Категории</a>
                         </li>
+                        <li th:if="${#request.isUserInRole('ROLE_ADMIN')}">
+                            <a href="./view-all-users">Пользователи</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="header__buttons">
                     <div class="header__buttons__application" th:if="${#request.isUserInRole('ROLE_USER')}">
-                        <a href="./contact.html#form">Оставить заявку</a>
+                        <a href="./contact">Оставить заявку</a>
                     </div>
                     <div th:if="${#request.isUserInRole('ROLE_USER')}">
                         <a href="./profile">Профиль</a>
@@ -66,7 +69,6 @@
                 <div class="toggle_btn">
                     <img src="./img/burger.png" alt="">
                 </div>
-
 <!--        <div class="mobile-menu">-->
 <!--            <div class="mobile-menu__content">-->
 <!--                <ul class="mobile-menu__nav">-->
@@ -83,36 +85,4 @@
 <!--            </div>-->
 <!--        </div>-->
     </header>
-
-
-<!--        <header>-->
-<!--            <div class="header__logotype">-->
-<!--                <img src="./img/logo.png" alt="" />-->
-<!--                <a href="index">GoodFood</a>-->
-<!--                <div class="header__logotype__line"></div>-->
-<!--            </div>-->
-<!--            <div class="header__navigation">-->
-<!--                <ul>-->
-<!--                    <li><a href="./.html">Каталог</a></li>-->
-<!--                    <li><a href="./basket.html">Корзина</a></li>-->
-<!--                    <li><a href="./contact.html">Контакты</a></li>-->
-<!--                    <li><a href="#">Профиль</a></li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--            <div class="header__buttons">-->
-<!--                <div class="header__buttons__application">-->
-<!--                    <a class="cont" href="./contact.html#form">Связаться с нами</a>-->
-<!--                </div>-->
-<!--                <div class="header__buttons__enter">-->
-<!--                    <a class="logg" th:if="${authenticated}" th:href="@{/logout}">Выйти</a>-->
-<!--                    <a class="logg" th:unless="${authenticated}" th:href="@{/login}">Войти</a>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="toggle_btn">-->
-<!--                <img src="./img/burger.png" alt="">-->
-<!--            </div>-->
-<!--        </header>-->
-
-
 </div>

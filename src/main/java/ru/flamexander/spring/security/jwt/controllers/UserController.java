@@ -7,7 +7,7 @@ import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.service.UserService;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired

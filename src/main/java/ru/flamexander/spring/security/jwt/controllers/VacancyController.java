@@ -2,13 +2,14 @@ package ru.flamexander.spring.security.jwt.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.flamexander.spring.security.jwt.dtos.VacancyDto;
 import ru.flamexander.spring.security.jwt.service.VacancyService;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/vacancy")
 @RequiredArgsConstructor
 public class VacancyController {
@@ -47,5 +48,7 @@ public class VacancyController {
     public ResponseEntity<List<VacancyDto>> searchVacancy(@RequestParam String name) {
         return ResponseEntity.ok(vacancyService.searchVacancy(name));
     }
+
+
 
 }

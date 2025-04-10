@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.flamexander.spring.security.jwt.dtos.VacancyDto;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.entities.Category;
+import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
 import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
 import ru.flamexander.spring.security.jwt.repositories.CategoryRepository;
@@ -142,10 +143,6 @@ public class VacancyService {
 
         return vacancyRepository.findByCategoryAndTitleContainingIgnoreCase(category, searchQuery, pageable);
     }
-
-
-
-
 
     private VacancyDto convertToDto(Vacancy vacancy) {
         VacancyDto dto = new VacancyDto();

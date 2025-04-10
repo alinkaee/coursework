@@ -20,11 +20,11 @@
         <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
         <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 
-        <form th:action="@{/profile/update}" method="post" class="edit-profile-form" enctype="multipart/form-data">
+        <form th:action="@{/user/update/{id}}" method="post" class="edit-profile-form" enctype="multipart/form-data">
             <div class="avatar-section">
                 <div class="avatar-preview">
-<!--                    <img th:src="${user.avatarUrl != null} ? ${user.avatarUrl} : '/img/default-avatar.png'"-->
-<!--                         alt="Аватар" id="avatar-preview">-->
+                    <img th:src="${user.avatarFilename != null} ? ${user.avatarFilename} : '/img/default-avatar.png'"
+                         alt="Аватар" id="avatar-preview">
                 </div>
                 <div class="avatar-upload">
                     <label for="avatar">Изменить фото</label>
@@ -40,7 +40,7 @@
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" th:value="${user.email}" readonly>
+                <input type="email" id="email" name="email" th:value="${user.email}" required>
             </div>
 
             <div class="form-group">
@@ -57,14 +57,14 @@
 
             <div class="form-group">
                 <label for="skills">Навыки</label>
-                <input type="text" id="skills" name="skills" placeholder="Введите навыки через запятую"> <!-- th:value="${user.skills}" -->
+                <input type="text" id="skills" name="skills" placeholder="Введите навыки через запятую" th:value="${user.skills}"> <!--  -->
             </div>
 
             <div class="form-group">
                 <label for="resume">Резюме (PDF)</label>
                 <input type="file" id="resume" name="resume" accept=".pdf">
-                <small> <!--  th:if="${user.resumeUrl != null}" -->
-                    Текущее резюме: <a target="_blank">Просмотреть</a> <!--  th:href="${user.resumeUrl}" -->
+                <small th:if="${user.resumeFilename != null}"> <!--  -->
+                    Текущее резюме: <a target="_blank" th:href="${user.resumeFilename}">Просмотреть</a> <!--  -->
                 </small>
             </div>
 
@@ -78,7 +78,7 @@
             <h3>Действия с аккаунтом</h3>
             <div class="actions-list">
                 <a th:href="@{/profile/change-password}" class="action-link">Изменить пароль</a>
-                <a th:href="@{/profile/delete}" class="action-link delete-link">Удалить аккаунт</a>
+                <a th:href="@{/user/delete/{id}}" class="action-link delete-link">Удалить аккаунт</a>
             </div>
         </div>
     </main>
