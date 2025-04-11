@@ -92,6 +92,32 @@
     transform: translateY(1px);
 }
 
+.update-category-btn{
+    background: #2ecc71;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    text-decoration: none !important;
+    margin-left: -57%
+}
+.category-block:hover .update-category-btn {
+    opacity: 1;
+}
+
+.update-category-btn:hover {
+    background: #27ae60;
+    transform: translateY(-1px);
+}
+
+.update-category-btn:active {
+    transform: translateY(1px);
+}
+
+
 .main__categories__block__form {
     position: relative;
     margin: 0 auto;
@@ -279,6 +305,7 @@
     border-radius: 20px;
     cursor: pointer;
     transition: background 0.3s ease;
+    text-decoration: none !important;
     font-size: 0.8em;
 }
 

@@ -58,6 +58,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/favorites/**")).authenticated()
                         // Требуем аутентификацию для доступа к странице "/secured"
                         .requestMatchers(new AntPathRequestMatcher("/secured")).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
                         // Требуем аутентификацию для доступа к странице "/info"
                         .requestMatchers(new AntPathRequestMatcher("/info")).authenticated()
                         // Требуем роль "ADMIN" для доступа к странице "/admin"

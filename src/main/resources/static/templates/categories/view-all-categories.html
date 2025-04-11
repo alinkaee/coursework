@@ -26,6 +26,7 @@
                     <div class="category-header">
                         <h2 th:text="${category.title}"></h2>
                         <button class="delete-category-btn" th:data-category-id="${category.id}">Удалить категорию</button>
+                        <a class="update-category-btn" th:href="@{/update-category/{id}(id=${category.id})}">Редактировать категорию</a>
                     </div>
                     <div class="category-cards">
                         <!-- Карточки вакансий для каждой категории -->

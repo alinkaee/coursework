@@ -152,6 +152,77 @@ button[type="submit"]:active {
     animation: shake 0.5s;
 }
 
+.edit-category-container {
+  max-width: 600px;
+  margin: 3% auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.form-group {
+  margin-bottom: 15px;
+}
+.text-danger {
+  color: red;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+  width: 100%;
+}
+
+
+/* Если нужно сделать кнопки одинаковой ширины
+.form-actions .btn {
+  flex: 1;
+  max-width: 200px;
+}*/
+
+
+.btn-secondary {
+  background: linear-gradient(135deg, #8a2be2 0%, #6e1b9b 100%);
+  color: white !important;
+  border: none;
+  margin-top: 20px;
+  padding: 6px 10px; /* Уменьшенный padding */
+  border-radius: 6px;
+  font-size: 0.9rem; /* Уменьшенный размер шрифта */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(138, 43, 226, 0.2);
+  margin-left: auto;
+  order: 2;
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #7b1fa2 0%, #5d1580 100%);
+  transform: translateY(-1px); /* Более мягкий эффект поднятия */
+  box-shadow: 0 4px 8px rgba(138, 43, 226, 0.3);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary::before {
+  content: "←";
+  margin-right: 8px; /* Уменьшенный отступ */
+  font-size: 0.9em;
+  transition: transform 0.2s;
+}
+
+.btn-secondary:hover::before {
+  transform: translateX(-2px); /* Меньшее смещение стрелки */
+}
+
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
     20%, 60% { transform: translateX(-5px); }
@@ -186,6 +257,26 @@ button[type="submit"]:active {
         padding: 16px;
         font-size: 16px;
     }
+
+     .edit-category-container {
+        margin: 20px;
+        padding: 20px;
+      }
+
+     .btn-secondary {
+         padding: 10px 16px;
+         font-size: 0.85rem;
+       }
+
+       .form-actions {
+         flex-direction: row; /* Оставляем в строке на мобильных */
+         justify-content: space-between; /* Равномерное распределение */
+       }
+
+       .form-actions .btn {
+         flex: 1; /* Обе кнопки занимают равное пространство */
+         max-width: 48%; /* Небольшой отступ между ними */
+       }
 }
 
 @media (max-width: 480px) {

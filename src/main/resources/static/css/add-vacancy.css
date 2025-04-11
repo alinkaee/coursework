@@ -75,3 +75,10 @@ button[type="submit"]:hover {
     display: flex;
     gap: 10px;
 }
+
+.edit-vacancy-container{
+    margin: 0px auto;
+    padding: 20px 30%;
+}
+
+

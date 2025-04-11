@@ -22,4 +22,6 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
 
     // Поиск конкретной связи пользователь-роль
     Optional<UserRole> findByUserIdAndRoleId(Long userId, Integer roleId);
+
+
 }

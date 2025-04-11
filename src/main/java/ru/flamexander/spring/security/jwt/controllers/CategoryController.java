@@ -3,6 +3,7 @@ package ru.flamexander.spring.security.jwt.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -59,14 +60,33 @@ public class CategoryController {
 
 
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody CategoriesDTO categoryDto) {
-        try {
-            return ResponseEntity.ok(categoryService.updateCategory(id, categoryDto));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody CategoriesDTO categoryDto) {
+//        try {
+//            return ResponseEntity.ok(categoryService.updateCategory(id, categoryDto));
+//        } catch (RuntimeException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+
+//    @GetMapping("/{id}/edit")
+//    public String showEditCategoryForm(@PathVariable Long id, Model model) {
+//        Category category = categoryService.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
+//
+//        CategoriesDTO categoryDto = new CategoriesDTO(category.getTitle(), category.getDescription(), category.getId());
+//        model.addAttribute("categoryDto", categoryDto);
+//        return "edit-category";
+//    }
+//
+//    @PostMapping("/{id}")
+//    public String updateCategory(@PathVariable Long id, @ModelAttribute("categoryDto") @Valid CategoriesDTO categoryDto, BindingResult bindingResult, Model model) {
+//        if (bindingResult.hasErrors()) {
+//            return "edit-category";
+//        }
+//        categoryService.updateCategory(id, categoryDto);
+//        return "redirect:/categories";
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {

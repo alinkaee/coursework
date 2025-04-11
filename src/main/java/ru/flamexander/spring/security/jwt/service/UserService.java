@@ -2,6 +2,8 @@ package ru.flamexander.spring.security.jwt.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.flamexander.spring.security.jwt.dtos.RegistrationUserDto;
+import ru.flamexander.spring.security.jwt.dtos.UserDto;
 import ru.flamexander.spring.security.jwt.entities.FavoriteVacancy;
 import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
@@ -20,6 +23,7 @@ import ru.flamexander.spring.security.jwt.repositories.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -166,5 +170,31 @@ public class UserService implements UserDetailsService {
 
     public boolean isVacancyInFavorites(User user, Vacancy vacancy) {
         return favoriteVacancyRepository.findByUserAndVacancy(user, vacancy).isPresent();
+    }
+
+    public List<UserDto> getAllUsers() {
+        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
+                .map(user -> new UserDto(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getEmail(),
+                        // Добавляем дополнительные поля, если нужно
+                        user.getUserRoles().stream()
+                                .map(ur -> ur.getRole().getName())
+                                .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public Page<UserDto> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable)
+                .map(user -> new UserDto(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getEmail(),
+                        user.getUserRoles().stream()
+                                .map(ur -> ur.getRole().getName())
+                                .collect(Collectors.toList())
+                ));
     }
 }

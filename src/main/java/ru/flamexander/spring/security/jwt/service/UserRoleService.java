@@ -113,4 +113,8 @@ public class UserRoleService {
 
         return userRoleDTO;
     }
+
+    public void saveUserRole(UserRole userRole) {
+        userRoleRepository.save(userRole);
+    }
 }

@@ -133,6 +133,25 @@ public class MVCCategoryController {
         return "redirect:/view-all-categories";
     }
 
+    @GetMapping("/update-category/{id}")
+    public String showEditCategoryForm(@PathVariable Long id, Model model) {
+        Category category = categoryService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
+
+        CategoriesDTO categoryDto = new CategoriesDTO(category.getTitle(), category.getDescription(), category.getId());
+        model.addAttribute("categoryDto", categoryDto);
+        return "categories/update-category";
+    }
+
+    @PostMapping("/update-category/{id}")
+    public String updateCategory(@PathVariable Long id, @ModelAttribute("categoryDto") @Valid CategoriesDTO categoryDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "categories/update-category";
+        }
+        categoryService.updateCategory(id, categoryDto);
+        return "redirect:/view-all-categories";
+    }
+
     @GetMapping("/job_openings")
     public String searchVacancies(
             @RequestParam(defaultValue = "0") int page,
