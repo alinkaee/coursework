@@ -7,6 +7,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,6 +57,8 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/categories/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/applications/apply/**")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/favorites/**")).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/user/edit/**")).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/user/update/**")).authenticated()
                         // Требуем аутентификацию для доступа к странице "/secured"
                         .requestMatchers(new AntPathRequestMatcher("/secured")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
@@ -114,6 +117,10 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         // Используем BCrypt для хеширования паролей
         return new BCryptPasswordEncoder();
+    }
+
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/uploads/**");
     }
 
     // Конфигурация менеджера аутентификации

@@ -2,8 +2,12 @@ package ru.flamexander.spring.security.jwt.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.flamexander.spring.security.jwt.dtos.UserUpdateDto;
 import ru.flamexander.spring.security.jwt.entities.User;
+import ru.flamexander.spring.security.jwt.service.ResourceNotFoundException;
 import ru.flamexander.spring.security.jwt.service.UserService;
 
 @RestController
@@ -13,11 +17,36 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-        User updatedUser = userService.updateUser(id, userDetails);
-        return ResponseEntity.ok(updatedUser);
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        User user = userService.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        model.addAttribute("user", user);
+        model.addAttribute("userUpdateDto", new UserUpdateDto());
+        return "profile-editing";
     }
+
+    @PostMapping("/update/{id}")
+    public String updateUser(
+            @PathVariable Long id,
+            @ModelAttribute UserUpdateDto userUpdateDto,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            User updatedUser = userService.updateUser(id, userUpdateDto);
+            redirectAttributes.addFlashAttribute("success", "Профиль успешно обновлен");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Ошибка при обновлении профиля: " + e.getMessage());
+        }
+
+        return "redirect:/user/edit/" + id;
+    }
+
+//    @PutMapping("/update/{id}")
+//    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+//        User updatedUser = userService.updateUser(id, userDetails);
+//        return ResponseEntity.ok(updatedUser);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {

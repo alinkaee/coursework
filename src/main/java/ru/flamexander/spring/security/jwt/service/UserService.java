@@ -12,16 +12,25 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import ru.flamexander.spring.security.jwt.dtos.RegistrationUserDto;
 import ru.flamexander.spring.security.jwt.dtos.UserDto;
+import ru.flamexander.spring.security.jwt.dtos.UserUpdateDto;
 import ru.flamexander.spring.security.jwt.entities.FavoriteVacancy;
 import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
 import ru.flamexander.spring.security.jwt.repositories.FavoriteVacancyRepository;
 import ru.flamexander.spring.security.jwt.repositories.UserRepository;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -196,5 +205,50 @@ public class UserService implements UserDetailsService {
                                 .map(ur -> ur.getRole().getName())
                                 .collect(Collectors.toList())
                 ));
+    }
+
+    public User updateUser(Long id, UserUpdateDto userUpdateDto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        user.setUsername(userUpdateDto.getUsername());
+        user.setEmail(userUpdateDto.getEmail());
+        user.setPhone(userUpdateDto.getPhone());
+        user.setDescription(userUpdateDto.getDescription());
+        user.setSkills(userUpdateDto.getSkills());
+
+        // Обработка аватарки
+        if (userUpdateDto.getAvatar() != null && !userUpdateDto.getAvatar().isEmpty()) {
+            String avatarFilename = storeFile(userUpdateDto.getAvatar(), "avatars");
+            user.setAvatarFilename("/uploads/avatars/" + avatarFilename);
+        }
+
+        // Обработка резюме
+        if (userUpdateDto.getResume() != null && !userUpdateDto.getResume().isEmpty()) {
+            String resumeFilename = storeFile(userUpdateDto.getResume(), "resumes");
+            user.setResumeFilename("/uploads/resumes/" + resumeFilename);
+        }
+
+        return userRepository.save(user);
+    }
+
+    private String storeFile(MultipartFile file, String subdirectory) {
+        try {
+            String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String fileName = UUID.randomUUID() + fileExtension;
+
+            Path uploadPath = Paths.get("uploads/" + subdirectory);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            return fileName;
+        } catch (IOException ex) {
+            throw new RuntimeException("Could not store file " + file.getOriginalFilename(), ex);
+        }
     }
 }

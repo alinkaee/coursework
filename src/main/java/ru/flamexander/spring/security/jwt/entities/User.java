@@ -23,23 +23,26 @@ public class User {
     @Column(name = "email")
     private String email;
 
-//    @Column(name = "phone")
-//    private String phone;
-//
-//    @Column(name = "avatar_filename", nullable = false)
-//    private String avatarFilename; // Имя файла аватарки
-//
-//    @Transient // Не сохраняется в БД
-//    private MultipartFile avatarFile;
-//
-//    @Column(name = "skills")
-//    private String skills;
+    @Column(name = "phone")
+    private String phone;
 
-//    @Column(name = "resume")
-//    private String resumeFilename;
-//
-//    @Transient
-//    private MultipartFile resumeFile;
+    @Column(name = "avatar_filename", nullable = true)
+    private String avatarFilename; // Имя файла аватарки
+
+    @Transient // Не сохраняется в БД
+    private MultipartFile avatarFile;
+
+    @Column(name = "skills", nullable = true)
+    private String skills;
+
+    @Column(name = "resume", nullable = true)
+    private String resumeFilename;
+
+    @Column(name = "description", nullable = true)
+    private String description;
+
+    @Transient
+    private MultipartFile resumeFile;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<UserRole> userRoles;
