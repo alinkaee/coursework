@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}"
+      lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Просмотр пользователя</title>
+    <link rel="stylesheet" href="/css/user-view.css">
+</head>
+<body>
+<div layout:fragment="content" class="">
+    <h1>Данные пользователя</h1>
+    <div th:if="${user}" class="user-card">
+        <div class="user-details">
+            <div class="user-detail">
+                <span class="detail-label">ID</span>
+                <span class="detail-value" th:text="${user.id}"></span>
+            </div>
+            <div class="user-detail">
+                <span class="detail-label">Имя пользователя</span>
+                <span class="detail-value" th:text="${user.username}"></span>
+            </div>
+            <div class="user-detail">
+                <span class="detail-label">Email</span>
+                <span class="detail-value" th:text="${user.email}"></span>
+            </div>
+        </div>
+        <a th:href="@{/users}" class="btn-back">
+            <i>←</i> Назад к списку
+        </a>
+    </div>
+</div>
+</body>
+</html>

@@ -41,7 +41,7 @@ public class User {
 //    @Transient
 //    private MultipartFile resumeFile;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<UserRole> userRoles;
 }
 

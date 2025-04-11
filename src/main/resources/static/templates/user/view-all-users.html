@@ -33,11 +33,13 @@
                               th:text="${role} + (${!iterStat.last} ? ', ' : '')"></span>
                 </td>
                 <td>
-                    <a th:href="@{'/user/' + ${user.id}}" class="btn btn-sm btn-info">Просмотр</a>
+                    <a th:href="@{'/users/view/' + ${user.id}}" class="btn btn-sm btn-info">Просмотр</a>
                     <a th:href="@{'/user/update/' + ${user.id}}" class="btn btn-sm btn-warning">Редактировать</a>
                     <form th:action="@{'/user/delete/' + ${user.id}}" method="post" style="display: inline;">
+                        <input type="hidden" name="_method" value="delete" />
                         <button type="submit" class="btn btn-sm btn-danger"
-                                onclick="return confirm('Вы уверены?')">Удалить</button>
+                                th:data-userid="${user.id}"
+                                onclick="confirmDelete(event, this)">Удалить</button>
                     </form>
                 </td>
             </tr>
