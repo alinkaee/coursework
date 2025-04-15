@@ -178,6 +178,203 @@ margin-bottom: 20px;
     background-color: #5649c0; /* Темнее фиолетовый при наведении */
 }
 
+/* Стили для блока сортировки */
+.main__search__block__form__bottom__sort {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 10px;
+}
+
+.main__search__block__form__bottom__sort label {
+    font-size: 14px;
+    color: #666;
+    white-space: nowrap;
+}
+
+.main__search__block__form__bottom__sort select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 160px;
+}
+
+.main__search__block__form__bottom__sort select:hover {
+    border-color: #8a2be2;
+}
+
+.main__search__block__form__bottom__sort select:focus {
+    outline: none;
+    border-color: #8a2be2;
+    box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.2);
+}
+
+/* Стили для активных фильтров */
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+    align-items: center;
+}
+
+.filter-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #f3e8ff;
+    color: #6b46c1;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.filter-tag .remove-filter {
+    margin-left: 8px;
+    cursor: pointer;
+    color: #805ad5;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.filter-tag .remove-filter:hover {
+    color: #6b46c1;
+}
+
+/* Стили для результатов поиска */
+.search-results-info {
+    margin: 20px 0;
+    font-size: 16px;
+    color: #666;
+}
+
+.search-results-info strong {
+    color: #333;
+}
+
+/* Улучшенные стили для карточек вакансий при фильтрации */
+.main__search__block__develop__cards__row__card.highlight {
+    border-left: 4px solid #8a2be2;
+    background-color: #faf5ff;
+}
+
+/* Анимация для карточек */
+@keyframes fadeInCard {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.main__search__block__develop__cards__row__card {
+    animation: fadeInCard 0.4s ease-out forwards;
+}
+
+/* Индикатор загрузки при фильтрации */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.loading-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.loading-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #8a2be2;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Адаптивность для фильтров */
+@media (max-width: 768px) {
+    .main__search__block__form__bottom {
+        flex-direction: column;
+    }
+
+    .main__search__block__form__bottom form {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .main__search__block__form__bottom__sort {
+        margin-left: 0;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .box,
+    .main__search__block__form__bottom__sort select {
+        width: 100%;
+    }
+
+    .main__search__block__form__bottom__input {
+        width: 100%;
+    }
+
+    .active-filters {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Стили для пустых результатов */
+.no-results {
+    text-align: center;
+    padding: 40px;
+    background-color: #f9f0ff;
+    border-radius: 8px;
+    margin: 30px 0;
+}
+
+.no-results h3 {
+    color: #6b46c1;
+    margin-bottom: 15px;
+}
+
+.no-results p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.no-results .reset-search {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #8a2be2;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.no-results .reset-search:hover {
+    background-color: #7b1fa2;
+    transform: translateY(-2px);
+}
+
 /* Стили пагинации */
 .pagination {
     display: flex;

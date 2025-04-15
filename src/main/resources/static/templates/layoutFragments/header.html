@@ -42,11 +42,16 @@
                 </div>
                 <div class="header__navigation">
                     <ul>
-                        <li><a href="./job_openings">Поиск вакансий</a></li>
+                        <li th:if="${#request.isUserInRole('ROLE_USER')}">
+                            <a href="./job_openings">Поиск вакансий</a>
+                        </li>
+                        <li th:if="${#request.isUserInRole('ROLE_ADMIN')}">
+                            <a href="./added_application">Отправленные заявки</a>
+                        </li>
                         <li><a href="./contact">Контакты</a></li>
                         <li><a href="./news">Новости</a></li>
                         <li th:if="${#request.isUserInRole('ROLE_ADMIN')}">
-                            <a href="./view-all-categories">Категории</a>
+                            <a href="./view-all-categories">Добавить вакансии</a>
                         </li>
                         <li th:if="${#request.isUserInRole('ROLE_ADMIN')}">
                             <a href="./users">Пользователи</a>

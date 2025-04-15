@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,23 +21,15 @@ import ru.flamexander.spring.security.jwt.service.UserService;
 import ru.flamexander.spring.security.jwt.service.VacancyService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class MVCCategoryController {
 
-    @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
+    private final CategoryService categoryService;
     private final CategoryRepository categoryRepository;
-
-    @Autowired
     private final VacancyService vacancyService;
-
-    @Autowired
     private final UserService userService;
 
     @GetMapping("/view-all-categories")
@@ -59,14 +52,11 @@ public class MVCCategoryController {
         if (bindingResult.hasErrors()) {
             return "categories/add-category";
         }
-
-        CategoryService categoryService = new CategoryService(); // Или через @Autowired
         categoryService.createNewCategory(categoryDto);
         return "redirect:/view-all-categories";
     }
 
-
-    @GetMapping("/add-vacancy") // Добавлен GET-метод для отображения формы
+    @GetMapping("/add-vacancy")
     public String showAddVacancyForm(Model model) {
         model.addAttribute("vacancyDto", new VacancyDto());
         model.addAttribute("categories", categoryService.getAllCategories());
@@ -77,8 +67,6 @@ public class MVCCategoryController {
     public String handleAddVacancy(@Valid @ModelAttribute("vacancyDto") VacancyDto vacancyDto,
                                    BindingResult bindingResult,
                                    Model model) {
-
-        // Явная проверка categoryId
         if (vacancyDto.getCategoryId() == null) {
             bindingResult.rejectValue("categoryId", "error.categoryId", "Категория обязательна");
         }
@@ -111,8 +99,6 @@ public class MVCCategoryController {
     public String handleEditVacancy(@Valid @ModelAttribute("vacancyDto") VacancyDto vacancyDto,
                                     BindingResult bindingResult,
                                     Model model) {
-
-        // Явная проверка categoryId
         if (vacancyDto.getCategoryId() == null) {
             bindingResult.rejectValue("categoryId", "error.categoryId", "Категория обязательна");
         }
@@ -144,7 +130,8 @@ public class MVCCategoryController {
     }
 
     @PostMapping("/update-category/{id}")
-    public String updateCategory(@PathVariable Long id, @ModelAttribute("categoryDto") @Valid CategoriesDTO categoryDto, BindingResult bindingResult, Model model) {
+    public String updateCategory(@PathVariable Long id, @ModelAttribute("categoryDto") @Valid CategoriesDTO categoryDto,
+                                 BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "categories/update-category";
         }
@@ -158,36 +145,35 @@ public class MVCCategoryController {
             @RequestParam(defaultValue = "3") int size,
             @RequestParam(name = "category", required = false) String categoryTitle,
             @RequestParam(name = "query", required = false) String searchQuery,
+            @RequestParam(name = "sort", defaultValue = "none") String sort,
             Model model) {
 
         List<Category> categories = categoryService.getAllCategoriesWithVacancies();
         model.addAttribute("categories", categories);
 
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Vacancy> vacancyPage;
-
-        if ((categoryTitle != null && !categoryTitle.isEmpty()) || (searchQuery != null && !searchQuery.isEmpty())) {
-            vacancyPage = vacancyService.searchVacancies(categoryTitle, searchQuery, pageable);
+        Pageable pageable;
+        if ("asc".equals(sort)) {
+            pageable = PageRequest.of(page, size, Sort.by("salary").ascending());
+        } else if ("desc".equals(sort)) {
+            pageable = PageRequest.of(page, size, Sort.by("salary").descending());
         } else {
-            vacancyPage = vacancyService.getAllVacancies(pageable);
+            pageable = PageRequest.of(page, size);
         }
+
+        Page<Vacancy> vacancyPage = vacancyService.searchVacancies(categoryTitle, searchQuery, pageable);
 
         User currentUser = userService.getCurrentUser();
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("userService", userService); // Добавьте userService в модель
-        model.addAttribute("vacancies", vacancyService.getAllVacancy());
-
-
+        model.addAttribute("userService", userService);
         model.addAttribute("vacancies", vacancyPage.getContent());
         model.addAttribute("currentPage", vacancyPage.getNumber() + 1);
         model.addAttribute("totalPages", vacancyPage.getTotalPages());
         model.addAttribute("totalItems", vacancyPage.getTotalElements());
         model.addAttribute("pageSize", size);
-        model.addAttribute("searchQuery", searchQuery); // Pass the search query
-        model.addAttribute("categoryTitle", categoryTitle); // Pass the category title
+        model.addAttribute("searchQuery", searchQuery);
+        model.addAttribute("categoryTitle", categoryTitle);
+        model.addAttribute("sort", sort);
 
         return "job-openings";
     }
-
 }
-

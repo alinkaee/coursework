@@ -43,5 +43,11 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
     @Query("SELECT v FROM Vacancy v WHERE v.category.title = :categoryName AND v.title LIKE %:query%")
     List<Vacancy> findByCategoryAndTitle(@Param("categoryName") String categoryName, @Param("query") String query);
 
+    @Query("SELECT v FROM Vacancy v ORDER BY v.salary ASC")
+    List<Vacancy> findAllOrderBySalaryAsc();
+
+    @Query("SELECT v FROM Vacancy v ORDER BY v.salary DESC")
+    List<Vacancy> findAllOrderBySalaryDesc();
+
 }
 

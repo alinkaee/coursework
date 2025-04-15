@@ -120,10 +120,12 @@ public class VacancyService {
 
     public Page<Vacancy> searchVacancies(String categoryTitle, String searchQuery, Pageable pageable) {
         if ((categoryTitle == null || categoryTitle.isEmpty()) && (searchQuery == null || searchQuery.isEmpty())) {
+            // Если нет фильтров, просто возвращаем все вакансии с пагинацией и сортировкой
             return vacancyRepository.findAll(pageable);
         }
 
         if (categoryTitle != null && !categoryTitle.isEmpty() && (searchQuery == null || searchQuery.isEmpty())) {
+            // Фильтрация по категории
             Category category = categoryService.getCategoryByTitleOrThrow(categoryTitle);
             if (category != null) {
                 return vacancyRepository.findByCategory(category, pageable);
@@ -133,15 +135,29 @@ public class VacancyService {
         }
 
         if ((categoryTitle == null || categoryTitle.isEmpty()) && searchQuery != null && !searchQuery.isEmpty()) {
+            // Фильтрация по названию вакансии
             return vacancyRepository.findByTitleContainingIgnoreCase(searchQuery, pageable);
         }
 
+        // Фильтрация по категории и названию вакансии
         Category category = categoryService.getCategoryByTitleOrThrow(categoryTitle);
         if (category == null) {
             return Page.empty(pageable);
         }
 
         return vacancyRepository.findByCategoryAndTitleContainingIgnoreCase(category, searchQuery, pageable);
+    }
+
+    public List<VacancyDto> getAllVacanciesSortedBySalaryAsc() {
+        return vacancyRepository.findAllOrderBySalaryAsc().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<VacancyDto> getAllVacanciesSortedBySalaryDesc() {
+        return vacancyRepository.findAllOrderBySalaryDesc().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     private VacancyDto convertToDto(Vacancy vacancy) {

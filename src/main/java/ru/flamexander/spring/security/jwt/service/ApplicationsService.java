@@ -1,6 +1,9 @@
 package ru.flamexander.spring.security.jwt.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ru.flamexander.spring.security.jwt.entities.Applications;
@@ -135,6 +138,11 @@ public class ApplicationsService {
     @Transactional
     public void deleteApplication(Long id) {
         applicationsRepository.deleteById(id);
+    }
+
+    public Page<Applications> getApplications(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return applicationsRepository.findAll(pageable);
     }
 }
 

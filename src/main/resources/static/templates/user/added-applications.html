@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}"
+      lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Завки пользователей | RECRUITIUM</title>
+    <link rel="stylesheet" href="/css/added-applications.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div layout:fragment="content" class="container mt-4">
+    <h1 class="mb-4">Список заявок на вакансии</h1>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Имя кандидата</th>
+                <th>Email</th>
+                <th>Телефон</th>
+                <th>Вакансия</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="application : ${applications}">
+                <td th:text="${application.id}"></td>
+                <td th:text="${application.candidateName}"></td>
+                <td th:text="${application.email}"></td>
+                <td th:text="${application.phone}"></td>
+                <td th:text="${application.vacancyTitle}"></td>
+                <td th:text="${application.status}"></td>
+                <td>
+                    <a th:href="@{'/applications/view/' + ${application.id}}" class="btn btn-sm btn-info">Просмотр</a>
+                    <a th:href="@{'/applications/update/' + ${application.id}}" class="btn btn-sm btn-warning">Редактировать</a>
+                    <form th:action="@{'/applications/delete/' + ${application.id}}" method="post" style="display: inline;">
+                        <input type="hidden" name="_method" value="delete" />
+                        <button type="submit" class="btn btn-sm btn-danger"
+                                th:data-applicationid="${application.id}"
+                                onclick="confirmDelete(event, this)">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${applications.totalPages > 1}" class="pagination">
+        <ul>
+            <!-- Первая страница -->
+            <li th:classappend="${currentPage == 0} ? 'disabled'">
+                <a th:href="@{/applications(page=0, size=${applications.size})}">«</a>
+            </li>
+
+            <!-- Назад -->
+            <li th:classappend="${currentPage == 0} ? 'disabled'">
+                <a th:href="@{/applications(page=${currentPage - 1}, size=${applications.size})}">‹</a>
+            </li>
+
+            <!-- Номера страниц -->
+            <li th:each="i : ${#numbers.sequence(0, applications.totalPages - 1)}"
+                th:classappend="${currentPage == i} ? 'active'">
+                <a th:href="@{/applications(page=${i}, size=${applications.size})}"
+                   th:text="${i + 1}"></a>
+            </li>
+
+            <!-- Вперед -->
+            <li th:classappend="${currentPage == applications.totalPages - 1} ? 'disabled'">
+                <a th:href="@{/applications(page=${currentPage + 1}, size=${applications.size})}">›</a>
+            </li>
+
+            <!-- Последняя страница -->
+            <li th:classappend="${currentPage == applications.totalPages - 1} ? 'disabled'">
+                <a th:href="@{/applications(page=${applications.totalPages - 1}, size=${applications.size})}">»</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script>
+    function confirmDelete(event, button) {
+        event.preventDefault();
+        if (confirm("Вы уверены, что хотите удалить эту заявку?")) {
+            button.closest('form').submit();
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package ru.flamexander.spring.security.jwt.controllers.mvc;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import ru.flamexander.spring.security.jwt.utils.JwtTokenUtils;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -90,6 +92,19 @@ public class MVCUserController {
         // Добавляем объект для редиректа
         redirectAttributes.addFlashAttribute("user", user);
         return "redirect:/edit-profile";
+    }
+
+    @GetMapping("/added_application")
+    public String showUserApplicationsPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model){
+        Page<Applications> applications = applicationsService.getApplications(page, size);
+
+        // Добавляем объект в модель
+        model.addAttribute("applications", applications);
+        model.addAttribute("currentPage", page);
+        return "user/added-applications";
     }
 
 

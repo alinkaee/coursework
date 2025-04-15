@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="/css/job-openings.css">
     <script>
         function resetSearch(event) {
-        event.preventDefault();
-        window.location.href = "http://localhost:8080/job_openings";
+            event.preventDefault();
+            window.location.href = "http://localhost:8080/job_openings";
         }
     </script>
 </head>
@@ -22,11 +22,12 @@
         <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 
         <div class="main__search__block">
+            <button type="button" class="reset-button" onclick="resetSearch(event)">Сбросить результаты поиска</button>
             <div class="main__search__block__form">
                 <h3>Уже видишь себя на <br/>определенном месте?</h3>
                 <p>Найди свое место!</p>
                 <div class="main__search__block__form__bottom">
-                    <form th:action="@{/job_openings}" method="get">
+                    <form id="searchForm" th:action="@{/job_openings}" method="get">
                         <div class="box">
                             <select name="category">
                                 <option value="">Все категории</option>
@@ -40,12 +41,42 @@
                         <div class="main__search__block__form__bottom__input">
                             <input type="text" id="searchInput" name="query" placeholder="Поиск вакансии"
                                    th:value="${query}"/>
-                            <button type="submit" onclick="clearSearchInput()">Найти</button>
+                            <button type="submit">Найти</button>
+                        </div>
+                        <!-- Добавленная сортировка по зарплате -->
+                        <div class="main__search__block__form__bottom__sort">
+                            <label for="sort">Сортировать по зарплате:</label>
+                            <select name="sort" id="sort" onchange="this.form.submit()">
+                                <option value="none" th:selected="${sort == null || sort == 'none'}">Без сортировки</option>
+                                <option value="asc" th:selected="${sort == 'asc'}">По возрастанию</option>
+                                <option value="desc" th:selected="${sort == 'desc'}">По убыванию</option>
+                            </select>
                         </div>
                     </form>
                 </div>
             </div>
-            <button type="button" class="reset-button" onclick="resetSearch(event)">Сбросить результаты поиска</button>
+            <div class="active-filters" th:if="${param.query != null || param.category != null || (param.sort != null && param.sort != 'none')}">
+    <span class="filter-tag" th:if="${param.query != null}">
+        Поиск: "<span th:text="${param.query}"></span>"
+        <span class="remove-filter" onclick="removeFilter('query')">×</span>
+    </span>
+                <span class="filter-tag" th:if="${param.category != null}">
+        Категория: <span th:text="${param.category}"></span>
+        <span class="remove-filter" onclick="removeFilter('category')">×</span>
+    </span>
+                <span class="filter-tag" th:if="${param.sort != null && param.sort != 'none'}">
+        Сортировка:
+        <span th:text="${param.sort == 'asc' ? 'По возрастанию' : 'По убыванию'}"></span>
+        <span class="remove-filter" onclick="removeFilter('sort')">×</span>
+    </span>
+            </div>
+
+            <!-- Индикатор загрузки -->
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loading-spinner"></div>
+            </div>
+
+
 
             <!-- Отображение результатов поиска -->
             <div th:if="${not #lists.isEmpty(vacancies)}">
@@ -95,24 +126,47 @@
             </div>
             <div th:if="${totalPages > 1}" class="pagination">
                 <a th:if="${currentPage > 1}"
-                   th:href="@{/job_openings(page=0, size=${pageSize}, query=${searchQuery}, category=${categoryTitle})}">&laquo;</a>
+                   th:href="@{/job_openings(page=0, size=${pageSize}, query=${searchQuery}, category=${categoryTitle}, sort=${param.sort})}">&laquo;</a>
                 <a th:if="${currentPage > 1}"
-                   th:href="@{/job_openings(page=${currentPage - 2}, size=${pageSize}, query=${searchQuery}, category=${categoryTitle})}">&lsaquo;</a>
+                   th:href="@{/job_openings(page=${currentPage - 2}, size=${pageSize}, query=${searchQuery}, category=${categoryTitle}, sort=${param.sort})}">&lsaquo;</a>
 
                 <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
-                    <a th:href="@{/job_openings(page=${i - 1}, size=${pageSize}, query=${searchQuery}, category=${categoryTitle})}"
+                    <a th:href="@{/job_openings(page=${i - 1}, size=${pageSize}, query=${searchQuery}, category=${categoryTitle}, sort=${param.sort})}"
                        th:class="${currentPage == i ? 'active' : ''}"
                        th:text="${i}"></a>
                 </th:block>
 
                 <a th:if="${currentPage < totalPages}"
-                   th:href="@{/job_openings(page=${currentPage}, size=${pageSize}, query=${searchQuery}, category=${categoryTitle})}">&rsaquo;</a>
+                   th:href="@{/job_openings(page=${currentPage}, size=${pageSize}, query=${searchQuery}, category=${categoryTitle}, sort=${param.sort})}">&rsaquo;</a>
                 <a th:if="${currentPage < totalPages}"
-                   th:href="@{/job_openings(page=${totalPages - 1}, size=${pageSize}, query=${searchQuery}, category=${categoryTitle})}">&raquo;</a>
+                   th:href="@{/job_openings(page=${totalPages - 1}, size=${pageSize}, query=${searchQuery}, category=${categoryTitle}, sort=${param.sort})}">&raquo;</a>
             </div>
         </div>
     </main>
 </div>
+<script>
+    let timeoutId;
+
+    function submitForm() {
+        document.getElementById('searchForm').submit();
+    }
+
+    function submitFormDelayed() {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(submitForm, 500); // Задержка 500 мс
+    }
+</script>
+<script>
+    function removeFilter(paramName) {
+        const url = new URL(window.location.href);
+        url.searchParams.delete(paramName);
+        window.location.href = url.toString();
+    }
+
+    // Показываем индикатор загрузки при отправке формы
+    document.querySelector('form').addEventListener('submit', function() {
+        document.getElementById('loadingOverlay').classList.add('active');
+    });
+</script>
 </body>
 </html>
-
