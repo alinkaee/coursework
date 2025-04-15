@@ -27,26 +27,26 @@
                 <th>Действия</th>
             </tr>
             </thead>
-            <tbody>
-            <tr th:each="application : ${applications}">
-                <td th:text="${application.id}"></td>
-                <td th:text="${application.candidateName}"></td>
-                <td th:text="${application.email}"></td>
-                <td th:text="${application.phone}"></td>
-                <td th:text="${application.vacancyTitle}"></td>
-                <td th:text="${application.status}"></td>
-                <td>
-                    <a th:href="@{'/applications/view/' + ${application.id}}" class="btn btn-sm btn-info">Просмотр</a>
-                    <a th:href="@{'/applications/update/' + ${application.id}}" class="btn btn-sm btn-warning">Редактировать</a>
-                    <form th:action="@{'/applications/delete/' + ${application.id}}" method="post" style="display: inline;">
-                        <input type="hidden" name="_method" value="delete" />
-                        <button type="submit" class="btn btn-sm btn-danger"
-                                th:data-applicationid="${application.id}"
-                                onclick="confirmDelete(event, this)">Удалить</button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
+<!--            <tbody>-->
+<!--            <tr th:each="application : ${applications}">-->
+<!--                <td th:text="${app.id}"></td>-->
+<!--                <td th:text="${app.candidateName}"></td>-->
+<!--                <td th:text="${app.email}"></td>-->
+<!--                <td th:text="${app.phone}"></td>-->
+<!--                <td th:text="${app.vacancyTitle}"></td>-->
+<!--                <td th:text="${app.status}"></td>-->
+<!--                <td>-->
+<!--                    <a th:href="@{'/applications/view/' + ${application.id}}" class="btn btn-sm btn-info">Просмотр</a>-->
+<!--                    <a th:href="@{'/applications/update/' + ${application.id}}" class="btn btn-sm btn-warning">Редактировать</a>-->
+<!--                    <form th:action="@{'/applications/delete/' + ${application.id}}" method="post" style="display: inline;">-->
+<!--                        <input type="hidden" name="_method" value="delete" />-->
+<!--                        <button type="submit" class="btn btn-sm btn-danger"-->
+<!--                                th:data-applicationid="${application.id}"-->
+<!--                                onclick="confirmDelete(event, this)">Удалить</button>-->
+<!--                    </form>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
         </table>
     </div>
     <div th:if="${applications.totalPages > 1}" class="pagination">
