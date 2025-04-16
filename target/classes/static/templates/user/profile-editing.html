@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}"
+      lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование профиля | RECRUITIUM</title>
+    <link rel="stylesheet" href="/css/profile-edit.css" />
+</head>
+<body>
+<div layout:fragment="content" class="edit-profile-container">
+    <main class="edit-profile-main">
+        <div class="edit-profile-header">
+            <h1>Редактирование профиля</h1>
+            <a th:href="@{/profile}" class="back-button">← Назад</a>
+        </div>
+
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+        <form th:action="@{/user/update/{id}}" method="post" class="edit-profile-form" enctype="multipart/form-data">
+            <div class="avatar-section">
+                <div class="avatar-preview">
+                    <img th:src="${user.avatarFilename != null} ? ${user.avatarFilename} : '/img/default-avatar.png'"
+                         alt="Аватар" id="avatar-preview">
+                </div>
+                <div class="avatar-upload">
+                    <label for="avatar">Изменить фото</label>
+                    <input type="file" id="avatar" name="avatar">
+                    <small>Формат: JPG, PNG. Макс. размер: 2MB</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Имя</label>
+                <input type="text" id="username" name="username" th:value="${user.username}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" th:value="${user.email}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Телефон</label>
+                <input type="tel" id="phone" name="phone"
+                       pattern="\+7\s?[0-9]{3}\s?[0-9]{3}\s?[0-9]{2}\s?[0-9]{2}"
+                       placeholder="+7 XXX XXX XX XX">
+            </div>
+
+            <div class="form-group">
+                <label for="description">О себе</label>
+                <textarea id="description" name="description" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="skills">Навыки</label>
+                <input type="text" id="skills" name="skills" placeholder="Введите навыки через запятую" th:value="${user.skills}"> <!--  -->
+            </div>
+
+            <div class="form-group">
+                <label for="resume">Резюме (PDF)</label>
+                <input type="file" id="resume" name="resume" accept=".pdf">
+                <small th:if="${user.resumeFilename != null}"> <!--  -->
+                    Текущее резюме: <a target="_blank" th:href="${user.resumeFilename}">Просмотреть</a> <!--  -->
+                </small>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="save-button">Сохранить изменения</button>
+                <button type="button" class="cancel-button" onclick="window.location.href='/profile'">Отмена</button>
+            </div>
+        </form>
+
+        <div class="account-actions">
+            <h3>Действия с аккаунтом</h3>
+            <div class="actions-list">
+                <a th:href="@{/profile/change-password}" class="action-link">Изменить пароль</a>
+                <a th:href="@{/user/delete/{id}}" class="action-link delete-link">Удалить аккаунт</a>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // Предпросмотр аватарки перед загрузкой
+    document.getElementById('avatar').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('avatar-preview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+</body>
+</html>

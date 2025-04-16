@@ -1,0 +1,260 @@
+/* Основные стили контейнера */
+.edit-profile-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Шапка страницы */
+.edit-profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #8a2be2;
+}
+
+.edit-profile-header h1 {
+    font-size: 28px;
+    color: #333;
+    margin: 0;
+}
+
+.back-button {
+    color: #8a2be2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.back-button:hover {
+    color: #7b1fa2;
+    transform: translateX(-3px);
+}
+
+/* Форма редактирования */
+.edit-profile-form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Секция аватара */
+.avatar-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 25px;
+}
+
+.avatar-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #8a2be2;
+}
+
+.avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-upload label {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #8a2be2;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.avatar-upload label:hover {
+    background: #7b1fa2;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(138, 43, 226, 0.3);
+}
+
+.avatar-upload input[type="file"] {
+    display: none;
+}
+
+.avatar-upload small {
+    display: block;
+    color: #666;
+    font-size: 12px;
+    max-width: 200px;
+}
+
+/* Группы полей формы */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #444;
+    font-size: 15px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 15px;
+    transition: border 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #8a2be2;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Кнопки формы */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.save-button {
+    padding: 12px 30px;
+    background-color: #8a2be2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.save-button:hover {
+    background-color: #7b1fa2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(138, 43, 226, 0.3);
+}
+
+.cancel-button {
+    padding: 12px 30px;
+    background-color: white;
+    color: #8a2be2;
+    border: 1px solid #8a2be2;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.cancel-button:hover {
+    background-color: #f5f0ff;
+    transform: translateY(-2px);
+}
+
+/* Действия с аккаунтом */
+.account-actions {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid #eee;
+}
+
+.account-actions h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.action-link {
+    color: #8a2be2;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s;
+    padding: 8px 0;
+    display: inline-block;
+}
+
+.action-link:hover {
+    color: #7b1fa2;
+    text-decoration: underline;
+    transform: translateX(3px);
+}
+
+.delete-link {
+    color: #e74c3c;
+}
+
+.delete-link:hover {
+    color: #c0392b;
+}
+
+/* Уведомления */
+.alert {
+    padding: 15px;
+    margin-bottom: 25px;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .edit-profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .avatar-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .save-button, .cancel-button {
+        width: 100%;
+        text-align: center;
+    }
+}
