@@ -26,16 +26,23 @@ public class MVCUserController {
     private final UserService userService;
 
     @GetMapping("/profile")
-    public String getProfile(Model model) {
+    public String getProfile(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
         // Получаем текущего пользователя
         User currentUser = userService.getCurrentUser();
         if (currentUser == null) {
             return "redirect:/login"; // Перенаправляем на страницу входа, если пользователь не найден
         }
 
-        // Получаем заявки пользователя
-        List<Applications> applications = applicationsService.getApplicationsByUser(currentUser);
-        model.addAttribute("applications", applications);
+        // Получаем заявки пользователя с пагинацией
+        Page<Applications> applicationsPage = applicationsService.getApplicationsByUser(currentUser, page, size);
+
+        // Добавляем заявки и данные пагинации в модель
+        model.addAttribute("applications", applicationsPage.getContent()); // Список заявок на текущей странице
+        model.addAttribute("currentPage", page); // Текущая страница
+        model.addAttribute("totalPages", applicationsPage.getTotalPages()); // Общее количество страниц
 
         // Добавляем данные пользователя в модель
         model.addAttribute("userName", currentUser.getUsername());

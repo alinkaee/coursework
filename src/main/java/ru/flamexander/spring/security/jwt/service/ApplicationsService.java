@@ -85,8 +85,9 @@ public class ApplicationsService {
         applicationsRepository.save(application);
     }
 
-    public List<Applications> getApplicationsByUser(User user) {
-        return applicationsRepository.findByUser(user);
+    public Page<Applications> getApplicationsByUser(User user, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return applicationsRepository.findByUser(user, pageable);
     }
 
     /**

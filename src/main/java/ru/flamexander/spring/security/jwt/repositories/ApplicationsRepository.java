@@ -1,6 +1,8 @@
 package ru.flamexander.spring.security.jwt.repositories;
 
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.flamexander.spring.security.jwt.entities.Applications;
@@ -28,7 +30,7 @@ public interface ApplicationsRepository extends JpaRepository<Applications, Long
         List<Applications> findByDateBetweenAndStatus(Date startDate, Date endDate, String status);
 
         // Поиск всех заявок пользователя
-        List<Applications> findByUser(User user);
+        Page<Applications> findByUser(User user, Pageable pageable);
 
         // Поиск заявок по названию вакансии
         List<Applications> findByVacancyTitle(String vacancyTitle);

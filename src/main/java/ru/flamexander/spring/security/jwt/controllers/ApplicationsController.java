@@ -1,6 +1,7 @@
 package ru.flamexander.spring.security.jwt.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -77,16 +78,24 @@ public class ApplicationsController {
     }
 
     @GetMapping("/my")
-    public String getUserApplications(Model model) {
+    public String getUserApplications(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
         // Получаем текущего пользователя
         User currentUser = userService.getCurrentUser();
         if (currentUser == null) {
             return "redirect:/login"; // Перенаправляем на страницу входа, если пользователь не найден
         }
 
-        // Получаем заявки пользователя
-        List<Applications> applications = applicationsService.getApplicationsByUser(currentUser);
-        model.addAttribute("applications", applications);
+        // Получаем заявки пользователя с пагинацией
+        Page<Applications> applicationsPage = applicationsService.getApplicationsByUser(currentUser, page, size);
+
+        // Добавляем данные в модель
+        model.addAttribute("applications", applicationsPage.getContent()); // Список заявок на текущей странице
+        model.addAttribute("currentPage", page); // Текущая страница
+        model.addAttribute("totalPages", applicationsPage.getTotalPages()); // Общее количество страниц
+
         return "user/profile"; // имя вашего Thymeleaf шаблона профиля
     }
 
