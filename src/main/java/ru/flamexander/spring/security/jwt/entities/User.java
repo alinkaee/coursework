@@ -42,11 +42,13 @@ public class User implements Serializable { // Добавляем реализа
     @Column(name = "resume", nullable = true)
     private String resumeFilename;
 
+    @Transient
+    private MultipartFile resumeFile;
+
     @Column(name = "description", nullable = true)
     private String description;
 
-    @Transient
-    private MultipartFile resumeFile;
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<UserRole> userRoles;

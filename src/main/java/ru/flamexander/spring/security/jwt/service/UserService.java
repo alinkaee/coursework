@@ -54,24 +54,20 @@ public class UserService implements UserDetailsService {
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
     @Autowired
     public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
     }
-
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
-
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
-
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
@@ -218,14 +214,14 @@ public class UserService implements UserDetailsService {
         user.setSkills(userUpdateDto.getSkills());
 
         // Обработка аватарки
-        if (userUpdateDto.getAvatar() != null && !userUpdateDto.getAvatar().isEmpty()) {
-            String avatarFilename = storeFile(userUpdateDto.getAvatar(), "avatars");
+        if (userUpdateDto.getAvatarFile() != null && !userUpdateDto.getAvatarFile().isEmpty()) {
+            String avatarFilename = storeFile(userUpdateDto.getAvatarFile(), "avatars");
             user.setAvatarFilename("/uploads/avatars/" + avatarFilename);
         }
 
         // Обработка резюме
-        if (userUpdateDto.getResume() != null && !userUpdateDto.getResume().isEmpty()) {
-            String resumeFilename = storeFile(userUpdateDto.getResume(), "resumes");
+        if (userUpdateDto.getResumeFile() != null && !userUpdateDto.getResumeFile().isEmpty()) {
+            String resumeFilename = storeFile(userUpdateDto.getResumeFile(), "resumes");
             user.setResumeFilename("/uploads/resumes/" + resumeFilename);
         }
 
