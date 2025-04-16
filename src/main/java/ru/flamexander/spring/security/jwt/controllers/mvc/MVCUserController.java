@@ -11,61 +11,65 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
-import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
 import ru.flamexander.spring.security.jwt.service.ApplicationsService;
 import ru.flamexander.spring.security.jwt.service.UserService;
-import ru.flamexander.spring.security.jwt.utils.JwtTokenUtils;
 
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
-
 @Controller
 @RequiredArgsConstructor
 public class MVCUserController {
 
-    private final ApplicationsRepository applicationsRepository;
-
-    private final UserService userService;
-
     private final ApplicationsService applicationsService;
-
-
+    private final UserService userService;
 
     @GetMapping("/profile")
     public String getProfile(Model model) {
-        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<Applications> applications = applicationsService.getApplicationsByUserEmail(userEmail);
+        // Получаем текущего пользователя
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return "redirect:/login"; // Перенаправляем на страницу входа, если пользователь не найден
+        }
+
+        // Получаем заявки пользователя
+        List<Applications> applications = applicationsService.getApplicationsByUser(currentUser);
         model.addAttribute("applications", applications);
 
-        User currentUser = userService.getCurrentUser();
-        if (currentUser != null) {
-            model.addAttribute("userName", currentUser.getUsername());
-            model.addAttribute("userEmail", currentUser.getEmail());
-            List<Vacancy> favoriteVacancies = userService.getFavoriteVacancies(currentUser);
-            model.addAttribute("favoriteVacancies", favoriteVacancies);
-        }
+        // Добавляем данные пользователя в модель
+        model.addAttribute("userName", currentUser.getUsername());
+        model.addAttribute("userEmail", currentUser.getEmail());
+        model.addAttribute("favoriteVacancies", userService.getFavoriteVacancies(currentUser));
 
         return "user/profile";
     }
 
     @PostMapping("/add_application")
-    public String AddApplication(
-            @RequestParam("userEmail") String userEmail,
+    public String addApplication(
             @RequestParam("vacancyTitle") String vacancyTitle,
             @RequestParam("status") String status,
             Model model
     ) {
-        // Создание сущности Applications
-        Applications application = new Applications();
-        application.setUserEmail(userEmail);
-        application.setVacancyTitle(vacancyTitle);
-        application.setStatus(status);
-        application.setDate(new Date()); // Установка текущей даты
+        // Получаем текущего пользователя
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return "redirect:/login"; // Перенаправляем на страницу входа, если пользователь не найден
+        }
+
+        // Создание DTO для заявки
+        ApplicationsService.ApplicationsDTO applicationDto = new ApplicationsService.ApplicationsDTO();
+        applicationDto.setUserId(currentUser.getId()); // Устанавливаем ID пользователя
+        applicationDto.setVacancyTitle(vacancyTitle);
+        applicationDto.setStatus(status);
 
         // Сохранение в базе данных
-        applicationsRepository.save(application);
+        try {
+            applicationsService.createApplication(applicationDto);
+            model.addAttribute("successMessage", "Заявка успешно создана!");
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Ошибка при создании заявки: " + e.getMessage());
+        }
 
         // После сохранения перенаправляем на страницу профиля
         return "redirect:/profile";
@@ -98,7 +102,7 @@ public class MVCUserController {
     public String showUserApplicationsPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            Model model){
+            Model model) {
         Page<Applications> applications = applicationsService.getApplications(page, size);
 
         // Добавляем объект в модель
@@ -106,6 +110,4 @@ public class MVCUserController {
         model.addAttribute("currentPage", page);
         return "user/added-applications";
     }
-
-
 }

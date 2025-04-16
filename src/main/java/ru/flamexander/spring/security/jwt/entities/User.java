@@ -1,14 +1,18 @@
 package ru.flamexander.spring.security.jwt.entities;
+
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
 @Data
 @Table(name = "users")
-public class User {
+public class User implements Serializable { // Добавляем реализацию Serializable
+    private static final long serialVersionUID = 1L; // Уникальный идентификатор для сериализации
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -20,7 +24,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "phone")
@@ -46,6 +50,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<UserRole> userRoles;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<Applications> applications; // Коллекция заявок пользователя
 }
-
-

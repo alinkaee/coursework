@@ -102,7 +102,7 @@
     opacity: 0;
     transition: opacity 0.3s ease;
     text-decoration: none !important;
-    margin-left: -57%
+    margin-left: -40%
 }
 .category-block:hover .update-category-btn {
     opacity: 1;

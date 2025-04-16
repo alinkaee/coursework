@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -21,8 +20,9 @@ public class Applications {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_email", nullable = false)
-    private String userEmail;
+    @ManyToOne(fetch = FetchType.LAZY) // Связь многие-к-одному
+    @JoinColumn(name = "user_email", referencedColumnName = "email", nullable = false)
+    private User user; // Добавляем ссылку на пользователя
 
     @Column(name = "vacancy_name", nullable = false)
     private String vacancyTitle;
@@ -36,8 +36,8 @@ public class Applications {
     // Конструкторы и геттеры/сеттеры
     public Applications() {}
 
-    public Applications(String userEmail, String vacancyTitle) {
-        this.userEmail = userEmail;
+    public Applications(User user, String vacancyTitle) {
+        this.user = user;
         this.vacancyTitle = vacancyTitle;
     }
 

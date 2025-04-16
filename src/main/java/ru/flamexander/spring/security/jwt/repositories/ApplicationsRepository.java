@@ -4,6 +4,7 @@ package ru.flamexander.spring.security.jwt.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.flamexander.spring.security.jwt.entities.Applications;
+import ru.flamexander.spring.security.jwt.entities.User;
 
 import java.util.Date;
 import java.util.List;
@@ -11,25 +12,28 @@ import java.util.List;
 @Repository
 public interface ApplicationsRepository extends JpaRepository<Applications, Long> {
 
-        // Пример метода поиска заявок по статусу
+        // Поиск заявок по статусу
         List<Applications> findByStatus(String status);
 
-        boolean existsByUserEmailAndVacancyTitle(String userEmail, String vacancyTitle);
+        // Проверка существования заявки для пользователя и вакансии
+        boolean existsByUserAndVacancyTitle(User user, String vacancyTitle);
 
-        // Пример метода поиска заявок по дате (>=)
+        // Поиск заявок по дате (>=)
         List<Applications> findByDateGreaterThanEqual(Date date);
 
-        // Пример метода поиска заявок по дате (<=)
+        // Поиск заявок по дате (<=)
         List<Applications> findByDateLessThanEqual(Date date);
 
-
-        // Пример метода поиска заявок по дате и статусу
+        // Поиск заявок по диапазону дат и статусу
         List<Applications> findByDateBetweenAndStatus(Date startDate, Date endDate, String status);
 
-        // Метод для поиска заявок по email пользователя
-        List<Applications> findByUserEmail(String userEmail);
+        // Поиск всех заявок пользователя
+        List<Applications> findByUser(User user);
 
-        // Метод для поиска заявок по названию вакансии
+        // Поиск заявок по названию вакансии
         List<Applications> findByVacancyTitle(String vacancyTitle);
+
+        // Поиск заявок по пользователю и статусу
+        List<Applications> findByUserAndStatus(User user, String status);
 }
 

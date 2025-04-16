@@ -11,11 +11,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.flamexander.spring.security.jwt.entities.Applications;
+import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
-import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
 import ru.flamexander.spring.security.jwt.service.ApplicationsService;
+import ru.flamexander.spring.security.jwt.service.UserService;
 import ru.flamexander.spring.security.jwt.service.VacancyService;
 import ru.flamexander.spring.security.jwt.utils.JwtTokenUtils;
+
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +28,13 @@ import java.util.Optional;
 public class ApplicationsController {
 
     private final ApplicationsService applicationsService;
+    private final UserService userService;
 
     @Autowired
-    public ApplicationsController(ApplicationsService applicationsService, JwtTokenUtils jwtTokenUtils, VacancyService vacancyService, ApplicationsRepository applicationsRepository) {
+    public ApplicationsController(ApplicationsService applicationsService, UserService userService) {
         this.applicationsService = applicationsService;
+        this.userService = userService;
     }
-
 
     @PostMapping("/add")
     public ModelAndView createApplication(
@@ -50,6 +53,17 @@ public class ApplicationsController {
             return new ModelAndView(new RedirectView("/add-application"));
         }
 
+        // Получаем текущего пользователя
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            errors.add("Пользователь не авторизован");
+            redirectAttributes.addFlashAttribute("errors", errors);
+            return new ModelAndView(new RedirectView("/add-application"));
+        }
+
+        // Устанавливаем пользователя в DTO
+        applicationDto.setUserId(currentUser.getId());
+
         // Обработка и сохранение заявки
         try {
             applicationsService.createApplication(applicationDto);
@@ -64,24 +78,32 @@ public class ApplicationsController {
 
     @GetMapping("/my")
     public String getUserApplications(Model model) {
-        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<Applications> applications = applicationsService.getApplicationsByUserEmail(userEmail);
+        // Получаем текущего пользователя
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return "redirect:/login"; // Перенаправляем на страницу входа, если пользователь не найден
+        }
+
+        // Получаем заявки пользователя
+        List<Applications> applications = applicationsService.getApplicationsByUser(currentUser);
         model.addAttribute("applications", applications);
         return "user/profile"; // имя вашего Thymeleaf шаблона профиля
     }
-
 
     @PostMapping("/apply/{vacancyId}")
     public String applyForVacancy(
             @PathVariable Long vacancyId,
             RedirectAttributes redirectAttributes) {
 
-        String userEmail = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
+        // Получаем текущего пользователя
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            redirectAttributes.addFlashAttribute("error", "Пользователь не авторизован");
+            return "redirect:/job_openings";
+        }
 
         try {
-            applicationsService.applyForVacancy(userEmail, vacancyId);
+            applicationsService.applyForVacancy(currentUser.getEmail(), vacancyId);
             redirectAttributes.addFlashAttribute("success", "Отклик успешно отправлен!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
@@ -89,8 +111,6 @@ public class ApplicationsController {
 
         return "redirect:/job_openings";
     }
-
-
 
     @GetMapping("/{id}")
     public ResponseEntity<Applications> getApplicationById(@PathVariable Long id) {
@@ -116,5 +136,3 @@ public class ApplicationsController {
         return ResponseEntity.noContent().build();
     }
 }
-
-
