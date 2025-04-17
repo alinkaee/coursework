@@ -294,6 +294,161 @@
     max-width: 600px;
 }
 
+/* Стили для аватарки пользователя */
+.avatar-preview {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+    border: 4px solid #fff;
+    transition: all 0.3s ease;
+    margin-right: 30px;
+}
+
+.avatar-preview:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
+}
+
+.avatar-preview::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(255, 255, 255, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.avatar-preview:hover::before {
+    opacity: 1;
+}
+
+.account__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 0;
+}
+
+.avatar-preview:hover .account__img {
+    transform: scale(1.03);
+}
+
+/* Эффект при клике */
+.avatar-preview:active {
+    transform: scale(0.95);
+}
+
+/* Анимация при загрузке */
+@keyframes avatarFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.avatar-preview {
+    animation: avatarFadeIn 0.5s ease-out forwards;
+}
+
+/* Стили для блока с информацией о пользователе */
+.profile__account {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    background: linear-gradient(to right, #f9f0ff, #ffffff);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.account__information {
+    flex: 1;
+}
+
+.account__information h4 {
+    font-size: 28px;
+    margin-bottom: 15px;
+    color: #2d3748;
+    position: relative;
+}
+
+.account__information h4::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #8a2be2, #4b0082);
+    border-radius: 2px;
+}
+
+.account__information p {
+    font-size: 16px;
+    margin: 12px 0;
+    color: #4a5568;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.account__information .description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #4a5568;
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 3px solid #8a2be2;
+}
+
+.account__information .skills {
+    font-size: 14px;
+    color: #6b46c1;
+    font-weight: 500;
+    padding: 10px 15px;
+    background-color: #f3e8ff;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .profile__account {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .avatar-preview {
+        margin-right: 0;
+        margin-bottom: 20px;
+        width: 120px;
+        height: 120px;
+    }
+
+    .account__information h4::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
 /* Иконка избранного (можно добавить через псевдоэлемент) */
 .favorite-vacancy-card::before {
     content: "★";

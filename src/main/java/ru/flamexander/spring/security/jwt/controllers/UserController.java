@@ -11,6 +11,8 @@ import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.service.ResourceNotFoundException;
 import ru.flamexander.spring.security.jwt.service.UserService;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -31,16 +33,36 @@ public class UserController {
     public String updateUser(
             @PathVariable Long id,
             @ModelAttribute UserUpdateDto userUpdateDto,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
 
         try {
+            // Получаем текущего пользователя
+            User currentUser = userService.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+
+            // Проверяем, изменилось ли имя пользователя
+            boolean isUsernameChanged = !currentUser.getUsername().equals(userUpdateDto.getUsername());
+
+            // Обновляем данные пользователя
             User updatedUser = userService.updateUser(id, userUpdateDto);
+
+            // Добавляем сообщение об успешном обновлении
             redirectAttributes.addFlashAttribute("success", "Профиль успешно обновлен");
+
+            // Если имя пользователя изменилось, очищаем сессию и перенаправляем на страницу входа
+            if (isUsernameChanged) {
+                session.invalidate(); // Очищаем сессию
+                return "redirect:/login?usernameChanged=true";
+            }
+
+            // Иначе возвращаемся на страницу профиля
+            return "redirect:/profile";
+
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Ошибка при обновлении профиля: " + e.getMessage());
+            return "redirect:/profile-editing";
         }
-
-        return "redirect:/profile";
     }
 
 //    @PutMapping("/update/{id}")
