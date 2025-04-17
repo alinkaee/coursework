@@ -150,6 +150,7 @@ public class MVCCategoryController {
 
         List<Category> categories = categoryService.getAllCategoriesWithVacancies();
         model.addAttribute("categories", categories);
+        model.addAttribute("sort", sort);
 
         Pageable pageable;
         if ("asc".equals(sort)) {

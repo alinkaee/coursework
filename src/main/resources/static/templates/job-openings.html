@@ -55,21 +55,23 @@
                     </form>
                 </div>
             </div>
-            <div class="active-filters" th:if="${param.query != null || param.category != null || (param.sort != null && param.sort != 'none')}">
-    <span class="filter-tag" th:if="${param.query != null}">
-        Поиск: "<span th:text="${param.query}"></span>"
-        <span class="remove-filter" onclick="removeFilter('query')">×</span>
-    </span>
-                <span class="filter-tag" th:if="${param.category != null}">
-        Категория: <span th:text="${param.category}"></span>
-        <span class="remove-filter" onclick="removeFilter('category')">×</span>
-    </span>
-                <span class="filter-tag" th:if="${param.sort != null && param.sort != 'none'}">
-        Сортировка:
-        <span th:text="${param.sort == 'asc' ? 'По возрастанию' : 'По убыванию'}"></span>
-        <span class="remove-filter" onclick="removeFilter('sort')">×</span>
-    </span>
-            </div>
+<!--            <div class="active-filters" th:if="${param.query != null || param.category != null || (param.sort != null && param.sort != 'none')}">-->
+<!--                            <span class="filter-tag" th:if="${param.query != null}">-->
+<!--                                        Поиск: "<span th:text="${param.query}"></span>"-->
+<!--                            <span class="remove-filter" onclick="removeFilter('query')">×</span>-->
+<!--                <span class="filter-tag" th:if="${param.category != null}">-->
+<!--        Категория: <span th:text="${param.category}"></span>-->
+<!--        <span class="remove-filter" onclick="removeFilter('category')">×</span>-->
+<!--                <span class="filter-tag" th:if="${param.sort != null && param.sort != 'none'}">-->
+<!--                    Сортировка:-->
+<!--                    <span th:switch="${param.sort}"></span>-->
+<!--                    <span th:case="'asc'">По возрастанию</span>-->
+<!--                    <span th:case="'desc'">По убыванию</span>-->
+<!--&lt;!&ndash;  <span th:case="*">Без сортировки</span>&ndash;&gt;-->
+<!--</span>-->
+<!--        <span class="remove-filter" onclick="removeFilter('sort')">×</span>-->
+<!--    </span>-->
+<!--            </div>-->
 
             <!-- Индикатор загрузки -->
             <div class="loading-overlay" id="loadingOverlay">

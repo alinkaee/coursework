@@ -30,6 +30,8 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
 
     Page<Vacancy> findByCategory(Category category, Pageable pageable);
 
+    List<Vacancy> findByCategory(Category category);
+
     Page<Vacancy> findByCategoryAndTitleContainingIgnoreCase(Category category, String title, Pageable pageable);
 
     Page<Vacancy> findByTitleContainingIgnoreCase(String title, Pageable pageable);
