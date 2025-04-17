@@ -46,8 +46,9 @@ public class MVCUserController {
         model.addAttribute("totalPages", applicationsPage.getTotalPages()); // Общее количество страниц
 
         // Добавляем данные пользователя в модель
+        model.addAttribute("user", currentUser);
         model.addAttribute("userName", currentUser.getUsername());
-        model.addAttribute("userAvatar", currentUser.getAvatarFile());
+//        model.addAttribute("avatarFilename", currentUser.getAvatarFilename());
         model.addAttribute("userEmail", currentUser.getEmail());
         model.addAttribute("userPhone", currentUser.getPhone());
         model.addAttribute("userDescription", currentUser.getDescription());

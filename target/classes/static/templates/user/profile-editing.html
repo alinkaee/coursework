@@ -23,12 +23,11 @@
         <form th:action="@{/user/update/{id}(id=${user.id})}" method="post" class="edit-profile-form" enctype="multipart/form-data">
             <div class="avatar-section">
                 <div class="avatar-preview">
-                    <img th:src="${user.avatarFilename != null} ? ${user.avatarFilename} : '/img/default-avatar.png'"
-                         alt="Аватар" id="avatar-preview">
+                    <img th:src="${user.avatarFilename != null} ? ${user.avatarFilename} : '/img/default-avatar.png'" alt="Аватар" id="avatar-preview">
                 </div>
                 <div class="avatar-upload">
                     <label for="avatar">Изменить фото</label>
-                    <input type="file" id="avatar" name="avatar">
+                    <input type="file" id="avatar" name="avatarFile">
                     <small>Формат: JPG, PNG. Макс. размер: 2MB</small>
                 </div>
             </div>

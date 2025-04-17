@@ -20,7 +20,9 @@
 
       <a href="/profile_editing" class="edit-button">Редактировать профиль</a>
       <div class="profile__account">
-        <img src="/img/account.png" alt="" class="account__img" />
+        <div class="avatar-preview">
+          <img th:src="${user.avatarFilename != null} ? ${user.avatarFilename} : '/img/default-avatar.png'" alt="Аватар" class="account__img">
+        </div>
         <div class="account__information">
           <h4 th:text="${userName}"></h4>
           <p>

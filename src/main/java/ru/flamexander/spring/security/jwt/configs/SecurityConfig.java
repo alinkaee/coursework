@@ -15,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import ru.flamexander.spring.security.jwt.service.UserService;
 
 import static ru.flamexander.spring.security.jwt.constants.SecurityConstants.ADMIN_ACCESS;
@@ -101,6 +102,7 @@ public class SecurityConfig {
                 );
         return http.build();
     }
+
 
     // Конфигурация провайдера аутентификации
     @Bean
