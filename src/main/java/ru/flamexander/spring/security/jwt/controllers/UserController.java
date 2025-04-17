@@ -2,6 +2,7 @@ package ru.flamexander.spring.security.jwt.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -10,7 +11,7 @@ import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.service.ResourceNotFoundException;
 import ru.flamexander.spring.security.jwt.service.UserService;
 
-@RestController
+@Controller
 @RequestMapping("/user")
 public class UserController {
 
@@ -39,7 +40,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("error", "Ошибка при обновлении профиля: " + e.getMessage());
         }
 
-        return "redirect:/user/edit/" + id;
+        return "redirect:/profile";
     }
 
 //    @PutMapping("/update/{id}")

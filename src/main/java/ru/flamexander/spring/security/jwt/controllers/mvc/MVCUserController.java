@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.flamexander.spring.security.jwt.dtos.UserUpdateDto;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
@@ -85,24 +86,49 @@ public class MVCUserController {
     @GetMapping("/profile_editing")
     public String getEditingProfilePage(Model model) {
         User user = userService.getCurrentUser();
+        if (user == null) {
+            return "redirect:/login"; // Перенаправляем на страницу входа, если пользователь не найден
+        }
 
         // Добавляем объект в модель
         model.addAttribute("user", user);
         return "user/profile-editing";
     }
 
+    /**
+     * Обработка формы редактирования профиля.
+     */
     @PostMapping("/edit-profile")
-    public String processEditProfile(@Valid @ModelAttribute("user") User user, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String processEditProfile(
+            @Valid @ModelAttribute("user") UserUpdateDto userUpdateDto,
+            BindingResult result,
+            RedirectAttributes redirectAttributes) {
+
+        // Проверка на наличие ошибок валидации
         if (result.hasErrors()) {
-            return "profile-editing"; // Возврат на страницу редактирования при ошибках
+            return "user/profile-editing"; // Возвращаемся на страницу редактирования при ошибках
         }
 
-        // Сохраняем изменения
-        userService.save(user);
+        // Получаем текущего пользователя
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            redirectAttributes.addFlashAttribute("error", "Пользователь не авторизован");
+            return "redirect:/login";
+        }
 
-        // Добавляем объект для редиректа
-        redirectAttributes.addFlashAttribute("user", user);
-        return "redirect:/edit-profile";
+        try {
+            // Обновляем данные пользователя
+            userService.updateUser(currentUser.getId(), userUpdateDto);
+
+            // Добавляем сообщение об успехе
+            redirectAttributes.addFlashAttribute("success", "Профиль успешно обновлен!");
+        } catch (Exception e) {
+            // Добавляем сообщение об ошибке
+            redirectAttributes.addFlashAttribute("error", "Ошибка при обновлении профиля: " + e.getMessage());
+        }
+
+        // Перенаправляем на страницу профиля
+        return "redirect:/profile";
     }
 
     @GetMapping("/added_application")
