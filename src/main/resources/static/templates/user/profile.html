@@ -28,17 +28,14 @@
             <span th:if="${userPhone == null}">Телефон не указан</span>
             <span th:text="${userEmail}"></span>
           </p>
-          <p class="description">
-            The template’s scalable assets architecture makes it easy to
-            customize. Other features include 300+ color schemes, 200+
-            customized components, and individual documentation.
-          </p>
+          <p th:text="${userDescription}" class="description"></p>
+          <p th:text="${userSkills}" class="skills"></p>
         </div>
       </div>
-      <div class="profile__buttons">
-        <a href="add_application" class="add-button">Редактировать</a>
-        <a href="add_application" class="add-button">Добавить</a>
-      </div>
+<!--      <div class="profile__buttons">-->
+<!--        <a href="add_application" class="add-button">Редактировать</a>-->
+<!--        <a href="add_application" class="add-button">Добавить</a>-->
+<!--      </div>-->
       <h3>Мои заявки</h3>
 
       <!-- Список заявок -->
