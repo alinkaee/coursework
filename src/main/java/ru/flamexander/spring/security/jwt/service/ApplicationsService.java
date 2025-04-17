@@ -154,6 +154,8 @@ public class ApplicationsService {
         }
     }
 
+
+
     // Метод для обновления заявки
     public Applications updateApplication(Long id, ApplicationsDTO applicationsDTO) {
         Applications existingApplication = applicationsRepository.findById(id)

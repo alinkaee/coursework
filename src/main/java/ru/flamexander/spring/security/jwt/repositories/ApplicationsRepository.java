@@ -14,6 +14,8 @@ import java.util.List;
 @Repository
 public interface ApplicationsRepository extends JpaRepository<Applications, Long> {
 
+        boolean existsByUser(User user);
+
         // Поиск заявок по статусу
         List<Applications> findByStatus(String status);
 

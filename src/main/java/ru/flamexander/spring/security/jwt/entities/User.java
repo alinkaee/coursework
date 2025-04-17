@@ -48,8 +48,6 @@ public class User implements Serializable { // Добавляем реализа
     @Column(name = "description", nullable = true)
     private String description;
 
-
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<UserRole> userRoles;
 

@@ -20,6 +20,7 @@
     import ru.flamexander.spring.security.jwt.entities.FavoriteVacancy;
     import ru.flamexander.spring.security.jwt.entities.User;
     import ru.flamexander.spring.security.jwt.entities.Vacancy;
+    import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
     import ru.flamexander.spring.security.jwt.repositories.FavoriteVacancyRepository;
     import ru.flamexander.spring.security.jwt.repositories.UserRepository;
 
@@ -38,6 +39,8 @@
     public class UserService implements UserDetailsService {
         private UserRepository userRepository;
         private RoleService roleService;
+        @Autowired
+        private ApplicationsRepository applicationsRepository;
 
         @Autowired
         private UserRoleService userRoleService;
@@ -207,9 +210,14 @@
             User user = userRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-            // Обновляем текстовые поля
+            // Проверяем, есть ли у пользователя активные заявки
+            if (!applicationsRepository.existsByUser(user)) {
+                user.setEmail(userUpdateDto.getEmail());
+            } else {
+                throw new RuntimeException("Невозможно изменить email, так как пользователь имеет активные заявки");
+            }
+
             user.setUsername(userUpdateDto.getUsername());
-            user.setEmail(userUpdateDto.getEmail());
             user.setPhone(userUpdateDto.getPhone());
             user.setDescription(userUpdateDto.getDescription());
             user.setSkills(userUpdateDto.getSkills());

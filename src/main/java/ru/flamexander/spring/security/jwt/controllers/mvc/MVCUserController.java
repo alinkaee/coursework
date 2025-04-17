@@ -48,6 +48,7 @@ public class MVCUserController {
         // Добавляем данные пользователя в модель
         model.addAttribute("userName", currentUser.getUsername());
         model.addAttribute("userEmail", currentUser.getEmail());
+        model.addAttribute("userPhone", currentUser.getPhone());
         model.addAttribute("favoriteVacancies", userService.getFavoriteVacancies(currentUser));
 
         return "user/profile";

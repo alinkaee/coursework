@@ -229,6 +229,27 @@
     margin-bottom: 0;
 }
 
+.account__information p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #555;
+    display: flex;
+    flex-direction: column; /* Элементы будут в столбик */
+    gap: 5px; /* Отступ между строками */
+}
+
+/* Стили для телефона */
+.account__information p span:first-child {
+    font-weight: 500;
+    color: #444;
+}
+
+/* Стили для email */
+.account__information p span:last-child {
+    color: #8a2be2;
+    word-break: break-all; /* Перенос длинных email */
+}
+
 /* Иконка избранного (можно добавить через псевдоэлемент) */
 .favorite-vacancy-card::before {
     content: "★";
