@@ -253,4 +253,21 @@
                 throw new RuntimeException("Не удалось сохранить файл " + file.getOriginalFilename(), ex);
             }
         }
+
+        public String saveResume(MultipartFile file, String subdirectory ) throws IOException {
+            // Создаем директорию, если она не существует
+            Path uploadPath = Paths.get("uploads/" + subdirectory);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // Генерируем уникальное имя файла
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+
+            // Сохраняем файл
+            Files.copy(file.getInputStream(), filePath);
+
+            return fileName; // Возвращаем путь к файлу
+        }
     }

@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.flamexander.spring.security.jwt.dtos.UserUpdateDto;
 import ru.flamexander.spring.security.jwt.entities.User;
@@ -33,6 +34,7 @@ public class UserController {
     public String updateUser(
             @PathVariable Long id,
             @ModelAttribute UserUpdateDto userUpdateDto,
+            @RequestParam("resume") MultipartFile resumeFile,
             RedirectAttributes redirectAttributes,
             HttpSession session) {
 
@@ -40,6 +42,12 @@ public class UserController {
             // Получаем текущего пользователя
             User currentUser = userService.findById(id)
                     .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+
+//            if (!resumeFile.isEmpty()) {
+//                // Сохраняем файл и получаем путь к нему
+//                String resumeFilename = userService.saveResume(resumeFile);
+//                userUpdateDto.setResumeFile(resumeFilename); // Устанавливаем имя файла в DTO
+//            }
 
             // Проверяем, изменилось ли имя пользователя
             boolean isUsernameChanged = !currentUser.getUsername().equals(userUpdateDto.getUsername());

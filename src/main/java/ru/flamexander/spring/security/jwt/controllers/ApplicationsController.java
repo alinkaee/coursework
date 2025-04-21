@@ -138,7 +138,7 @@ public class ApplicationsController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при обновлении статуса: " + e.getMessage());
         }
-        return "redirect:/added-applications";
+        return "redirect:/added_application";
     }
 
 
@@ -163,6 +163,6 @@ public class ApplicationsController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при удалении заявки: " + e.getMessage());
         }
-        return "redirect:/added-applications";
+        return "redirect:/added_application";
     }
 }

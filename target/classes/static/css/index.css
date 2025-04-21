@@ -5,21 +5,30 @@ body {
     background-color: #fff;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-main {
+/* Главный контейнер */
+.main-container {
     max-width: 1200px;
-    margin: 20px auto 0;
-    padding: 0 20px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 /* Первый экран */
 .main__first_screen {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: 30px;
     position: relative;
     margin-bottom: 60px;
+    padding: 40px 0;
 }
 
 .main__first_screen h1 {
@@ -27,8 +36,19 @@ main {
     font-weight: 700;
     line-height: 1.2;
     color: #8a2be2;
-    position: relative;
-    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.first_screen__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.first_screen__list {
+    width: 100%;
     max-width: 600px;
 }
 
@@ -36,8 +56,9 @@ main {
     list-style: none;
     padding: 0;
     margin: 0;
-    position: relative;
-    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .first_screen__list li {
@@ -46,6 +67,8 @@ main {
     margin-bottom: 15px;
     font-size: 18px;
     line-height: 1.5;
+    text-align: left;
+    width: 100%;
 }
 
 .first_screen__list li::before {
@@ -59,6 +82,10 @@ main {
     border-radius: 50%;
 }
 
+.first_screen__button {
+    margin-top: 20px;
+}
+
 .first_screen__button button {
     background-color: #fff83b;
     color: #333;
@@ -69,8 +96,6 @@ main {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
-    z-index: 1;
-    position: relative;
 }
 
 .first_screen__button button:hover {
@@ -80,13 +105,11 @@ main {
 }
 
 .main__first_screen img {
-    position: absolute;
-    right: 0;
-    top: 0;
-    max-width: 50%;
+    max-width: 100%;
     height: auto;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
 }
 
 /* Преимущества */
@@ -94,7 +117,9 @@ main {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 30px;
-    margin: 60px 0;
+    margin: 60px auto;
+    max-width: 1200px;
+    padding: 0 20px;
 }
 
 .advantages__card {
@@ -103,6 +128,10 @@ main {
     padding: 25px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .advantages__card:hover {
@@ -112,6 +141,7 @@ main {
 
 .card__top {
     display: flex;
+    flex-direction: column;
     align-items: center;
     margin-bottom: 15px;
 }
@@ -119,13 +149,14 @@ main {
 .card__top__img {
     width: 50px;
     height: 50px;
-    margin-right: 15px;
+    margin-bottom: 15px;
 }
 
 .card__top h3 {
     font-size: 20px;
     color: #8a2be2;
     margin: 0;
+    text-align: center;
 }
 
 .advantages__card p {
@@ -133,11 +164,14 @@ main {
     font-size: 16px;
     line-height: 1.5;
     margin: 0;
+    text-align: center;
 }
 
 /* Карточки работы */
 .main__work-card {
-    margin: 80px 0;
+    margin: 80px auto;
+    max-width: 1200px;
+    padding: 0 20px;
 }
 
 .main__work-card h2 {
@@ -151,6 +185,7 @@ main {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 30px;
+    justify-content: center;
 }
 
 .main__work-card__cards__card {
@@ -214,7 +249,9 @@ main {
 
 /* Компании-партнеры */
 .main__colleagues {
-    margin: 80px 0;
+    margin: 80px auto;
+    max-width: 1200px;
+    padding: 0 20px;
     text-align: center;
 }
 
@@ -253,14 +290,8 @@ main {
         font-size: 36px;
     }
 
-    .main__first_screen img {
-        position: relative;
-        max-width: 100%;
-        margin-top: 30px;
-    }
-
     .main__advantages {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
