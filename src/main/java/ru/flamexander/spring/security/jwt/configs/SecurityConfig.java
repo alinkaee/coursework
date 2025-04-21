@@ -61,9 +61,9 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/user/edit/**")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/user/update/**")).authenticated()
                         // Требуем аутентификацию для доступа к странице "/secured"
-                        .requestMatchers(new AntPathRequestMatcher("/secured")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/view-all-categories")).hasRole("ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/job_openings")).hasRole("USER")
                         // Требуем аутентификацию для доступа к странице "/info"
                         .requestMatchers(new AntPathRequestMatcher("/info")).authenticated()
                         // Требуем роль "ADMIN" для доступа к странице "/admin"

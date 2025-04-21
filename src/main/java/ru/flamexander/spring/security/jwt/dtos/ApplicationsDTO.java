@@ -5,7 +5,7 @@ import lombok.*;
 import java.util.Date;
 
 @Data
-@NoArgsConstructor
+//@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
@@ -15,5 +15,11 @@ public class ApplicationsDTO {
     private String vacancyTitle; // Название вакансии
     private Date date; // Дата создания заявки
     private String status; // Статус заявки
+
+    public ApplicationsDTO() {}
+
+    public ApplicationsDTO(String status) {
+        this.status = status;
+    }
 }
 

@@ -127,6 +127,22 @@ public class ApplicationsController {
         return application.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping("/update-status/{id}")
+    public String updateApplicationStatus(
+            @PathVariable Long id,
+            @RequestParam String status,
+            RedirectAttributes redirectAttributes) {
+        try {
+            applicationsService.updateApplicationStatus(id, status);
+            redirectAttributes.addFlashAttribute("successMessage", "Статус заявки успешно обновлен!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при обновлении статуса: " + e.getMessage());
+        }
+        return "redirect:/added-applications";
+    }
+
+
+
     @GetMapping
     public ResponseEntity<List<Applications>> getAllApplications() {
         List<Applications> applications = applicationsService.getAllApplications();
@@ -139,9 +155,14 @@ public class ApplicationsController {
         return ResponseEntity.ok(updatedApplication);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteApplication(@PathVariable Long id) {
-        applicationsService.deleteApplication(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/delete/{id}")
+    public String deleteApplication(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            applicationsService.deleteApplication(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Заявка успешно удалена!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при удалении заявки: " + e.getMessage());
+        }
+        return "redirect:/added-applications";
     }
 }

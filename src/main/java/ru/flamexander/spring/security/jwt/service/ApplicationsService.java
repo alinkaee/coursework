@@ -62,6 +62,8 @@ public class ApplicationsService {
         return applicationsRepository.save(application);
     }
 
+
+
     public void applyForVacancy(String userEmail, Long vacancyId) {
         // Находим пользователя по email
         User user = userRepository.findByEmail(userEmail)
@@ -155,6 +157,12 @@ public class ApplicationsService {
     }
 
 
+    public Applications updateApplicationStatus(Long id, String status) {
+        Applications existingApplication = applicationsRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Application not found with id: " + id));
+        existingApplication.setStatus(status); // Обновляем только статус
+        return applicationsRepository.save(existingApplication);
+    }
 
     // Метод для обновления заявки
     public Applications updateApplication(Long id, ApplicationsDTO applicationsDTO) {
