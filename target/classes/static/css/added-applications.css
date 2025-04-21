@@ -67,6 +67,23 @@ h1 {
     color: white;
 }
 
+    .editable-status {
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+    }
+    .editable-status:hover {
+        background-color: #f0f0f0;
+    }
+    .status-select {
+        width: 100%;
+        padding: 5px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        background-color: white;
+    }
+
 .pagination li.disabled a {
     color: #ccc;
     pointer-events: none;
