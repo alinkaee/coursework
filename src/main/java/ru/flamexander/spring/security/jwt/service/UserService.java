@@ -39,6 +39,7 @@
     public class UserService implements UserDetailsService {
         private UserRepository userRepository;
         private RoleService roleService;
+        private static final String RESUME_UPLOAD_DIR = "uploads/resumes/";
         @Autowired
         private ApplicationsRepository applicationsRepository;
 
@@ -51,6 +52,23 @@
             String encodedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(encodedPassword);
             return null;
+        }
+
+        public String saveResume(MultipartFile file) throws IOException {
+            // Создаем директорию, если она не существует
+            Path uploadPath = Paths.get(RESUME_UPLOAD_DIR);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // Генерируем уникальное имя файла
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+
+            // Сохраняем файл
+            Files.copy(file.getInputStream(), filePath);
+
+            return RESUME_UPLOAD_DIR + fileName; // Возвращаем путь к файлу
         }
 
         @Autowired
@@ -234,6 +252,11 @@
                 user.setResumeFilename("/uploads/resumes/" + resumeFilename);
             }
 
+            // Обновляем резюме, если оно было загружено
+            if (userUpdateDto.getResumeFilename() != null) {
+                user.setResumeFilename(userUpdateDto.getResumeFilename());
+            }
+
             return userRepository.save(user);
         }
 
@@ -252,22 +275,5 @@
             } catch (IOException ex) {
                 throw new RuntimeException("Не удалось сохранить файл " + file.getOriginalFilename(), ex);
             }
-        }
-
-        public String saveResume(MultipartFile file, String subdirectory ) throws IOException {
-            // Создаем директорию, если она не существует
-            Path uploadPath = Paths.get("uploads/" + subdirectory);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-
-            // Генерируем уникальное имя файла
-            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            Path filePath = uploadPath.resolve(fileName);
-
-            // Сохраняем файл
-            Files.copy(file.getInputStream(), filePath);
-
-            return fileName; // Возвращаем путь к файлу
         }
     }
