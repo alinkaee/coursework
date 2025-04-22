@@ -44,7 +44,7 @@
 
             <div class="form-group">
                 <label for="phone">Телефон</label>
-                <input type="tel" name="phone" id="phone" th:value="${user.phone}">
+                <input type="tel" name="phone" id="phone" th:value="${user.phone}" placeholder="+7 (___) ___-__-__">
             </div>
 
             <div class="form-group">
@@ -79,20 +79,31 @@
             </div>
         </div>
     </main>
+    <script>
+        // Предпросмотр аватарки перед загрузкой
+        document.getElementById('avatar').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatar-preview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+          // Инициализация маски для телефона
+    $(document).ready(function(){
+        $('#phone').inputmask({
+            mask: '+7 (999) 999-99-99',
+            placeholder: '_',
+            showMaskOnHover: false,
+            showMaskOnFocus: true,
+            clearIncomplete: true
+        });
+    });
+    </script>
 </div>
 
-<script>
-    // Предпросмотр аватарки перед загрузкой
-    document.getElementById('avatar').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('avatar-preview').src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-</script>
 </body>
 </html>

@@ -165,4 +165,15 @@ public class ApplicationsController {
         }
         return "redirect:/added_application";
     }
+
+    @DeleteMapping("/{id}")
+    public String deleteApplicationFromUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            applicationsService.deleteApplication(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Заявка успешно удалена!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при удалении заявки: " + e.getMessage());
+        }
+        return "redirect:/profile";
+    }
 }

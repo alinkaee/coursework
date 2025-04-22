@@ -120,6 +120,7 @@
                 <th>Телефон</th>
                 <th>Вакансия</th>
                 <th>Статус</th>
+                <th>Дата</th>
                 <th>Действия</th>
             </tr>
             </thead>
@@ -130,6 +131,7 @@
                 <td th:text="${app.user.email}"></td>
                 <td th:text="${app.user.phone}"></td>
                 <td th:text="${app.vacancyTitle}"></td>
+                <td th:text="${app.date}"></td>
                 <td>
                     <form th:action="@{'/applications/update-status/' + ${app.id}}" method="post" style="display: inline;">
                         <select name="status" class="form-select" onchange="this.form.submit()">

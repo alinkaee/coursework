@@ -63,6 +63,8 @@ public class SecurityConfig {
                         // Требуем аутентификацию для доступа к странице "/secured"
                         .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/view-all-categories")).hasRole("ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/view-all-users")).hasRole("ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/added_application")).hasRole("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/job_openings")).hasRole("USER")
                         // Требуем аутентификацию для доступа к странице "/info"
                         .requestMatchers(new AntPathRequestMatcher("/info")).authenticated()
