@@ -1,6 +1,8 @@
 package ru.flamexander.spring.security.jwt.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class VacancyService {
+    private static final Logger logger = LoggerFactory.getLogger(VacancyService.class);
 
     private final VacancyRepository vacancyRepository;
     private final ApplicationsRepository applicationsRepository;
@@ -30,151 +33,171 @@ public class VacancyService {
     private final CategoryService categoryService;
 
     public Vacancy getById(Long id) {
+        logger.info("Получение вакансии по ID: {}", id);
         return vacancyRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Вакансия не найдена"));
+                .orElseThrow(() -> {
+                    logger.error("Вакансия с ID {} не найдена", id);
+                    return new ResourceNotFoundException("Вакансия не найдена");
+                });
     }
 
     public Optional<Vacancy> findById(Long id) {
-        return vacancyRepository.findById(id);
+        logger.info("Поиск вакансии по ID: {}", id);
+        Optional<Vacancy> vacancy = vacancyRepository.findById(id);
+        if (vacancy.isEmpty()) {
+            logger.warn("Вакансия с ID {} не найдена", id);
+        }
+        return vacancy;
     }
 
     @Transactional
     public VacancyDto createVacancy(VacancyDto vacancyDto) {
+        logger.info("Создание новой вакансии: {}", vacancyDto.getTitle());
         Vacancy vacancy = new Vacancy();
         vacancy.setTitle(vacancyDto.getTitle());
         vacancy.setDescription(vacancyDto.getDescription());
         vacancy.setSalary(vacancyDto.getSalary());
-        vacancy.setCategory(categoryRepository.findById(vacancyDto.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found")));
+
+        logger.debug("Поиск категории с ID: {}", vacancyDto.getCategoryId());
+        Category category = categoryRepository.findById(vacancyDto.getCategoryId())
+                .orElseThrow(() -> {
+                    logger.error("Категория с ID {} не найдена", vacancyDto.getCategoryId());
+                    return new RuntimeException("Category not found");
+                });
+        vacancy.setCategory(category);
 
         Vacancy savedVacancy = vacancyRepository.save(vacancy);
+        logger.info("Вакансия успешно создана с ID: {}", savedVacancy.getId());
         return convertToDto(savedVacancy);
     }
 
     @Transactional
     public VacancyDto updateVacancy(Long id, VacancyDto vacancyDto) {
-        // Находим существующую вакансию
+        logger.info("Обновление вакансии ID: {}", id);
         Vacancy vacancy = vacancyRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Vacancy not found with id: " + id));
+                .orElseThrow(() -> {
+                    logger.error("Вакансия с ID {} не найдена для обновления", id);
+                    return new ResourceNotFoundException("Vacancy not found with id: " + id);
+                });
 
-        // Обновляем основные поля
+        logger.debug("Обновление полей вакансии: title={}, salary={}",
+                vacancyDto.getTitle(), vacancyDto.getSalary());
         vacancy.setTitle(vacancyDto.getTitle());
         vacancy.setDescription(vacancyDto.getDescription());
         vacancy.setSalary(vacancyDto.getSalary());
-        vacancy.setCategory(vacancy.getCategory());
 
-        // Обновляем категорию, если она указана
         if (vacancyDto.getCategoryId() != null) {
+            logger.debug("Обновление категории вакансии на ID: {}", vacancyDto.getCategoryId());
             Category category = categoryRepository.findById(vacancyDto.getCategoryId())
-                    .orElseThrow(() -> new ResourceNotFoundException(
-                            "Category not found with id: " + vacancyDto.getCategoryId()));
+                    .orElseThrow(() -> {
+                        logger.error("Категория с ID {} не найдена", vacancyDto.getCategoryId());
+                        return new ResourceNotFoundException("Category not found with id: " + vacancyDto.getCategoryId());
+                    });
             vacancy.setCategory(category);
         }
 
-        // Сохраняем обновленную вакансию
         Vacancy updatedVacancy = vacancyRepository.save(vacancy);
+        logger.info("Вакансия ID {} успешно обновлена", id);
         return convertToDto(updatedVacancy);
     }
 
-
-
-
-    private VacancyDto mapToDto(Vacancy vacancy) {
-        VacancyDto dto = new VacancyDto();
-        dto.setId(vacancy.getId());
-        dto.setTitle(vacancy.getTitle());
-        dto.setDescription(vacancy.getDescription());
-        dto.setSalary(vacancy.getSalary());
-        if (vacancy.getCategory() != null) {
-            dto.setCategoryId(vacancy.getCategory().getId());
-        }
-        return dto;
-    }
     public List<VacancyDto> getAllVacancy() {
-        return vacancyRepository.findAll().stream()
+        logger.info("Запрос всех вакансий");
+        List<VacancyDto> result = vacancyRepository.findAll().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+        logger.info("Найдено {} вакансий", result.size());
+        return result;
     }
 
     public Page<Vacancy> getAllVacancies(Pageable pageable) {
+        logger.info("Запрос всех вакансий с пагинацией: {}", pageable);
         return vacancyRepository.findAll(pageable);
     }
 
     public VacancyDto getVacancyById(Long id) {
+        logger.info("Получение вакансии по ID: {}", id);
         Vacancy vacancy = vacancyRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Vacancy not found with id: " + id));
+                .orElseThrow(() -> {
+                    logger.error("Вакансия с ID {} не найдена", id);
+                    return new ResourceNotFoundException("Vacancy not found with id: " + id);
+                });
         return convertToDto(vacancy);
     }
+
     @Transactional
     public void deleteVacancy(Long id) {
+        logger.info("Удаление вакансии с ID: {}", id);
         if (!vacancyRepository.existsById(id)) {
+            logger.error("Попытка удаления несуществующей вакансии с ID: {}", id);
             throw new ResourceNotFoundException("Vacancy not found with id: " + id);
         }
         vacancyRepository.deleteById(id);
+        logger.info("Вакансия с ID {} успешно удалена", id);
     }
+
     public List<VacancyDto> searchVacancy(String name) {
-        return vacancyRepository.findByTitleContainingIgnoreCase(name).stream()
+        logger.info("Поиск вакансий по названию: {}", name);
+        List<VacancyDto> result = vacancyRepository.findByTitleContainingIgnoreCase(name).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+        logger.info("Найдено {} вакансий по запросу '{}'", result.size(), name);
+        return result;
     }
 
     public Page<Vacancy> searchVacancies(String categoryTitle, String searchQuery, Pageable pageable) {
+        logger.info("Поиск вакансий с фильтрами: категория='{}', запрос='{}'", categoryTitle, searchQuery);
+
         if ((categoryTitle == null || categoryTitle.isEmpty()) && (searchQuery == null || searchQuery.isEmpty())) {
-            // Если нет фильтров, просто возвращаем все вакансии с пагинацией и сортировкой
+            logger.debug("Без фильтров - возврат всех вакансий");
             return vacancyRepository.findAll(pageable);
         }
 
         if (categoryTitle != null && !categoryTitle.isEmpty() && (searchQuery == null || searchQuery.isEmpty())) {
-            // Фильтрация по категории
+            logger.debug("Фильтрация по категории: {}", categoryTitle);
             Category category = categoryService.getCategoryByTitleOrThrow(categoryTitle);
-            if (category != null) {
-                return vacancyRepository.findByCategory(category, pageable);
-            } else {
-                return Page.empty(pageable);
-            }
+            return vacancyRepository.findByCategory(category, pageable);
         }
 
         if ((categoryTitle == null || categoryTitle.isEmpty()) && searchQuery != null && !searchQuery.isEmpty()) {
-            // Фильтрация по названию вакансии
+            logger.debug("Фильтрация по названию: {}", searchQuery);
             return vacancyRepository.findByTitleContainingIgnoreCase(searchQuery, pageable);
         }
 
-        // Фильтрация по категории и названию вакансии
+        logger.debug("Комбинированная фильтрация: категория='{}', запрос='{}'", categoryTitle, searchQuery);
         Category category = categoryService.getCategoryByTitleOrThrow(categoryTitle);
-        if (category == null) {
-            return Page.empty(pageable);
-        }
-
         return vacancyRepository.findByCategoryAndTitleContainingIgnoreCase(category, searchQuery, pageable);
     }
 
     public List<VacancyDto> getAllVacanciesSortedBySalaryAsc() {
-        return vacancyRepository.findAllOrderBySalaryAsc().stream()
+        logger.info("Запрос вакансий с сортировкой по возрастанию зарплаты");
+        List<VacancyDto> result = vacancyRepository.findAllOrderBySalaryAsc().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+        logger.info("Найдено {} вакансий", result.size());
+        return result;
     }
 
     public List<VacancyDto> getAllVacanciesSortedBySalaryDesc() {
-        return vacancyRepository.findAllOrderBySalaryDesc().stream()
+        logger.info("Запрос вакансий с сортировкой по убыванию зарплаты");
+        List<VacancyDto> result = vacancyRepository.findAllOrderBySalaryDesc().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+        logger.info("Найдено {} вакансий", result.size());
+        return result;
     }
 
     private VacancyDto convertToDto(Vacancy vacancy) {
         VacancyDto dto = new VacancyDto();
         dto.setId(vacancy.getId());
-        dto.setTitle(vacancy.getTitle());  // Изменил setName() на setTitle()
+        dto.setTitle(vacancy.getTitle());
         dto.setDescription(vacancy.getDescription());
         dto.setSalary(vacancy.getSalary());
 
-        // Безопасное получение ID категории
         if (vacancy.getCategory() != null) {
             dto.setCategoryId(vacancy.getCategory().getId());
         }
 
         return dto;
     }
-
-
-
 }

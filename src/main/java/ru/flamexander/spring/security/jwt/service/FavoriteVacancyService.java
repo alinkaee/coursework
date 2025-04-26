@@ -17,8 +17,7 @@ public class FavoriteVacancyService {
     public void removeVacancyFromFavorites(User user, Vacancy vacancy) {
         favoriteVacancyRepository.findByUserAndVacancy(user, vacancy)
                 .ifPresent(favoriteVacancy -> {
-//                    favoriteVacancyRepository.delete(favoriteVacancy);
-                    favoriteVacancyRepository.deleteByUserAndVacancy(user, vacancy);
+                    favoriteVacancyRepository.delete(favoriteVacancy); // Только один вызов удаления
                 });
     }
 }

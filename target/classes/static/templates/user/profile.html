@@ -73,7 +73,7 @@
       <div class="profile__favorite-vacancies" th:if="${not #lists.isEmpty(favoriteVacancies)}">
         <div class="favorite-vacancy-card" th:each="vacancy : ${favoriteVacancies}">
           <h4 th:text="${vacancy.title}">Название вакансии</h4>
-          <form th:action="@{/favorites/vacancy/{vacancyId}(vacancyId=${vacancy.id})}"
+          <form th:action="@{/favorites/remove/{vacancyId}(vacancyId=${vacancy.id})}"
                 method="post"
                 class="remove-form">
             <button type="submit" class="remove-button">

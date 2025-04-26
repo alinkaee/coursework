@@ -46,13 +46,6 @@ public class UserController {
             // Проверяем, изменилось ли имя пользователя
             boolean isUsernameChanged = !currentUser.getUsername().equals(userUpdateDto.getUsername());
 
-            // Проверяем, был ли загружен файл
-            if (userUpdateDto.getResumeFile() != null && !userUpdateDto.getResumeFile().isEmpty()) {
-                // Сохраняем файл и получаем путь к нему
-                String resumeFilename = userService.saveResume(userUpdateDto.getResumeFile());
-                userUpdateDto.setResumeFilename(resumeFilename); // Устанавливаем имя файла в DTO
-            }
-
             // Обновляем данные пользователя
             User updatedUser = userService.updateUser(id, userUpdateDto);
 

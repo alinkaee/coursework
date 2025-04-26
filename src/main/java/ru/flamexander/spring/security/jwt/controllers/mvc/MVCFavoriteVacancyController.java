@@ -30,12 +30,26 @@ public class MVCFavoriteVacancyController {
             Principal principal,
             RedirectAttributes redirectAttributes) {
 
-        User user = userService.findByEmail(principal.getName())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        String email = principal.getName();
+        User user = userService.findByEmail(email)
+                .orElseThrow(() -> {
+                    System.err.println("User not found with email: " + email);
+                    return new UsernameNotFoundException("User not found");
+                });
 
         Vacancy vacancy = vacancyService.getById(vacancyId);
-
         favoriteVacancyService.removeVacancyFromFavorites(user, vacancy);
+
+        System.out.println("Principal email: " + principal.getName());
+        User user1 = userService.findByEmail(principal.getName())
+                .orElseThrow(() -> {
+                    System.err.println("Ошибка: пользователь с email '" + principal.getName() + "' не найден");
+                    return new UsernameNotFoundException("User not found");
+                });
 
         redirectAttributes.addFlashAttribute("success", "Вакансия удалена из избранного");
         return "redirect:/profile#favorites";

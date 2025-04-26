@@ -16,5 +16,4 @@ public class UserUpdateDto {
     private String skills;
     private MultipartFile avatarFile;
     private MultipartFile resumeFile;
-    private String resumeFilename;
 }
