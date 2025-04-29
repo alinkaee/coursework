@@ -2,22 +2,29 @@ package ru.flamexander.spring.security.jwt.controllers.mvc;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.flamexander.spring.security.jwt.dtos.PasswordResetResponse;
 import ru.flamexander.spring.security.jwt.dtos.UserUpdateDto;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
+import ru.flamexander.spring.security.jwt.exceptions.UserNotFoundException;
 import ru.flamexander.spring.security.jwt.service.ApplicationsService;
+import ru.flamexander.spring.security.jwt.service.PasswordResetService;
 import ru.flamexander.spring.security.jwt.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,6 +32,7 @@ public class MVCUserController {
 
     private final ApplicationsService applicationsService;
     private final UserService userService;
+    private final PasswordResetService passwordResetService;
 
     @GetMapping("/profile")
     public String getProfile(
@@ -147,5 +155,42 @@ public class MVCUserController {
         model.addAttribute("applications", applications);
         model.addAttribute("currentPage", page);
         return "user/added-applications";
+    }
+
+    @GetMapping("/remember-password")
+    public String showRememberPasswordPage(){
+        return "user/remember-password";
+    }
+
+    @PostMapping("/forgot-password")
+    @ResponseBody
+    public Map<String, Object> handleForgotPassword(
+            @RequestParam String email,
+            HttpServletRequest request) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            passwordResetService.initiatePasswordReset(email);
+            response.put("success", true);
+            response.put("message", "На ваш email отправлена инструкция по восстановлению пароля");
+        } catch (UserNotFoundException e) {
+            response.put("success", false);
+            response.put("message", "Пользователь с таким email не найден");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Ошибка при отправке письма. Пожалуйста, попробуйте позже.");
+        }
+
+        return response;
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(
+            @RequestParam String token,
+            @RequestParam String newPassword) {
+        passwordResetService.completePasswordReset(token, newPassword);
+        return ResponseEntity.ok(new PasswordResetResponse(
+                "Пароль успешно изменен"));
     }
 }

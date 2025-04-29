@@ -3,8 +3,12 @@ package ru.flamexander.spring.security.jwt.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,10 +23,15 @@ import ru.flamexander.spring.security.jwt.dtos.RegistrationUserDto;
 import ru.flamexander.spring.security.jwt.dtos.UserDto;
 import ru.flamexander.spring.security.jwt.dtos.UserUpdateDto;
 import ru.flamexander.spring.security.jwt.entities.FavoriteVacancy;
+import ru.flamexander.spring.security.jwt.entities.PasswordResetToken;
 import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
+import ru.flamexander.spring.security.jwt.exceptions.InvalidTokenException;
+import ru.flamexander.spring.security.jwt.exceptions.TokenExpiredException;
+import ru.flamexander.spring.security.jwt.exceptions.UserNotFoundException;
 import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
 import ru.flamexander.spring.security.jwt.repositories.FavoriteVacancyRepository;
+import ru.flamexander.spring.security.jwt.repositories.PasswordResetTokenRepository;
 import ru.flamexander.spring.security.jwt.repositories.UserRepository;
 
 import java.io.IOException;
@@ -30,6 +39,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -318,4 +328,7 @@ public class UserService implements UserDetailsService {
             throw new RuntimeException("Ошибка сохранения файла", ex);
         }
     }
+
+
+
 }

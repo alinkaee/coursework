@@ -144,26 +144,6 @@ h1 {
     box-shadow: 0 0 5px rgba(255, 105, 180, 0.5); /* Добавляем лиловое свечение */
 }
 
-/*
-button[type="submit"] {
-    width: calc(100% - 20px);
-    height: 40px;
-    background-color: #468966;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 0 10px;
-}
-
-button[type="submit"]:hover {
-    background-color: #fff;
-    color: #468966;
-    border: 1px solid #468966;
-    transition: .3s ease-out;
-}
-*/
-
 
 .message {
     color: red;
@@ -176,14 +156,99 @@ p:last-child {
     text-align: center;
     margin-top: 20px;
 }
-/*
-p:last-child a {
+/* Стили для ссылки "Забыли пароль?" */
+#login-form a[href="/remember-password"] {
+    display: block;
+    text-align: right;
+    margin: -10px 10px 20px 10px; /* Выравнивание с полями ввода */
+    font-size: 14px;
+    color: #7A288A;
     text-decoration: none;
-    color: #468966;
+    transition: all 0.3s ease;
+    position: relative;
+    padding-right: 20px; /* Место для иконки */
+}
+
+#login-form a[href="/remember-password"]:hover {
+    color: #5C1A7D;
+    text-decoration: underline;
+}
+
+/* Добавляем иконку стрелки (опционально) */
+#login-form a[href="/remember-password"]::after {
+    content: "→";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease;
+}
+
+#login-form a[href="/remember-password"]:hover::after {
+    transform: translateY(-50%) translateX(3px);
+}
+
+/* Стили для кнопки входа */
+button[type="submit"] {
+    width: calc(100% - 20px);
+    height: 45px;
+    background: linear-gradient(135deg, #7A288A, #5C1A7D);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px 15px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(122, 40, 138, 0.3);
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(135deg, #5C1A7D, #3E1254);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(122, 40, 138, 0.4);
+}
+
+/* Стили для ссылки регистрации */
+p:last-child {
+    text-align: center;
+    margin-top: 25px;
+    color: #666;
+}
+
+p:last-child a {
+    color: #7A288A;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
 }
 
 p:last-child a:hover {
-    text-decoration: underline;
+    color: #5C1A7D;
+    border-bottom-color: #5C1A7D;
 }
-/*
 
+.remember-password{
+margin: 0px auto;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 480px) {
+    .container {
+        margin: 20px auto;
+        width: 90%;
+        padding: 15px;
+    }
+
+    #login-form a[href="/remember-password"] {
+        margin-bottom: 15px;
+    }
+
+    button[type="submit"] {
+        height: 50px;
+        font-size: 15px;
+    }
+}
