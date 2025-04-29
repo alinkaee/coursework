@@ -14,6 +14,8 @@ import ru.flamexander.spring.security.jwt.dtos.UserUpdateDto;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
+import ru.flamexander.spring.security.jwt.exceptions.InvalidTokenException;
+import ru.flamexander.spring.security.jwt.exceptions.TokenExpiredException;
 import ru.flamexander.spring.security.jwt.exceptions.UserNotFoundException;
 import ru.flamexander.spring.security.jwt.service.ApplicationsService;
 import ru.flamexander.spring.security.jwt.service.PasswordResetService;
@@ -185,12 +187,32 @@ public class MVCUserController {
         return response;
     }
 
+    @GetMapping("/reset-password")
+    public String showResetPasswordForm(@RequestParam String token, Model model) {
+        try {
+            // Проверяем валидность токена
+            User user = passwordResetService.validatePasswordResetToken(token);
+            model.addAttribute("token", token);
+            return "user/reset-password"; // Имя Thymeleaf шаблона
+        } catch (InvalidTokenException | TokenExpiredException e) {
+            model.addAttribute("error", e.getMessage());
+            return "user/reset-password-error";
+        }
+    }
+
     @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(
+    public String handleResetPassword(
             @RequestParam String token,
-            @RequestParam String newPassword) {
-        passwordResetService.completePasswordReset(token, newPassword);
-        return ResponseEntity.ok(new PasswordResetResponse(
-                "Пароль успешно изменен"));
+            @RequestParam String newPassword,
+            Model model) {
+
+        try {
+            passwordResetService.completePasswordReset(token, newPassword);
+            model.addAttribute("success", "Пароль успешно изменен. Теперь вы можете войти с новым паролем.");
+            return "user/reset-password-success";
+        } catch (Exception e) {
+            model.addAttribute("error", "Ошибка при сбросе пароля: " + e.getMessage());
+            return "user/reset-password-error";
+        }
     }
 }
