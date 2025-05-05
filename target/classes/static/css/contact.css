@@ -49,18 +49,32 @@
     outline: none;
 }
 
-.main__relationship .relationship__form .relationship__form__input input {
+.main__relationship .relationship__form .relationship__form__input input,
+.main__relationship .relationship__form .relationship__form__input textarea {
     border: none;
     font-size: 16px;
     width: 100%;
     color: #333;
     background: transparent;
     outline: none;
+    font-family: inherit;
+    resize: none; /* Запрещаем изменение размера */
 }
 
-.main__relationship .relationship__form .relationship__form__input input:focus {
+.main__relationship .relationship__form .relationship__form__input textarea {
+    min-height: 120px; /* Минимальная высота для текстового поля */
+    line-height: 1.5;
+}
+
+.main__relationship .relationship__form .relationship__form__input input:focus,
+.main__relationship .relationship__form .relationship__form__input textarea:focus {
     outline: none;
     box-shadow: none;
+}
+
+/* Специальные стили только для textarea (меняем скругление углов) */
+.main__relationship .relationship__form .relationship__form__input.has-textarea {
+    border-radius: 20px; /* Меньше скругление для многострочного поля */
 }
 
 /* Кнопка - теперь использует те же классы и стили ширины */
@@ -100,5 +114,9 @@
     .main__relationship .relationship__form .relationship__form__input,
     .main__relationship .relationship__form button {
         width: 100%;
+    }
+
+    .main__relationship .relationship__form .relationship__form__input textarea {
+        min-height: 100px; /* Уменьшаем высоту на мобильных */
     }
 }
