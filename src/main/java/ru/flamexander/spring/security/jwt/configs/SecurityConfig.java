@@ -51,24 +51,31 @@ public class SecurityConfig {
 //                        .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
 //                        .antMatchers("/login").permitAll()
                           .antMatchers("/").permitAll()
-                          .antMatchers("/logout").authenticated()
                         // Разрешаем доступ к странице выхода без аутентификации
 //                        .requestMatchers(new AntPathRequestMatcher("/logout")).authenticated()
+                                //Доступно всем
                         .requestMatchers(new AntPathRequestMatcher("/vacancies/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/categories/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/user/reset-password")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/user/forgot-password")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/user/reset-password/**")).permitAll()
+                                // Требуем аутентификацию
+                        .antMatchers("/logout").authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/applications/apply/**")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/favorites/**")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/user/edit/**")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/user/update/**")).authenticated()
-                        // Требуем аутентификацию для доступа к странице "/secured"
+                        .requestMatchers(new AntPathRequestMatcher("/info")).authenticated()
+                                //Доступ для админа
                         .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/view-all-categories")).hasRole("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/view-all-users")).hasRole("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/added_application")).hasRole("ADMIN")
+                                //Доступ для пользователя
                         .requestMatchers(new AntPathRequestMatcher("/job_openings")).hasRole("USER")
-                        // Требуем аутентификацию для доступа к странице "/info"
-                        .requestMatchers(new AntPathRequestMatcher("/info")).authenticated()
-                        // Требуем роль "ADMIN" для доступа к странице "/admin"
+
+
+
                         .requestMatchers(ADMIN_ACCESS.stream()
                                 .map(AntPathRequestMatcher::new)
                                 .toArray(RequestMatcher[]::new))

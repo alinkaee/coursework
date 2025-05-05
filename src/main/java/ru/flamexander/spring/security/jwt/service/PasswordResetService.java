@@ -101,10 +101,11 @@ public class PasswordResetService {
     @Transactional
     public User validatePasswordResetToken(String token) {
         PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token)
-                .orElseThrow(() -> new InvalidTokenException("Invalid password reset token"));
+                .orElseThrow(() -> new InvalidTokenException("Недействительная ссылка для сброса пароля"));
 
         if (resetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
-            throw new TokenExpiredException("Password reset token has expired");
+            passwordResetTokenRepository.delete(resetToken);
+            throw new TokenExpiredException("Срок действия ссылки истек. Пожалуйста, запросите новую.");
         }
 
         return resetToken.getUser();
