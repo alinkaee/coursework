@@ -5,10 +5,15 @@ import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 import ru.flamexander.spring.security.jwt.dtos.ContactFormDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.mail.internet.MimeMessage;
 
 @Service
 public class EmailService {
@@ -20,8 +25,9 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
-    public EmailService(JavaMailSender mailSender) {
+    public EmailService(JavaMailSender mailSender, SpringTemplateEngine templateEngine) {
         this.mailSender = mailSender;
+        this.templateEngine = templateEngine;
     }
 
     public void sendContactEmail(ContactFormDto formData) {
@@ -69,6 +75,34 @@ public class EmailService {
         } catch (Exception e) {
             logger.error("НЕИЗВЕСТНАЯ ОШИБКА: При отправке письма произошла непредвиденная ошибка", e);
             throw new RuntimeException("Неизвестная ошибка при отправке", e);
+        }
+    }
+
+    private final SpringTemplateEngine templateEngine;
+
+
+    public void sendApplicationStatusUpdate(String toEmail, String username, String vacancyTitle, String status) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            Context context = new Context();
+            context.setVariable("username", username);
+            context.setVariable("vacancyTitle", vacancyTitle);
+            context.setVariable("status", status);
+
+            String htmlContent = templateEngine.process("user/status-update", context);
+
+            helper.setFrom(fromEmail);
+            helper.setTo(toEmail);
+            helper.setSubject("Обновление статуса вашей заявки");
+            helper.setText(htmlContent, true);
+
+            mailSender.send(message);
+            logger.info("Письмо с обновлением статуса отправлено на {}", toEmail);
+        } catch (Exception e) {
+            logger.error("Ошибка отправки письма с обновлением статуса", e);
+            throw new RuntimeException("Ошибка при отправке уведомления о статусе", e);
         }
     }
 }

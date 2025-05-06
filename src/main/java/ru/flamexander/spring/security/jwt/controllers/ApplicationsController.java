@@ -141,6 +141,11 @@ public class ApplicationsController {
         return "redirect:/added_application";
     }
 
+    @GetMapping("/status-update")
+    public String showUpdateStatusPage() {
+        return "user/status-update";
+    }
+
 
 
     @GetMapping

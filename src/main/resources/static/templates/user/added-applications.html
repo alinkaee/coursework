@@ -134,7 +134,10 @@
                 <td th:text="${app.date}"></td>
                 <td>
                     <form th:action="@{'/applications/update-status/' + ${app.id}}" method="post" style="display: inline;">
-                        <select name="status" class="form-select" onchange="this.form.submit()">
+                        <select name="status"
+                                class="form-select"
+                                onchange="this.form.submit()"
+                                th:disabled="${app.status == 'Принято' or app.status == 'Отклонено'}">
                             <option th:selected="${app.status == 'На рассмотрении'}" value="На рассмотрении">На рассмотрении</option>
                             <option th:selected="${app.status == 'Принято'}" value="Принято">Принято</option>
                             <option th:selected="${app.status == 'Отклонено'}" value="Отклонено">Отклонено</option>

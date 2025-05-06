@@ -1,5 +1,7 @@
 package ru.flamexander.spring.security.jwt.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,15 +28,20 @@ public class ApplicationsService {
     private final VacancyRepository vacancyRepository;
     private final UserRepository userRepository;
     private final VacancyService vacancyService;
+    private final EmailService emailService;
+
+    private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
+
 
     @Autowired
     public ApplicationsService(ApplicationsRepository applicationsRepository,
                                VacancyRepository vacancyRepository,
-                               UserRepository userRepository, VacancyService vacancyService) {
+                               UserRepository userRepository, VacancyService vacancyService, EmailService emailService) {
         this.applicationsRepository = applicationsRepository;
         this.vacancyRepository = vacancyRepository;
         this.userRepository = userRepository;
         this.vacancyService = vacancyService;
+        this.emailService = emailService;
     }
 
     @Transactional
@@ -160,8 +167,32 @@ public class ApplicationsService {
     public Applications updateApplicationStatus(Long id, String status) {
         Applications existingApplication = applicationsRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Application not found with id: " + id));
-        existingApplication.setStatus(status); // Обновляем только статус
-        return applicationsRepository.save(existingApplication);
+
+        // Проверка текущего статуса
+        if (existingApplication.getStatus().equals("Принято")
+                || existingApplication.getStatus().equals("Отклонено")) {
+            throw new IllegalStateException("Статус нельзя изменить после принятия или отклонения");
+        }
+
+        existingApplication.setStatus(status);
+        Applications updatedApp = applicationsRepository.save(existingApplication);
+
+        // Отправка email только при финальных статусах
+        if (status.equals("Принято") || status.equals("Отклонено")) {
+            User user = updatedApp.getUser();
+            try {
+                emailService.sendApplicationStatusUpdate(
+                        user.getEmail(),
+                        user.getUsername(),
+                        updatedApp.getVacancyTitle(),
+                        status
+                );
+            } catch (Exception e) {
+                logger.error("Ошибка отправки email для заявки {}", id, e);
+            }
+        }
+
+        return updatedApp;
     }
 
     // Метод для обновления заявки
