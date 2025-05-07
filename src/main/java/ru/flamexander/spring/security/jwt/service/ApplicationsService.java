@@ -14,7 +14,10 @@ import ru.flamexander.spring.security.jwt.entities.Vacancy;
 import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
 import ru.flamexander.spring.security.jwt.repositories.UserRepository;
 import ru.flamexander.spring.security.jwt.repositories.VacancyRepository;
+
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -177,22 +180,20 @@ public class ApplicationsService {
         existingApplication.setStatus(status);
         Applications updatedApp = applicationsRepository.save(existingApplication);
 
-        // Отправка email только при финальных статусах
-        if (status.equals("Принято") || status.equals("Отклонено")) {
-            User user = updatedApp.getUser();
-            try {
-                emailService.sendApplicationStatusUpdate(
-                        user.getEmail(),
-                        user.getUsername(),
-                        updatedApp.getVacancyTitle(),
-                        status
-                );
-            } catch (Exception e) {
-                logger.error("Ошибка отправки email для заявки {}", id, e);
-            }
+        return updatedApp;
+    }
+
+    @Transactional
+    public Applications updateStatus(Long id, String newStatus) {
+        Applications application = applicationsRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Заявка не найдена"));
+
+        if (!application.getStatus().equals(newStatus)) {
+            application.setStatus(newStatus);
+            applicationsRepository.save(application);
         }
 
-        return updatedApp;
+        return application;
     }
 
     // Метод для обновления заявки

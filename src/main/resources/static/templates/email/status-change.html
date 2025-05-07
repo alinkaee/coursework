@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}"
+      lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменение статуса заявки</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .header { color: #2c3e50; font-size: 24px; margin-bottom: 20px; }
+        .content { margin: 20px 0; }
+        .status {
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .status-new { background: #e3f2fd; color: #1976d2; }
+        .footer { margin-top: 30px; color: #7f8c8d; }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="">
+    <div class="header">Обновление статуса вашей заявки</div>
+
+    <div class="content">
+        <p>Уважаемый пользователь,</p>
+        <p>Статус вашей заявки на вакансию <strong th:text="${vacancyTitle}"></strong> был изменен:</p>
+
+        <div class="status status-new" th:text="${newStatus}"></div>
+
+        <p>Вы можете проверить текущий статус в личном кабинете на нашем сайте.</p>
+    </div>
+
+    <div class="footer">
+        <p>С уважением,<br>Команда Recruitium</p>
+        <p>Это автоматическое сообщение, пожалуйста, не отвечайте на него.</p>
+    </div>
+</div>
+</body>
+</html>

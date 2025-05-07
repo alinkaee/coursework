@@ -80,29 +80,4 @@ public class EmailService {
 
     private final SpringTemplateEngine templateEngine;
 
-
-    public void sendApplicationStatusUpdate(String toEmail, String username, String vacancyTitle, String status) {
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
-            Context context = new Context();
-            context.setVariable("username", username);
-            context.setVariable("vacancyTitle", vacancyTitle);
-            context.setVariable("status", status);
-
-            String htmlContent = templateEngine.process("user/status-update", context);
-
-            helper.setFrom(fromEmail);
-            helper.setTo(toEmail);
-            helper.setSubject("Обновление статуса вашей заявки");
-            helper.setText(htmlContent, true);
-
-            mailSender.send(message);
-            logger.info("Письмо с обновлением статуса отправлено на {}", toEmail);
-        } catch (Exception e) {
-            logger.error("Ошибка отправки письма с обновлением статуса", e);
-            throw new RuntimeException("Ошибка при отправке уведомления о статусе", e);
-        }
-    }
 }
