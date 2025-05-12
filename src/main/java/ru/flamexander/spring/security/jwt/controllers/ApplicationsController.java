@@ -138,6 +138,14 @@ public class ApplicationsController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при обновлении статуса: " + e.getMessage());
         }
+
+        Optional<Applications> optionalApplication = applicationsService.getApplicationById(id);
+        if (optionalApplication.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Заявка не найдена");
+            return "redirect:/added_application";
+        }
+
+        Applications currentApplication = optionalApplication.get();
         return "redirect:/added_application";
     }
 

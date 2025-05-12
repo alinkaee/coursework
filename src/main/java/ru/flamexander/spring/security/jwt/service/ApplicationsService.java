@@ -1,5 +1,6 @@
 package ru.flamexander.spring.security.jwt.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
+import ru.flamexander.spring.security.jwt.exceptions.EmailSendingException;
 import ru.flamexander.spring.security.jwt.repositories.ApplicationsRepository;
 import ru.flamexander.spring.security.jwt.repositories.UserRepository;
 import ru.flamexander.spring.security.jwt.repositories.VacancyRepository;
@@ -25,6 +27,7 @@ import java.util.Optional;
 
 @Service
 @EnableTransactionManagement
+@Slf4j
 public class ApplicationsService {
 
     private final ApplicationsRepository applicationsRepository;
@@ -32,6 +35,7 @@ public class ApplicationsService {
     private final UserRepository userRepository;
     private final VacancyService vacancyService;
     private final EmailService emailService;
+    private final EmailNotificationService emailNotificationService;
 
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
@@ -39,12 +43,13 @@ public class ApplicationsService {
     @Autowired
     public ApplicationsService(ApplicationsRepository applicationsRepository,
                                VacancyRepository vacancyRepository,
-                               UserRepository userRepository, VacancyService vacancyService, EmailService emailService) {
+                               UserRepository userRepository, VacancyService vacancyService, EmailService emailService, EmailNotificationService emailNotificationService) {
         this.applicationsRepository = applicationsRepository;
         this.vacancyRepository = vacancyRepository;
         this.userRepository = userRepository;
         this.vacancyService = vacancyService;
         this.emailService = emailService;
+        this.emailNotificationService = emailNotificationService;
     }
 
     @Transactional
@@ -188,12 +193,37 @@ public class ApplicationsService {
         Applications application = applicationsRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Заявка не найдена"));
 
-        if (!application.getStatus().equals(newStatus)) {
+        String oldStatus = application.getStatus();
+
+        if (!oldStatus.equals(newStatus)) {
             application.setStatus(newStatus);
-            applicationsRepository.save(application);
+            Applications updatedApp = applicationsRepository.save(application);
+
+            // Отправка уведомления об изменении статуса
+            if (shouldSendStatusChangeNotification(oldStatus, newStatus)) {
+                try {
+                    emailNotificationService.sendStatusChangeNotification(
+                            application.getUser().getEmail(),
+                            application.getVacancyTitle(),
+                            oldStatus,
+                            newStatus
+                    );
+                    log.info("Уведомление об изменении статуса отправлено для заявки {}", id);
+                } catch (EmailSendingException e) {
+                    log.error("Ошибка отправки уведомления для заявки {}", id, e);
+                }
+            }
+
+            return updatedApp;
         }
 
         return application;
+    }
+
+    private boolean shouldSendStatusChangeNotification(String oldStatus, String newStatus) {
+        // Отправляем уведомление только при определенных изменениях статуса
+        return !oldStatus.equals(newStatus) &&
+                ("Принято".equals(newStatus) || "Отклонено".equals(newStatus));
     }
 
     // Метод для обновления заявки

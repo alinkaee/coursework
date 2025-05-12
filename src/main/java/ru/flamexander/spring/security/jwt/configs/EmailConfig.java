@@ -1,5 +1,6 @@
 package ru.flamexander.spring.security.jwt.configs;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
+@Slf4j
 public class EmailConfig {
 
     @Value("${spring.mail.host}")
@@ -34,6 +36,15 @@ public class EmailConfig {
         properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
         properties.put("mail.smtp.ssl.enable", "true");
         properties.put("mail.smtp.ssl.trust", "smtp.mail.ru");
+        properties.put("mail.debug", "true");
+        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.socketFactory.fallback", "false");
+        properties.put("mail.smtp.connectiontimeout", 5000);
+        properties.put("mail.smtp.timeout", 5000);
+        properties.put("mail.smtp.writetimeout", 5000);
+
+        log.info("Конфигурация почтового сервера: {}:{}", mailServerHost, mailServerPort);
+        log.info("Почтовый логин: {}", mailServerUserName);
 
         return mailSender;
     }
