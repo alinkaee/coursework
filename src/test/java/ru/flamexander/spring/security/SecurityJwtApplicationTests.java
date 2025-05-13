@@ -141,15 +141,15 @@ class SecurityJwtApplicationTests {
 			assertTrue(ex.getMessage().contains("Category with id=1 was not found"));
 		}
 
-//		@Test
-//		void testGlobalExceptionHandlerUserNotFoundException() {
-//			UserNotFoundException ex = new UserNotFoundException("User not found");
-//			AppError error = globalExceptionHandler.handleUserNotFoundException(ex);
-//
-//			assertNotNull(error);
-//			assertEquals(HttpStatus.NOT_FOUND.value(), error.getStatus());
-//			assertTrue(error.getMessage().contains("User not found"));
-//		}
+		@Test
+		void testGlobalExceptionHandlerUserNotFoundException() {
+			UserNotFoundException ex = new UserNotFoundException("User not found");
+			AppError error = globalExceptionHandler.handleUserNotFoundException(ex);
+
+			assertNotNull(error);
+			assertEquals(HttpStatus.NOT_FOUND.value(), error.getStatus());
+			assertTrue(error.getMessage().contains("User not found"));
+		}
 
 //		@Test
 //		void testMailUtilsBuildMailContent() {
