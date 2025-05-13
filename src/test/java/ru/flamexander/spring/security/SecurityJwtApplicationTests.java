@@ -151,18 +151,18 @@ class SecurityJwtApplicationTests {
 			assertTrue(error.getMessage().contains("User not found"));
 		}
 
-//		@Test
-//		void testMailUtilsBuildMailContent() {
-//			String username = "testuser";
-//			String token = "reset-token-123";
-//			String expectedLink = "http://example.com/reset?token=" + token;
-//
-//			String mailContent = MailUtils.buildResetPasswordMail(username, expectedLink);
-//
-//			assertThat(mailContent).contains("testuser");
-//			assertThat(mailContent).contains(expectedLink);
-//			assertThat(mailContent).contains("password reset");
-//		}
+		@Test
+		void testMailUtilsBuildMailContent() {
+			String username = "testuser";
+			String token = "reset-token-123";
+			String expectedLink = "http://example.com/reset?token=" + token;
+
+			String mailContent = MailUtils.buildResetPasswordMail(username, expectedLink);
+
+			assertThat(mailContent).contains("testuser");
+			assertThat(mailContent).contains(expectedLink);
+			assertThat(mailContent).contains("password reset");
+		}
 
 
 

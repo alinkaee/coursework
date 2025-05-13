@@ -40,4 +40,16 @@ public class MailUtils {
         mailMessage.setText(text);
         return mailMessage;
     }
+    public static String buildResetPasswordMail(String username, String resetLink) {
+        return String.format(
+                "Dear %s,\n\n" +
+                        "We received a request to reset your password. Please click the link below to proceed:\n\n" +
+                        "%s\n\n" +
+                        "If you did not request a password reset, please ignore this email.\n\n" +
+                        "Best regards,\n" +
+                        "Your Application Team",
+                username, resetLink
+        );
+    }
+
 }
