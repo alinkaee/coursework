@@ -133,13 +133,13 @@ class SecurityJwtApplicationTests {
 			emailNotificationService.sendStatusChangeNotification("user@example.com", "subject", "text", "kkkkkk");
 		}
 
-//		@Test
-//		void testResourceNotFoundException() {
-//			ResourceNotFoundException ex = new ResourceNotFoundException("Category");
-//
-//			assertNotNull(ex.getMessage());
-//			assertTrue(ex.getMessage().contains("Category with id=1 was not found"));
-//		}
+		@Test
+		void testResourceNotFoundException() {
+			ResourceNotFoundException ex = new ResourceNotFoundException("Category", 1L);
+
+			assertNotNull(ex.getMessage());
+			assertTrue(ex.getMessage().contains("Category with id=1 was not found"));
+		}
 
 //		@Test
 //		void testGlobalExceptionHandlerUserNotFoundException() {
