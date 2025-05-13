@@ -19,40 +19,10 @@ import javax.mail.internet.MimeMessage;
 @Slf4j
 @RequiredArgsConstructor
 public class EmailNotificationService {
-    private final JavaMailSender mailSender;
-    private final SpringTemplateEngine templateEngine;
+    private final EmailService emailService;
 
-    public void sendStatusChangeNotification(String email, String vacancyTitle,
-                                             String oldStatus, String newStatus)
-            throws EmailSendingException {
-        try {
-            Context context = new Context();
-            context.setVariable("vacancyTitle", vacancyTitle);
-            context.setVariable("oldStatus", oldStatus);
-            context.setVariable("newStatus", newStatus);
-
-            String emailContent = templateEngine.process("email/status-changed", context);
-
-            sendEmail(
-                    email,
-                    "Статус вашей заявки изменен",
-                    emailContent
-            );
-        } catch (Exception e) {
-            throw new EmailSendingException("Ошибка отправки уведомления об изменении статуса", e);
-        }
-    }
-
-    private void sendEmail(String to, String subject, String content) throws MessagingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
-        helper.setFrom("noreply@recruitium.ru");
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(content, true);
-
-        mailSender.send(message);
+    public void sendStatusChangeNotification(String userEmail, String vacancyTitle, String oldStatus, String newStatus) throws EmailSendingException {
+        emailService.sendStatusChangeNotification(userEmail, vacancyTitle, oldStatus, newStatus);
     }
 }
 

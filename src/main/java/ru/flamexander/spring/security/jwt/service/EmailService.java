@@ -12,8 +12,10 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import ru.flamexander.spring.security.jwt.dtos.ContactFormDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.flamexander.spring.security.jwt.exceptions.EmailSendingException;
 
 import javax.mail.internet.MimeMessage;
+import java.time.LocalDateTime;
 
 @Service
 public class EmailService {
@@ -79,5 +81,35 @@ public class EmailService {
     }
 
     private final SpringTemplateEngine templateEngine;
+
+    public void sendStatusChangeNotification(String userEmail, String vacancyTitle, String oldStatus, String newStatus) throws EmailSendingException {
+        logger.info("Отправка уведомления о смене статуса заявки для {}", userEmail);
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromEmail);
+            helper.setTo(userEmail);
+            helper.setSubject("Обновление статуса заявки: " + vacancyTitle);
+
+            Context context = new Context();
+            context.setVariable("username", userEmail); // Можно заменить на имя пользователя из User
+            context.setVariable("vacancyTitle", vacancyTitle);
+            context.setVariable("oldStatus", oldStatus);
+            context.setVariable("newStatus", newStatus);
+            context.setVariable("date", LocalDateTime.now().toString());
+
+            String htmlContent = templateEngine.process("status-change-notification", context);
+            helper.setText(htmlContent, true);
+
+            mailSender.send(message);
+            logger.info("Уведомление о смене статуса успешно отправлено на {}", userEmail);
+
+        } catch (Exception e) {
+            logger.error("Ошибка отправки уведомления о смене статуса заявки", e);
+            throw new EmailSendingException("Не удалось отправить уведомление на " + userEmail, e);
+        }
+    }
 
 }

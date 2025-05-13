@@ -133,7 +133,7 @@ public class ApplicationsController {
             @RequestParam String status,
             RedirectAttributes redirectAttributes) {
         try {
-            applicationsService.updateApplicationStatus(id, status);
+            applicationsService.updateStatus(id, status);
             redirectAttributes.addFlashAttribute("successMessage", "Статус заявки успешно обновлен!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при обновлении статуса: " + e.getMessage());

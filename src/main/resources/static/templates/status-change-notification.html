@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Обновление статуса заявки</title>
+</head>
+<body>
+<div>
+    <h3>Здравствуйте, <span th:text="${username}"></span>!</h3>
+
+    <p>Статус вашей заявки на вакансию "<strong th:text="${vacancyTitle}"></strong>" был изменён.</p>
+
+    <p>Старый статус: <strong th:text="${oldStatus}"></strong></p>
+    <p>Новый статус: <strong th:text="${newStatus}"></strong></p>
+
+    <p>Дата изменения: <span th:text="${date}"></span></p>
+
+    <p>С уважением,<br/>
+        <strong>Команда HR</strong></p>
+</div>
+</body>
+</html>
