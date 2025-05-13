@@ -7,6 +7,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,9 +16,13 @@ import ru.flamexander.spring.security.jwt.controllers.AuthController;
 import ru.flamexander.spring.security.jwt.dtos.CategoriesDTO;
 import ru.flamexander.spring.security.jwt.dtos.RegistrationUserDto;
 import ru.flamexander.spring.security.jwt.entities.*;
+import ru.flamexander.spring.security.jwt.exceptions.AppError;
+import ru.flamexander.spring.security.jwt.exceptions.GlobalExceptionHandler;
+import ru.flamexander.spring.security.jwt.exceptions.UserNotFoundException;
 import ru.flamexander.spring.security.jwt.repositories.*;
 import ru.flamexander.spring.security.jwt.service.*;
 import ru.flamexander.spring.security.jwt.utils.JwtTokenUtils;
+import ru.flamexander.spring.security.jwt.utils.MailUtils;
 
 import java.time.Duration;
 import java.util.*;
@@ -63,6 +68,12 @@ class SecurityJwtApplicationTests {
 		private PasswordResetTokenRepository tokenRepository;
 		@InjectMocks
 		private PasswordResetService passwordResetService;
+		@Mock
+		private EmailService emailService;
+		@InjectMocks
+		private EmailNotificationService emailNotificationService;
+		@InjectMocks
+		private GlobalExceptionHandler globalExceptionHandler;
 
 
 		@Test
@@ -112,6 +123,47 @@ class SecurityJwtApplicationTests {
 			assertEquals(1L, dto.getId());
 			assertEquals("Java", dto.getTitle());
 		}
+
+		@Test
+		void testEmailNotificationServiceSendEmail() {
+			String to = "user@example.com";
+			String subject = "Test Subject";
+			String text = "Test message content";
+
+			emailNotificationService.sendStatusChangeNotification("user@example.com", "subject", "text", "kkkkkk");
+		}
+
+//		@Test
+//		void testResourceNotFoundException() {
+//			ResourceNotFoundException ex = new ResourceNotFoundException("Category");
+//
+//			assertNotNull(ex.getMessage());
+//			assertTrue(ex.getMessage().contains("Category with id=1 was not found"));
+//		}
+
+//		@Test
+//		void testGlobalExceptionHandlerUserNotFoundException() {
+//			UserNotFoundException ex = new UserNotFoundException("User not found");
+//			AppError error = globalExceptionHandler.handleUserNotFoundException(ex);
+//
+//			assertNotNull(error);
+//			assertEquals(HttpStatus.NOT_FOUND.value(), error.getStatus());
+//			assertTrue(error.getMessage().contains("User not found"));
+//		}
+
+//		@Test
+//		void testMailUtilsBuildMailContent() {
+//			String username = "testuser";
+//			String token = "reset-token-123";
+//			String expectedLink = "http://example.com/reset?token=" + token;
+//
+//			String mailContent = MailUtils.buildResetPasswordMail(username, expectedLink);
+//
+//			assertThat(mailContent).contains("testuser");
+//			assertThat(mailContent).contains(expectedLink);
+//			assertThat(mailContent).contains("password reset");
+//		}
+
 
 
 
