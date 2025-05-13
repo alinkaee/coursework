@@ -22,4 +22,9 @@ public class RoleService {
                 .orElseThrow(() -> new RuntimeException("Роль не найдена"));
     }
 
+    // Добавьте этот метод
+    public void deleteAll() {
+        roleRepository.deleteAll();
+    }
+
 }

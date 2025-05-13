@@ -1,6 +1,6 @@
 package ru.flamexander.spring.security.jwt.entities;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -9,7 +9,9 @@ import java.util.Collection;
 
 @Entity
 @Data
+//@NoArgsConstructor
 @Table(name = "users")
+@Setter
 public class User implements Serializable { // Добавляем реализацию Serializable
     private static final long serialVersionUID = 1L; // Уникальный идентификатор для сериализации
 
@@ -53,4 +55,7 @@ public class User implements Serializable { // Добавляем реализа
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Applications> applications; // Коллекция заявок пользователя
+
+    public User() {}
+
 }
