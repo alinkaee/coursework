@@ -74,6 +74,8 @@ class SecurityJwtApplicationTests {
 		private EmailNotificationService emailNotificationService;
 		@InjectMocks
 		private GlobalExceptionHandler globalExceptionHandler;
+		@Mock
+		private UserRepository userRepository;
 
 
 		@Test
@@ -163,39 +165,6 @@ class SecurityJwtApplicationTests {
 			assertThat(mailContent).contains(expectedLink);
 			assertThat(mailContent).contains("password reset");
 		}
-
-
-
-
-//		@Test
-//		void testApplicationsServiceCreateApplication() {
-//			Applications mockApp = new Applications();
-//			mockApp.setId(1L);
-//			mockApp.setStatus(Applications.ApplicationStatus.PENDING);
-//
-//			when(applicationsRepository.save(any(Applications.class))).thenReturn(mockApp);
-//
-//			Applications result = applicationsService.createApplication(mockApp);
-//			assertNotNull(result);
-//			assertEquals(Applications.ApplicationStatus.PENDING, result.getStatus());
-//			verify(applicationsRepository, times(1)).save(any(Applications.class));
-//		}
-
-
-
-//		@Test
-//		void testVacancyServiceCreateVacancy() {
-//			Vacancy mockVacancy = new Vacancy();
-//			mockVacancy.setId(1L);
-//			mockVacancy.setTitle("Java Developer");
-//
-//			when(vacancyRepository.save(any(Vacancy.class))).thenReturn(mockVacancy);
-//
-//			Vacancy result = vacancyService.createVacancy(mockVacancy);
-//			assertNotNull(result);
-//			assertEquals("Java Developer", result.getTitle());
-//			verify(vacancyRepository, times(1)).save(any(Vacancy.class));
-//		}
 
 
 
