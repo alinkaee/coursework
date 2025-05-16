@@ -70,19 +70,15 @@ public class UserService implements UserDetailsService {
     }
 
     public String saveResume(MultipartFile file) throws IOException {
-        logger.info("Сохранение резюме: {}", file.getOriginalFilename());
         Path uploadPath = Paths.get(RESUME_UPLOAD_DIR);
         if (!Files.exists(uploadPath)) {
-            logger.debug("Создание директории для резюме: {}", uploadPath);
             Files.createDirectories(uploadPath);
         }
 
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        logger.debug("Генерация имени файла: {}", fileName);
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         Path filePath = uploadPath.resolve(fileName);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        Files.copy(file.getInputStream(), filePath);
-        logger.info("Резюме успешно сохранено: {}", filePath);
         return RESUME_UPLOAD_DIR + fileName;
     }
 
@@ -286,8 +282,19 @@ public class UserService implements UserDetailsService {
         processAvatarUpload(user, userUpdateDto);
         processResumeUpload(user, userUpdateDto);
 
+        if (userUpdateDto.getResumeFile() != null && !userUpdateDto.getResumeFile().isEmpty()) {
+            try {
+                String resumeFilename = saveResume(userUpdateDto.getResumeFile());
+                user.setResumeFilename(resumeFilename);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to save resume", e);
+            }
+        }
+
         return userRepository.save(user);
     }
+
+
 
     private void processAvatarUpload(User user, UserUpdateDto dto) {
         if (dto.getAvatarFile() != null && !dto.getAvatarFile().isEmpty()) {

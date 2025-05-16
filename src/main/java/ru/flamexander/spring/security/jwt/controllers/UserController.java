@@ -34,7 +34,7 @@ public class UserController {
     public String updateUser(
             @PathVariable Long id,
             @ModelAttribute UserUpdateDto userUpdateDto,
-            @RequestParam("resume") MultipartFile resumeFile,
+            @RequestParam("resumeFile") MultipartFile resumeFile,
             RedirectAttributes redirectAttributes,
             HttpSession session) {
 

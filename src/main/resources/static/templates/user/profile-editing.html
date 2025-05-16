@@ -59,9 +59,9 @@
 
             <div class="form-group">
                 <label for="resume">Резюме (PDF)</label>
-                <input type="file" id="resume" name="resume" accept=".pdf">
-                <small th:if="${user.resumeFilename != null}"> <!--  -->
-                    Текущее резюме: <a target="_blank" th:href="${user.resumeFilename}">Просмотреть</a> <!--  -->
+                <input type="file" id="resume" name="resumeFile" accept=".pdf,.doc,.docx">
+                <small th:if="${user.resumeFilename != null}">
+                    Текущее резюме: <a th:href="@{${user.resumeFilename}}" target="_blank">Просмотреть</a>
                 </small>
             </div>
 
