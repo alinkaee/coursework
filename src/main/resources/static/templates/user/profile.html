@@ -32,6 +32,25 @@
           </p>
           <p th:text="${userDescription}" class="description"></p>
           <p th:text="${userSkills}" class="skills"></p>
+
+          <div class="resume-section" th:if="${user.resumeFilename != null}">
+            <h4>Мое резюме:</h4>
+            <div class="resume-container">
+              <a th:href="${user.resumeFilename}" target="_blank" class="resume-link">
+                <i class="fas fa-file-pdf"></i> Просмотреть резюме (PDF)
+              </a>
+              <span class="resume-info">
+                <i class="fas fa-info-circle"></i> Вы можете обновить резюме в разделе редактирования профиля
+              </span>
+            </div>
+          </div>
+          <div class="resume-section" th:unless="${user.resumeFilename != null}">
+            <h4>Резюме:</h4>
+            <p class="no-resume">Резюме не загружено</p>
+            <a href="/profile_editing" class="upload-resume-link">
+              <i class="fas fa-upload"></i> Загрузить резюме
+            </a>
+          </div>
         </div>
       </div>
       <h3>Мои заявки</h3>

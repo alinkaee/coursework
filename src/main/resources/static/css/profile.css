@@ -428,6 +428,75 @@
     margin-top: 10px;
 }
 
+/* Стили для раздела резюме */
+.resume-section {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.resume-section h4 {
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.resume-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.resume-link {
+    color: #d32f2f;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+}
+
+.resume-link:hover {
+    color: #b71c1c;
+    text-decoration: underline;
+}
+
+.resume-link i {
+    font-size: 1.2em;
+}
+
+.resume-info {
+    color: #666;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.resume-info i {
+    color: #1976d2;
+}
+
+.no-resume {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.upload-resume-link {
+    color: #1976d2;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.upload-resume-link:hover {
+    text-decoration: underline;
+}
+
 /* Адаптация для мобильных */
 @media (max-width: 768px) {
     .profile__account {
