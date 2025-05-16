@@ -36,7 +36,9 @@ public class AdminInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         initAdmin();
+        initUser();
         initItCategoriesAndVacancies();
+
     }
 
     private void initAdmin() {
@@ -54,6 +56,24 @@ public class AdminInitializer implements CommandLineRunner {
                     });
 
             userRoleService.createUserWithRole(admin, roleService.getRoleIdByName("ROLE_ADMIN"));
+        }
+    }
+
+    private void initUser() {
+        if (!userService.existsByUsername("user1")) {
+            User user = new User();
+            user.setUsername("user1");
+            user.setEmail("user1@example.com");
+            user.setPassword(passwordEncoder.encode("123QWEasd!"));
+
+            Role userRole = roleService.getRoleByName("ROLE_USER")
+                    .orElseGet(() -> {
+                        Role newRole = new Role();
+                        newRole.setName("ROLE_USER");
+                        return roleRepository.save(newRole);
+                    });
+
+            userRoleService.createUserWithRole(user, roleService.getRoleIdByName("ROLE_USER"));
         }
     }
 
