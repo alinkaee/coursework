@@ -18,6 +18,7 @@ import ru.flamexander.spring.security.jwt.exceptions.InvalidTokenException;
 import ru.flamexander.spring.security.jwt.exceptions.TokenExpiredException;
 import ru.flamexander.spring.security.jwt.exceptions.UserNotFoundException;
 import ru.flamexander.spring.security.jwt.service.ApplicationsService;
+import ru.flamexander.spring.security.jwt.service.FavoriteVacancyService;
 import ru.flamexander.spring.security.jwt.service.PasswordResetService;
 import ru.flamexander.spring.security.jwt.service.UserService;
 

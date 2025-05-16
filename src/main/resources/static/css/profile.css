@@ -497,6 +497,69 @@
     text-decoration: underline;
 }
 
+/* Стили для избранных вакансий */
+.profile__favorite-vacancies {
+    margin-top: 20px;
+}
+
+.favorite-vacancy-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.vacancy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.vacancy-header h4 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.2em;
+}
+
+.remove-form {
+    margin: 0;
+}
+
+.remove-button {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s;
+}
+
+.remove-button:hover {
+    background: #ff5252;
+}
+
+.remove-button svg {
+    fill: currentColor;
+}
+
+.view-vacancy-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #3498db;
+    text-decoration: none;
+}
+
+.view-vacancy-link:hover {
+    text-decoration: underline;
+}
+
 /* Адаптация для мобильных */
 @media (max-width: 768px) {
     .profile__account {

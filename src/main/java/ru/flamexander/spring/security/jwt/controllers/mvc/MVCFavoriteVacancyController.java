@@ -1,6 +1,7 @@
 package ru.flamexander.spring.security.jwt.controllers.mvc;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,33 +26,31 @@ public class MVCFavoriteVacancyController {
 
 
     @PostMapping("/remove/{vacancyId}")
-    public String removeFromFavorites(
-            @PathVariable Long vacancyId,
-            Principal principal,
-            RedirectAttributes redirectAttributes) {
+    public String removeFromFavorites(@PathVariable Long vacancyId,
+                                      Principal principal,
+                                      RedirectAttributes redirectAttributes) {
 
         if (principal == null) {
+            redirectAttributes.addFlashAttribute("error", "Требуется авторизация");
             return "redirect:/login";
         }
 
-        String email = principal.getName();
-        User user = userService.findByEmail(email)
-                .orElseThrow(() -> {
-                    System.err.println("User not found with email: " + email);
-                    return new UsernameNotFoundException("User not found");
-                });
+        try {
+            User user = userService.findByUsername(principal.getName())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        Vacancy vacancy = vacancyService.getById(vacancyId);
-        favoriteVacancyService.removeVacancyFromFavorites(user, vacancy);
+            Vacancy vacancy = vacancyService.getById(vacancyId);
 
-        System.out.println("Principal email: " + principal.getName());
-        User user1 = userService.findByEmail(principal.getName())
-                .orElseThrow(() -> {
-                    System.err.println("Ошибка: пользователь с email '" + principal.getName() + "' не найден");
-                    return new UsernameNotFoundException("User not found");
-                });
+            System.out.println("Удаление: user=" + user.getId() + ", vacancy=" + vacancyId);
 
-        redirectAttributes.addFlashAttribute("success", "Вакансия удалена из избранного");
+            favoriteVacancyService.removeVacancyFromFavorites(user.getId(), vacancy.getId());
+
+            redirectAttributes.addFlashAttribute("success", "Вакансия удалена из избранного");
+        } catch (Exception e) {
+            System.err.println("Ошибка удаления: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Ошибка: " + e.getMessage());
+        }
+
         return "redirect:/profile#favorites";
     }
 }

@@ -30,15 +30,15 @@ public class FavoritesController {
         return "redirect:/job_openings";
     }
 
-    @PostMapping("/vacancies/remove-from-favorites/{vacancyId}")
-    public String removeVacancyFromFavorites(@PathVariable Long vacancyId) {
-        User currentUser = userService.getCurrentUser();
-        Vacancy vacancy = vacancyService.findById(vacancyId).orElse(null);
-
-        if (vacancy != null) {
-            userService.removeVacancyFromFavorites(currentUser, vacancy);
-        }
-
-        return "redirect:/job_openings";
-    }
+//    @PostMapping("/vacancies/remove-from-favorites/{vacancyId}")
+//    public String removeVacancyFromFavorites(@PathVariable Long vacancyId) {
+//        User currentUser = userService.getCurrentUser();
+//        Vacancy vacancy = vacancyService.findById(vacancyId).orElse(null);
+//
+//        if (vacancy != null) {
+//            userService.removeVacancyFromFavorites(currentUser, vacancy);
+//        }
+//
+//        return "redirect:/job_openings";
+//    }
 }

@@ -51,6 +51,7 @@ public class UserService implements UserDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private UserRepository userRepository;
     private RoleService roleService;
+    private FavoriteVacancyService favoriteVacancyService;
     private static final String RESUME_UPLOAD_DIR = "uploads/resumes/";
 
     @Autowired
@@ -335,6 +336,7 @@ public class UserService implements UserDetailsService {
             throw new RuntimeException("Ошибка сохранения файла", ex);
         }
     }
+
 
 
 
