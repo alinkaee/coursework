@@ -9,6 +9,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Моя страница | RECRUITIUM</title>
   <link rel="stylesheet" href="/css/profile.css" />
+  <style>
+
+  </style>
 </head>
 <body>
 <div layout:fragment="content" class="">
@@ -17,6 +20,29 @@
       <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
       <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 
+      <!-- Модальное окно для удаления заявки -->
+      <div id="deleteApplicationModal" class="modal-overlay">
+        <div class="modal-content">
+          <div class="modal-header">Подтверждение удаления</div>
+          <div class="modal-body">Вы уверены, что хотите удалить эту заявку? Это действие нельзя отменить.</div>
+          <div class="modal-footer">
+            <button class="modal-button modal-button-cancel" onclick="closeModal('deleteApplicationModal')">Отмена</button>
+            <button class="modal-button modal-button-confirm" id="confirmDeleteApplication">Удалить</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Модальное окно для удаления вакансии из избранного -->
+      <div id="deleteFavoriteModal" class="modal-overlay">
+        <div class="modal-content">
+          <div class="modal-header">Подтверждение удаления</div>
+          <div class="modal-body">Вы уверены, что хотите удалить эту вакансию из избранного?</div>
+          <div class="modal-footer">
+            <button class="modal-button modal-button-cancel" onclick="closeModal('deleteFavoriteModal')">Отмена</button>
+            <button class="modal-button modal-button-confirm" id="confirmDeleteFavorite">Удалить</button>
+          </div>
+        </div>
+      </div>
 
       <a href="/profile_editing" class="edit-button">Редактировать профиль</a>
       <div class="profile__account">
@@ -34,22 +60,38 @@
           <p th:text="${userSkills}" class="skills"></p>
 
           <div class="resume-section" th:if="${user.resumeFilename != null}">
-            <h4>Мое резюме:</h4>
-            <div class="resume-container">
-              <a th:href="${user.resumeFilename}" target="_blank" class="resume-link">
-                <i class="fas fa-file-pdf"></i> Просмотреть резюме (PDF)
-              </a>
-              <span class="resume-info">
-                <i class="fas fa-info-circle"></i> Вы можете обновить резюме в разделе редактирования профиля
-              </span>
+            <div class="resume-card">
+              <div class="resume-header">
+                <i class="fas fa-file-pdf resume-icon"></i>
+                <h4>Мое резюме</h4>
+              </div>
+              <div class="resume-actions">
+                <a th:href="${user.resumeFilename}" target="_blank" class="resume-download-btn">
+                  <i class="fas fa-eye"></i> Просмотреть
+                </a>
+                <a th:href="${user.resumeFilename}" download class="resume-download-btn">
+                  <i class="fas fa-download"></i> Скачать
+                </a>
+              </div>
+              <div class="resume-footer">
+      <span class="resume-update-info">
+        <i class="fas fa-sync-alt"></i> Обновить резюме можно в <a href="/profile_editing">настройках профиля</a>
+      </span>
+              </div>
             </div>
           </div>
+
           <div class="resume-section" th:unless="${user.resumeFilename != null}">
-            <h4>Резюме:</h4>
-            <p class="no-resume">Резюме не загружено</p>
-            <a href="/profile_editing" class="upload-resume-link">
-              <i class="fas fa-upload"></i> Загрузить резюме
-            </a>
+            <div class="resume-card empty-resume">
+              <div class="resume-header">
+                <i class="fas fa-file-upload resume-icon"></i>
+                <h4>Резюме не загружено</h4>
+              </div>
+              <p class="resume-upload-text">Добавьте резюме, чтобы повысить свои шансы на трудоустройство</p>
+              <a href="/profile_editing" class="resume-upload-btn">
+                <i class="fas fa-cloud-upload-alt"></i> Загрузить резюме
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -69,9 +111,9 @@
           <div class="application-details">
             <span th:text="${#dates.format(app.date, 'dd.MM.yyyy')}"></span>
             <a th:href="@{'/applications/' + ${app.id}}" class="view-button">Просмотр</a>
-            <form th:action="@{/applications/{id}(id=${app.id})}" method="post" class="remove-form">
+            <form th:action="@{/applications/{id}(id=${app.id})}" method="post" class="remove-form" id="applicationForm_${app.id}">
               <input type="hidden" name="_method" value="delete" />
-              <button type="submit" class="remove-button">
+              <button type="button" class="remove-button" onclick="showDeleteApplicationModal('${app.id}')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                   <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                 </svg>
@@ -93,13 +135,12 @@
         <div class="favorite-vacancy-card" th:each="vacancy : ${favoriteVacancies}">
           <h4 th:text="${vacancy.title}"></h4>
 
-          <!-- Форма без CSRF-токена -->
           <form th:action="@{/favorites/remove/{vacancyId}(vacancyId=${vacancy.id})}"
                 method="post"
                 class="remove-form"
-                onsubmit="return confirm('Удалить вакансию из избранного?')">
+                id="favoriteForm_${vacancy.id}">
 
-            <button type="submit" class="remove-button">
+            <button type="button" class="remove-button" onclick="showDeleteFavoriteModal('${vacancy.id}')">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
               </svg>
@@ -116,8 +157,54 @@
         <p>У вас пока нет избранных вакансий</p>
         <a href="/job_openings" class="add-button">Найти вакансии</a>
       </div>
-
     </div>
+    <script>
+      // Глобальные переменные для хранения ID текущей заявки/вакансии
+      let currentApplicationId = null;
+      let currentFavoriteId = null;
+
+      // Функция для показа модального окна удаления заявки
+      function showDeleteApplicationModal(applicationId) {
+        currentApplicationId = applicationId;
+        document.getElementById('deleteApplicationModal').classList.add('active');
+      }
+
+      // Функция для показа модального окна удаления вакансии из избранного
+      function showDeleteFavoriteModal(favoriteId) {
+        currentFavoriteId = favoriteId;
+        document.getElementById('deleteFavoriteModal').classList.add('active');
+      }
+
+      // Функция для закрытия модального окна
+      function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
+      }
+
+      // Обработчик подтверждения удаления заявки
+      document.getElementById('confirmDeleteApplication').addEventListener('click', function() {
+        if (currentApplicationId) {
+          document.getElementById('applicationForm_' + currentApplicationId).submit();
+        }
+        closeModal('deleteApplicationModal');
+      });
+
+      // Обработчик подтверждения удаления вакансии из избранного
+      document.getElementById('confirmDeleteFavorite').addEventListener('click', function() {
+        if (currentFavoriteId) {
+          document.getElementById('favoriteForm_' + currentFavoriteId).submit();
+        }
+        closeModal('deleteFavoriteModal');
+      });
+
+      // Закрытие модального окна при клике вне его области
+      document.querySelectorAll('.modal-overlay').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+          if (e.target === this) {
+            this.classList.remove('active');
+          }
+        });
+      });
+    </script>
   </main>
 </div>
 </body>

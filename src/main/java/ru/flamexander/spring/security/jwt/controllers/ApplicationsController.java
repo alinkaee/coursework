@@ -189,4 +189,19 @@ public class ApplicationsController {
         }
         return "redirect:/profile";
     }
+
+    @GetMapping("/{id}/details")
+    public String getApplicationDetails(@PathVariable Long id, Model model) {
+        Applications application = applicationsService.getApplicationById(id)
+                .orElseThrow(() -> new RuntimeException("Application not found with id: " + id));
+
+        // Проверяем, что текущий пользователь имеет доступ к этой заявке
+        User currentUser = userService.getCurrentUser();
+        if (!application.getUser().getId().equals(currentUser.getId())) {
+            throw new RuntimeException("Access denied");
+        }
+
+        model.addAttribute("application", application);
+        return "user/application-details";
+    }
 }
