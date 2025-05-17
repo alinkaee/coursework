@@ -131,7 +131,7 @@
                 <td th:text="${app.user.email}"></td>
                 <td th:text="${app.user.phone}"></td>
                 <td th:text="${app.vacancyTitle}"></td>
-                <td th:text="${app.date}"></td>
+                <td class="application-date" th:text="${#dates.format(app.date, 'dd.MM.yyyy HH:mm')}">01.01.2025 12:00</td>
                 <td>
                     <form th:action="@{'/applications/update-status/' + ${app.id}}" method="post" style="display: inline;">
                         <select name="status"

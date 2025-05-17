@@ -33,9 +33,6 @@ public class Applications {
     @Column(name = "status")
     private String status;
 
-//    @Column(name = "comments", nullable = true)
-//    private String comments;
-
     // Конструкторы и геттеры/сеттеры
     public Applications() {}
 

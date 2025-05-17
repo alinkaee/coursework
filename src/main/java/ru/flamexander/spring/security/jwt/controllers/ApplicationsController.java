@@ -1,8 +1,11 @@
 package ru.flamexander.spring.security.jwt.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +17,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import ru.flamexander.spring.security.jwt.entities.Applications;
 import ru.flamexander.spring.security.jwt.entities.User;
 import ru.flamexander.spring.security.jwt.entities.Vacancy;
-import ru.flamexander.spring.security.jwt.service.ApplicationsService;
-import ru.flamexander.spring.security.jwt.service.UserService;
-import ru.flamexander.spring.security.jwt.service.VacancyService;
+import ru.flamexander.spring.security.jwt.service.*;
 import ru.flamexander.spring.security.jwt.utils.JwtTokenUtils;
 
 import javax.validation.Valid;
@@ -28,6 +29,8 @@ import java.util.Optional;
 @RequestMapping("/applications")
 public class ApplicationsController {
 
+
+    private static final Logger log = LoggerFactory.getLogger(ApplicationsController.class);
     private final ApplicationsService applicationsService;
     private final UserService userService;
 
@@ -190,18 +193,4 @@ public class ApplicationsController {
         return "redirect:/profile";
     }
 
-    @GetMapping("/{id}/details")
-    public String getApplicationDetails(@PathVariable Long id, Model model) {
-        Applications application = applicationsService.getApplicationById(id)
-                .orElseThrow(() -> new RuntimeException("Application not found with id: " + id));
-
-        // Проверяем, что текущий пользователь имеет доступ к этой заявке
-        User currentUser = userService.getCurrentUser();
-        if (!application.getUser().getId().equals(currentUser.getId())) {
-            throw new RuntimeException("Access denied");
-        }
-
-        model.addAttribute("application", application);
-        return "user/application-details";
-    }
 }

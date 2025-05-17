@@ -243,14 +243,6 @@ public class ApplicationsService {
 
         return applicationsRepository.save(existingApplication);
     }
-
-//    public Applications updateApplicationComments(Long id, String comments) {
-//        Applications application = applicationsRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException("Application not found"));
-//
-//        application.setComments(comments);
-//        return applicationsRepository.save(application);
-//    }
 }
 
 

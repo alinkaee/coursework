@@ -110,7 +110,6 @@
           </div>
           <div class="application-details">
             <span th:text="${#dates.format(app.date, 'dd.MM.yyyy')}"></span>
-            <a th:href="@{'/applications/' + ${app.id}}" class="view-button">Просмотр</a>
             <form th:action="@{/applications/{id}(id=${app.id})}" method="post" class="remove-form" id="applicationForm_${app.id}">
               <input type="hidden" name="_method" value="delete" />
               <button type="button" class="remove-button" onclick="showDeleteApplicationModal('${app.id}')">
