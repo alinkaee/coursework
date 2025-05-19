@@ -43,6 +43,8 @@ public class AdminUserController {
                     PageRequest.of(page, size, Sort.by(direction, sort[0]))
             );
             model.addAttribute("users", usersPage);
+            model.addAttribute("currentPage", page); // Добавляем текущую страницу в модель
+            model.addAttribute("totalPages", usersPage.getTotalPages()); // Добавляем общее количество страниц
         }
 
         return "user/view-all-users";
