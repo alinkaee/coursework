@@ -1,3 +1,4 @@
+/* Ваши существующие стили */
 .table-responsive {
     margin-top: 20px;
 }
@@ -12,4 +13,69 @@
 
 .table th {
     white-space: nowrap;
+}
+
+/* Новые стили для пагинации */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination li {
+    margin: 0 5px;
+}
+
+.pagination li a,
+.pagination li span {
+    display: block;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #007bff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.pagination li a:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination li.active a {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.pagination li.disabled a,
+.pagination li.disabled span {
+    color: #6c757d;
+    pointer-events: none;
+    cursor: not-allowed;
+    background-color: #f8f9fa;
+    border-color: #ddd;
+}
+
+.pagination li.disabled:hover a {
+    background-color: #f8f9fa;
+}
+
+/* Адаптивные стили */
+@media (max-width: 576px) {
+    .pagination li {
+        margin: 0 2px;
+    }
+
+    .pagination li a,
+    .pagination li span {
+        padding: 6px 8px;
+        font-size: 0.9rem;
+    }
 }

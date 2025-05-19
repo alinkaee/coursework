@@ -60,7 +60,7 @@
                 </div>
                 <div class="header__buttons">
                     <div class="header__buttons__application" th:if="${#request.isUserInRole('ROLE_USER')}">
-                        <a href="./contact">Оставить заявку</a>
+                        <a href="./contact">Связаться с нами</a>
                     </div>
                     <div th:if="${#request.isUserInRole('ROLE_USER')}">
                         <a href="./profile">Профиль</a>
